@@ -9,15 +9,6 @@ module.exports = {
         }
     },
 
-    build_min: {
-        options: {
-            compress: true
-        },
-        files: {
-            '<%= build.css_min %>': '<%= files.lib.less.main %>'
-        }
-    },
-
     dist_expand: {
         options: {
             compress: false
