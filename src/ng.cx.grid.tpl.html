@@ -1,0 +1,21 @@
+<div class="ng-cx-grid">
+
+    <div class="corner"></div>
+
+    <div class="row-headers">
+        <div class="row-header-cell" ng-repeat="data in rowHeaderData"></div>
+    </div>
+
+    <div class="column-headers">
+        <div class="column-header-cell" ng-repeat="data in columnHeaderData"></div>
+    </div>
+
+    <div class="grid">
+        <div class="grid-row" ng-repeat="cells in gridData">
+            <div class="cell" ng-repeat="cell in cells">
+                {{ cell }}
+            </div>
+        </div>
+    </div>
+
+</div>
