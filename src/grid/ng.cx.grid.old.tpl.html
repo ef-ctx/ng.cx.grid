@@ -1,0 +1,33 @@
+<div class="ng-cx-grid">
+
+    <div class="row-headers">
+        <div class="corner"></div>
+        <div class="row-header-cell" ng-repeat="data in rowHeaderData">
+            <div cx-grid-cell
+                io-renderer-directive="{{gridController.ioRowHeaderRenderer}}"
+                 io-data-provider="data">
+            </div>
+        </div>
+    </div>
+
+    <div class="column-headers">
+        <div class="column-header-cell" ng-repeat="data in columnHeaderData">
+            <div cx-grid-cell
+                io-renderer-directive="{{gridController.ioColumnHeaderRenderer}}"
+                 io-data-provider="data">
+            </div>
+        </div>
+    </div>
+
+    <div class="grid">
+        <div class="grid-row" ng-repeat="cells in gridData">
+            <div class="cell" ng-repeat="cell in cells">
+                <div cx-grid-cell
+                     io-renderer-directive="{{gridController.ioCellRenderer}}"
+                     io-data-provider="cell">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

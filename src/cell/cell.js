@@ -1,0 +1,92 @@
+angular.module('ng.cx.grid.cell', [
+    'ng.cx.grid.cell.renderer'
+])
+
+/**********************************************************
+ *
+ * @ngdoc directive
+ * @name cxGridCell
+ *
+ **********************************************************/
+
+.directive('cxGridCell', [
+
+    function cxGridCellRenderer() {
+        'use strict';
+
+        return {
+            restrict: 'AE',
+            scope: {},
+            bindToController: {
+                ioDataProvider: '=?',
+                ioRendererDirective: '@?'
+            },
+            controller: 'cxGridCellController as cellController'
+        };
+    }
+])
+
+/**********************************************************
+ *
+ * @ngdoc controller
+ * @name cxGridCellController
+ *
+ **********************************************************/
+
+.controller('cxGridCellController', [
+    '$compile',
+    '$element',
+    '$scope',
+    function $cxGridCellController($compile, $element, $scope) {
+        'use strict';
+
+        var self = this,
+            _renderedElement,
+            _rendererDirective = '<div cx-grid-cell-renderer io-data-provider="dataProvider"></div>',
+            _data;
+
+        /**********************************************************
+         * SETTERS
+         **********************************************************/
+        Object.defineProperty(this, 'ioRendererDirective', {
+            set: function(value) {
+                if (value && value.length > 0) {
+                    _rendererDirective = '<div ' + value + ' io-data-provider="dataProvider"></div>';
+                }
+                _render();
+            }
+        });
+        /**********************************************************
+         * ACCESSORS
+         **********************************************************/
+
+        Object.defineProperty($scope, 'dataProvider', {
+            get: function() {
+                return self.ioDataProvider;
+            }
+        });
+
+        /**********************************************************
+         * RUN
+         **********************************************************/
+
+        _init();
+
+        /**********************************************************
+         * HELPERS
+         **********************************************************/
+
+        function _init() {}
+
+        function _render() {
+            _renderedElement = $compile(_rendererDirective)($scope);
+            $element.append(_renderedElement);
+
+        }
+
+    }
+])
+
+/**********************************************************/
+
+;
