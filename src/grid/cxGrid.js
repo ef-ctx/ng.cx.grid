@@ -1,6 +1,4 @@
-angular.module('ng.cx.grid.grid', [
-    'ng.cx.grid.service'
-])
+angular.module('ng.cx.grid.grid', [])
 
 /**********************************************************
  *
@@ -18,7 +16,7 @@ angular.module('ng.cx.grid.grid', [
         return {
             restrict: 'AE',
             replace: 'element',
-            templateUrl: 'src/grid/ng.cx.grid.tpl.html',
+            templateUrl: 'src/grid/ng.cx.grid.html',
             controller: 'cxGridController as gridController',
             scope: {},
             bindToController: {
@@ -45,11 +43,9 @@ angular.module('ng.cx.grid.grid', [
 .controller('cxGridController', [
     '$scope',
     '$timeout',
-    'gridService',
     'CxGrid',
-    function ngCxGridController($scope, $timeout, gridService, CxGrid) {
+    function ngCxGridController($scope, $timeout, CxGrid) {
         'use strict';
-        console.log('ioDataProvider', this.ioDataProvider);
 
         var _grid = new CxGrid(
             this.ioDataProvider,

@@ -13,7 +13,7 @@ angular.module('ng.cx.grid.cell.renderer', [])
 
         return {
             restrict: 'AE',
-            templateUrl: 'src/cell/renderer/cellRenderer.tpl.html',
+            templateUrl: 'src/cell/renderer/cxGridCellRenderer.html',
             scope: {
                 dataProvider: '=?ioDataProvider'
             }
