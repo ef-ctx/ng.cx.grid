@@ -18,7 +18,7 @@ angular.module('ng.cx.grid.cell', [
             restrict: 'AE',
             scope: {},
             bindToController: {
-                ioDataProvider: '=?',
+                ioCxCell: '=?',
                 ioRendererDirective: '@?'
             },
             controller: 'cxGridCellController as cellController'
@@ -42,8 +42,8 @@ angular.module('ng.cx.grid.cell', [
 
         var self = this,
             _renderedElement,
-            _rendererDirective = '<div cx-grid-cell-renderer io-data-provider="dataProvider"></div>',
-            _data;
+            _rendererDirective = '<div cx-grid-cell-renderer io-data-provider="cxCell"></div>',
+            _cxCell = this.ioCxCell;
 
         /**********************************************************
          * SETTERS
@@ -51,7 +51,7 @@ angular.module('ng.cx.grid.cell', [
         Object.defineProperty(this, 'ioRendererDirective', {
             set: function(value) {
                 if (value && value.length > 0) {
-                    _rendererDirective = '<div ' + value + ' io-data-provider="dataProvider"></div>';
+                    _rendererDirective = '<div ' + value + ' io-data-provider="cxCell.data"></div>';
                 }
                 _render();
             }
@@ -60,9 +60,9 @@ angular.module('ng.cx.grid.cell', [
          * ACCESSORS
          **********************************************************/
 
-        Object.defineProperty($scope, 'dataProvider', {
+        Object.defineProperty($scope, 'cxCell', {
             get: function() {
-                return self.ioDataProvider;
+                return _cxCell;
             }
         });
 
@@ -81,7 +81,7 @@ angular.module('ng.cx.grid.cell', [
         function _render() {
             _renderedElement = $compile(_rendererDirective)($scope);
             $element.append(_renderedElement);
-
+            _cxCell.$element = _renderedElement;
         }
 
     }
