@@ -9,7 +9,8 @@
 
 angular.module('ng.cx.grid', [
     'ng.cx.grid.grid',
-    'ng.cx.grid.cell'
+    'ng.cx.grid.cell',
+    'ng.cx.grid.bindScroll'
 ])
 
 /**********************************************************/
