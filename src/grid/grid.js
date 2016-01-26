@@ -1,4 +1,6 @@
-angular.module('ng.cx.grid.grid',[])
+angular.module('ng.cx.grid.grid', [
+    'ng.cx.grid.service'
+])
 
 /**********************************************************
  *
@@ -9,6 +11,7 @@ angular.module('ng.cx.grid.grid',[])
  **********************************************************/
 
 .directive('cxGrid', [
+
     function() {
         'use strict';
 
@@ -41,12 +44,21 @@ angular.module('ng.cx.grid.grid',[])
 
 .controller('cxGridController', [
     '$scope',
-    function ngCxGridController($scope) {
+    '$timeout',
+    'gridService',
+    'CxGrid',
+    function ngCxGridController($scope, $timeout, gridService, CxGrid) {
         'use strict';
         console.log('ioDataProvider', this.ioDataProvider);
-        $scope.gridData = this.ioDataProvider;
-        $scope.rowHeaderData = this.ioRowHeaderDataProvider;
-        $scope.columnHeaderData = this.ioColumnHeaderDataProvider;
+
+        var _grid = new CxGrid(
+            this.ioDataProvider,
+            this.ioColumnHeaderDataProvider,
+            this.ioRowHeaderDataProvider);
+
+        $scope.gridData = _grid.cells;
+        $scope.rowHeaderData = _grid.rowHeaders;
+        $scope.columnHeaderData = _grid.columnHeaders;
     }
 ])
 
