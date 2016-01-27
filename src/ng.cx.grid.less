@@ -17,16 +17,13 @@
         align-content: flex-start;
 
         .corner {
-            width: 50px;
-            height: 50px;
             background-color: #fff;
             flex-grow: 0;
         }
 
-        .row-headers {
+        .column-headers {
             display: flex;
             flex-grow: 1;
-            height: 50px;
             overflow-x: scroll;
             background-color: #aaa;
         }
@@ -38,10 +35,12 @@
         flex: 1 1;
         align-content: flex-start;
 
-        .column-headers {
-            width: 50px;
+        .row-headers {
             background-color: #bbb;
             overflow-y: scroll;
+            .big {
+                width: 100px;
+            }
         }
 
         .grid {
@@ -49,6 +48,13 @@
             flex-grow: 1;
             background-color: #090;
             overflow: scroll;
+            flex-direction: column;
+        }
+
+        .grid-row{
+            .cell {
+                display: inline-block;
+            }
         }
     }
 }
