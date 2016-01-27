@@ -36,8 +36,9 @@ angular.module('ng.cx.grid.cell', [
 .controller('cxGridCellController', [
     '$compile',
     '$element',
+    '$timeout',
     '$scope',
-    function $cxGridCellController($compile, $element, $scope) {
+    function $cxGridCellController($compile, $element, $timeout, $scope) {
         'use strict';
 
         var self = this,
@@ -81,7 +82,9 @@ angular.module('ng.cx.grid.cell', [
         function _render() {
             _renderedElement = $compile(_rendererDirective)($scope);
             $element.append(_renderedElement);
-            _cxCell.$element = _renderedElement;
+            $timeout(function() {
+                _cxCell.$element = _renderedElement;
+            });
         }
 
     }
