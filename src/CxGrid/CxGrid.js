@@ -28,11 +28,15 @@ angular.module('ng.cx.grid.CxGrid', [])
                 _cells = [
                     []
                 ],
-                _maxColHeaderHeight,
-                _maxRowHeaderWidth,
+                _maxColHeaderHeight = 0,
+                _maxRowHeaderWidth = 0,
                 _totalCellCount = 0,
                 _totalCellRendered = 0,
-                _onRenderComplete;
+                _onRenderComplete,
+                _axes = {
+                    x: [0],
+                    y: [0]
+                };
 
             Object.defineProperty(this, 'cells', {
                 get: getCells
@@ -48,6 +52,9 @@ angular.module('ng.cx.grid.CxGrid', [])
             });
             Object.defineProperty(this, 'maxRowHeaderWidth', {
                 get: getMaxRowHeaderWidth
+            });
+            Object.defineProperty(this, 'axes', {
+                get: getAxes
             });
 
             this.onRender = onRender;
@@ -112,15 +119,24 @@ angular.module('ng.cx.grid.CxGrid', [])
             }
 
             function _calculateHeaderDimensions() {
-                _maxColHeaderHeight = _colHeaders.reduce(function(previous, cxCell) {
-                    previous = (angular.isObject(previous)) ? previous.height : previous;
-                    return Math.max(previous, cxCell.height);
-                });
+                var cxCell, ix;
 
-                _maxRowHeaderWidth = _rowHeaders.reduce(function(previous, cxCell) {
-                    previous = (angular.isObject(previous)) ? previous.width : previous;
-                    return Math.max(previous, cxCell.width);
-                });
+                for (ix = 0; ix < _colHeaders.length; ix++) {
+                    cxCell = _colHeaders[ix];
+                    _maxColHeaderHeight = Math.max(_maxColHeaderHeight, cxCell.height);
+                    _addAxisIntervalByCell(_axes.x,cxCell);
+                }
+
+                for (ix = 0; ix < _rowHeaders.length; ix++) {
+                    cxCell = _rowHeaders[ix];
+                    _maxRowHeaderWidth = Math.max(_maxRowHeaderWidth, cxCell.width);
+                    _addAxisIntervalByCell(_axes.y,cxCell);
+                }
+            }
+
+            function _addAxisIntervalByCell(axis, cxCell) {
+                var intervalSize = (axis === _axes.x) ? cxCell.width : cxCell.height;
+                axis.push(intervalSize + axis[axis.length - 1]);
             }
 
             /**********************************************************
@@ -145,6 +161,10 @@ angular.module('ng.cx.grid.CxGrid', [])
 
             function getMaxRowHeaderWidth() {
                 return _maxRowHeaderWidth;
+            }
+
+            function getAxes() {
+                return _axes;
             }
         }
 
@@ -188,7 +208,7 @@ angular.module('ng.cx.grid.CxGrid', [])
 
             function set$element($element) {
                 _$element = $element;
-                if(_restrictions) {
+                if (_restrictions) {
                     _$element.css('width', restrictions.width + 'px');
                     _$element.css('height', restrictions.height + 'px');
                 }
