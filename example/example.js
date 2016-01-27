@@ -36,6 +36,7 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
 
         function itemParser (item) {
             return {
+                title: 'Title',
                 label: item
             };
         }
@@ -52,7 +53,7 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
             scope: {
                 dataProvider: '=?ioDataProvider'
             },
-            template: '<div class="cell-basic-renderer" ng-class="{\'big\': dataProvider.label === \'c-3\'}"><span class="label" ng-bind="dataProvider.label"></span></div>',
+            templateUrl: '/cellRenderer.html',
         };
     }
 ])
@@ -67,7 +68,7 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
             scope: {
                 dataProvider: '=?ioDataProvider'
             },
-            template: '<div class="cell-basic-renderer" ng-class="{\'big\': dataProvider.label === \'r-5\'}"><span class="label" ng-bind="dataProvider.label"></span></div>',
+            templateUrl: '/rowHeaderRenderer.html',
         };
     }
 ])
@@ -82,7 +83,7 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
             scope: {
                 dataProvider: '=?ioDataProvider'
             },
-            template: '<div class="cell-basic-renderer column-header" ng-class="{\'big\': dataProvider.label === \'c-3\'}"> <span class="label" ng-bind="dataProvider.label"></span></div>',
+            templateUrl: '/colHeaderRenderer.html'
         };
     }
 ])
