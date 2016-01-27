@@ -5,14 +5,14 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
     function($scope) {
         'use strict';
 
-        var _columnHeders = [], _rowHeders = [], _matrix = [];
+        var _columnHeaders = [], _rowHeaders = [], _matrix = [];
 
         _init();
 
         $scope.test = 'test';
         $scope.matrix = _matrix;
-        $scope.rowHeaders = _rowHeders;
-        $scope.columnHeaders = _columnHeders;
+        $scope.rowHeaders = _rowHeaders;
+        $scope.columnHeaders = _columnHeaders;
 
         function _init() {
             _initializeMatrix();
@@ -22,12 +22,12 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
             var width = 15,
                 height = 15;
 
-            for (var row = 0; row < width; row++) {
-                _rowHeders.push(itemParser('r-' + row));
+            for (var row = 0; row < height; row++) {
+                _rowHeaders.push(itemParser('r-' + row));
                 _matrix.push([]);
-                for (var col = 0; col < height; col++) {
+                for (var col = 0; col < width; col++) {
                     if(row===0) {
-                        _columnHeders.push(itemParser('c-' + col));
+                        _columnHeaders.push(itemParser('c-' + col));
                     }
                     _matrix[row].push(itemParser(row + '-' + col));
                 }
@@ -52,7 +52,7 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
             scope: {
                 dataProvider: '=?ioDataProvider'
             },
-            template: '<div class="cell-basic-renderer"><span class="label" ng-bind="dataProvider.label"></span></div>',
+            template: '<div class="cell-basic-renderer" ng-class="{\'big\': dataProvider.label === \'c-3\'}"><span class="label" ng-bind="dataProvider.label"></span></div>',
         };
     }
 ])
@@ -67,7 +67,7 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
             scope: {
                 dataProvider: '=?ioDataProvider'
             },
-            template: '<div class="cell-basic-renderer row-header"><span class="label" ng-bind="dataProvider.label"></span></div>',
+            template: '<div class="cell-basic-renderer" ng-class="{\'big\': dataProvider.label === \'r-5\'}"><span class="label" ng-bind="dataProvider.label"></span></div>',
         };
     }
 ])
@@ -82,7 +82,7 @@ angular.module('ng.cx.grid.example', ['ng.cx.grid'])
             scope: {
                 dataProvider: '=?ioDataProvider'
             },
-            template: '<div class="cell-basic-renderer column-header"> <span class="label" ng-bind="dataProvider.label"></span></div>',
+            template: '<div class="cell-basic-renderer column-header" ng-class="{\'big\': dataProvider.label === \'c-3\'}"> <span class="label" ng-bind="dataProvider.label"></span></div>',
         };
     }
 ])
