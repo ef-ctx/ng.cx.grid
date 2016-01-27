@@ -1,4 +1,8 @@
-angular.module('ng.cx.grid.grid', [])
+angular.module('ng.cx.grid.grid', [
+    'ng.cx.grid.cxScroll',
+    'ng.cx.grid.CxGrid',
+    'ng.cx.grid.cell'
+])
 
 /**********************************************************
  *

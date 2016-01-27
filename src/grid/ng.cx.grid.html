@@ -4,7 +4,7 @@
 
         <div class="corner"></div>
 
-        <div class="column-headers" cx-bind-scroll="gridScroll" io-bind-scroll-restrict-to-axis="x">
+        <div class="column-headers" cx-scroll="gridScroll" io-scroll-restrict-to-axis="x">
             <div ng-repeat="cxCell in grid.columnHeaders track by $index">
                 <div cx-grid-cell
                      io-renderer-directive="{{gridController.ioColumnHeaderRenderer}}"
@@ -17,7 +17,7 @@
 
     <div class="body">
 
-        <div class="row-headers" cx-bind-scroll="gridScroll" io-bind-scroll-restrict-to-axis="y">
+        <div class="row-headers" cx-scroll="gridScroll" io-scroll-restrict-to-axis="y">
             <div ng-repeat="cxCell in grid.rowHeaders track by $index">
                 <div cx-grid-cell
                      io-renderer-directive="{{gridController.ioRowHeaderRenderer}}"
@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <div class="grid" cx-bind-scroll="gridScroll">
+        <div class="grid" cx-scroll="gridScroll">
             <div class="grid-row" ng-repeat="row in grid.cells track by $index">
                 <div class="cell" ng-repeat="cxCell in row track by $index">
                     <div cx-grid-cell
