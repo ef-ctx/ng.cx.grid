@@ -16,6 +16,7 @@ angular.module('ng.cx.grid.cell', [
 
         return {
             restrict: 'AE',
+            replace: 'element',
             scope: {},
             bindToController: {
                 ioCxCell: '=?',
@@ -82,9 +83,14 @@ angular.module('ng.cx.grid.cell', [
         function _render() {
             _renderedElement = $compile(_rendererDirective)($scope);
             $element.append(_renderedElement);
-            $timeout(function() {
+            $timeout(_assignElement);
+        }
+
+        function _assignElement() {
+            if (_cxCell) {
                 _cxCell.$element = _renderedElement;
-            });
+            }
+
         }
 
     }
