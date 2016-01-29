@@ -30,6 +30,7 @@ angular.module('ng.cx.grid.grid', [
                 ioCellRenderer: '@?',
                 ioRowHeaderRenderer: '@?',
                 ioColumnHeaderRenderer: '@?',
+                ioCornerRenderer: '@?'
             }
         };
     }
@@ -83,12 +84,7 @@ angular.module('ng.cx.grid.grid', [
             _$corner.css('max-width', _grid.maxRowHeaderWidth + 'px');
             _$corner.css('min-height', _grid.maxColHeaderHeight + 'px');
             _$corner.css('max-height', _grid.maxColHeaderHeight + 'px');
-
-            $scope.$applyAsync();
         }
-
-        $scope.colHeaderHeight = _grid.maxColHeaderHeight;
-        $scope.rowHeaderWidth = _grid.maxRowHeaderWidth;
 
         function get$elementBySelector(selector) {
             return angular.element($element[0].querySelector(selector));

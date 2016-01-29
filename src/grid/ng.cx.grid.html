@@ -2,7 +2,11 @@
 
     <div class="header">
 
-        <div class="corner"></div>
+        <div class="corner">
+            <div cx-grid-cell
+                 io-renderer-directive="{{gridController.ioCornerRenderer}}" >
+            </div>
+        </div>
 
         <div class="column-headers" cx-scroll="gridScroll" io-scroll-restrict-to-axis="x">
             <div ng-repeat="cxCell in grid.columnHeaders track by $index">
