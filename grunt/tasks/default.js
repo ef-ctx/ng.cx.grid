@@ -7,9 +7,12 @@ module.exports = function (grunt) {
         'karma:unit',
         'ngtemplates:build',
         'concat:build',
-        'clean:templates',
         'less:build_expand',
-        'copy',
+        'copy:vendor',
+
+        'example',
+
+        'clean:templates',
         'browserSync',
         'watch',
     ]);

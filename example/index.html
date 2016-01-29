@@ -1,114 +1,36 @@
 <!DOCTYPE html>
 <html ng-app="ng.cx.grid.example">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="author" content="EF Education First - CTX">
-    <meta name="description" content="">
-    <title>EF CTX GRID</title>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta name="author" content="EF Education First - CTX">
+        <meta name="description" content="">
+        <title>EF CTX GRID</title>
 
-    <link rel="stylesheet" href="ng.cx.grid.css" />
+        <link rel="stylesheet" href="ng.cx.grid.css" />
+        <link rel="stylesheet" href="example.css" />
+    </head>
 
-    <style>
-        html,
-        body {
-            background-color: #fff;
-            font-family: helvetive, arial;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        .main-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            white-space: nowrap;
-        }
-        .container {
-            display: inline-block;
-            width: 50%;
-            vertical-align: top;
-        }
-
-        .my-grid {
-            width: 100%;
-            height: 100%;
-        }
-
-        .cell-basic-renderer {
-            background-color: rgba(40,64,85,0.8);
-            padding: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .cell-basic-renderer .wp{
-            text-align: center;
-            color: #fff;
-            border-radius: 3px;
-            font-size: 10px;
-            width: 180px;
-            height: 100px;
-            padding: 10px;
-            background-color: rgba(72, 181,124,1);
-            box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.2);
-        }
-
-        .corner {
-            background-color: rgba(40,64,85,0.8);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .cell-basic-renderer.big{
-        }
-
-        .cell-basic-renderer .label{
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .cell-basic-renderer .row-header .label{
-            color: #900;
-        }
-
-        .cell-basic-renderer .column-header .label{
-            color: #090;
-        }
-
-        h2 {
-            text-align: center;
-            text-transform: uppercase;
-            color: #bbb;
-        }
-
-    </style>
-</head>
-
-<body>
-
-    <div class="main-container" ng-controller="exampleController">
-        <div cx-grid
-            io-data-provider="matrix"
-            io-row-header-data-provider="rowHeaders"
-            io-column-header-data-provider="columnHeaders"
-            io-row-header-renderer="row-header-renderer"
-            io-column-header-renderer="column-header-renderer"
-            io-cell-renderer="cell-renderer"
-            class="my-grid">
-
+    <body>
+        <div class="main-container" ng-controller="exampleController">
+            <div cx-grid
+                io-data-provider="matrix"
+                io-row-header-data-provider="rowHeaders"
+                io-column-header-data-provider="columnHeaders"
+                io-row-header-renderer="overview-row-header-renderer"
+                io-column-header-renderer="overview-column-header-renderer"
+                io-cell-renderer="overview-cell-renderer"
+                io-corner-renderer="overview-corner-renderer"
+                class="my-grid">
+            </div>
         </div>
-    </div>
 
-    <script type="text/javascript" charset="utf-8" src="vendor/angular.js"></script>
-    <script type="text/javascript" charset="utf-8" src="vendor/angular-touch.js"></script>
-    <script type="text/javascript" charset="utf-8" src="ng.cx.grid.js"></script>
-    <script type="text/javascript" charset="utf-8" src="example.js"></script>
-</body>
+        <script type="text/javascript" charset="utf-8" src="vendor/angular.js"></script>
+        <script type="text/javascript" charset="utf-8" src="vendor/angular-touch.js"></script>
+        <script type="text/javascript" charset="utf-8" src="ng.cx.grid.js"></script>
+        <script type="text/javascript" charset="utf-8" src="example.js"></script>
+    </body>
 
 </html>

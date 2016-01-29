@@ -1,8 +1,7 @@
 module.exports = {
-
-    example: {
+    example_index: {
         files: [{
-            src: ['<%= files.example %>'],
+            src: ['<%= files.example.index %>'],
             dest: '<%= build.root %>',
             flatten: true,
             expand: true,
@@ -17,5 +16,4 @@ module.exports = {
             expand: true,
         }]
     }
-
 };

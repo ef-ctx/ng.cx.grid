@@ -23,5 +23,14 @@ module.exports = {
 
         src: '<%= files.lib.tpl %>',
         dest: '<%= dist.tpl %>'
+    },
+
+    example: {
+        options: {
+            module: 'ng.cx.grid.example'
+        },
+        src: '<%= files.example.tpl %>',
+        dest: '<%= build.example.tpl %>'
     }
+
 };

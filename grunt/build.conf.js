@@ -2,10 +2,15 @@ module.exports = {
 
     build: {
         root: 'build/',
-        js: 'build/<%= pkg.name %>.js',
-        css: 'build/<%= pkg.name %>.css',
-        tpl: 'build/<%= pkg.name %>.tpl.js',
-        vendor: 'build/vendor'
+        js: '<%= build.root %>/<%= pkg.name %>.js',
+        css: '<%= build.root %>/<%= pkg.name %>.css',
+        tpl: '<%= build.root %>/<%= pkg.name %>.tpl.js',
+        vendor: '<%= build.root %>/vendor',
+        example: {
+            js: '<%= build.root %>/example.js',
+            css: '<%= build.root %>/example.css',
+            tpl: '<%= build.root %>/example.tpl.js'
+        }
     },
 
     dist: {
@@ -34,7 +39,16 @@ module.exports = {
             }
         },
 
-        example: ['example/**/*'],
+        example: {
+            js: ['example/**/*.js'],
+            index: 'example/index.html',
+            tpl: ['example/**/*.html'],
+            less: {
+                main: 'example/example.less',
+                all: ['example/**/*.less']
+            }
+
+        },
 
         grunt: ['Gruntfile.js', 'grunt/**/*.js'],
 

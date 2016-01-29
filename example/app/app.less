@@ -1,0 +1,83 @@
+@bg-color: rgb(41,63,85);
+@border-color: rgba(255,255,255,0.2);
+
+html, body {
+    background-color: #fff;
+    font-family: helvetive, arial;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.main-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+.container {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+}
+
+.my-grid {
+    width: 100%;
+    height: 100%;
+    background-color: @bg-color;
+
+}
+
+.cell-renderer {
+    padding: 20px;
+    background: transparent;
+    border-bottom: 1px solid @border-color;
+    border-right: 1px solid @border-color;
+}
+
+.column-header .wp,
+.row-header .wp,
+.cell-renderer .wp{
+    text-align: center;
+    color: #fff;
+    border-radius: 2px;
+    font-size: 10px;
+    width: 180px;
+    height: 100px;
+    padding: 10px;
+    background: transparent;
+    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.2);
+}
+
+.cell-renderer.error .wp{
+    background-color: rgb(215,80,73);
+}
+
+.cell-renderer.warn .wp{
+    background-color: rgb(240,203,70);
+}
+
+.cell-renderer.success .wp{
+    background-color: rgb(72,181,124);
+}
+
+.cell-renderer.empty .wp{
+    background-color: rgb(119, 134, 147);
+}
+
+.cell-renderer.open .wp{
+    background-color: rgb(75,150,204);
+}
+
+
+@import "components/detail/corner/corner.less";
+@import "components/detail/cell/cell.less";
+@import "components/detail/colHeader/colHeader.less";
+@import "components/detail/rowHeader/rowHeader.less";
+
+@import "components/overview/corner/corner.less";
+@import "components/overview/cell/cell.less";
+@import "components/overview/colHeader/colHeader.less";
+@import "components/overview/rowHeader/rowHeader.less";

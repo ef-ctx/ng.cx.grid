@@ -25,6 +25,15 @@ module.exports = {
         files: {
             '<%= dist.css_min %>': '<%= files.lib.less.main %>'
         }
-    }
+    },
 
+    example: {
+        options: {
+            compress: false
+        },
+        files: {
+            '<%= build.example.css %>': '<%= files.example.less.main %>'
+        }
+
+    }
 };

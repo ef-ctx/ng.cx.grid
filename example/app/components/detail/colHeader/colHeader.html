@@ -1,0 +1,19 @@
+<div class="col-header-renderer cell-renderer"
+    ng-class="{
+        'no-response': (dataProvider.score === undefined )
+    }">
+    <div class="activity-counter">
+        <span class="label">Activity</span>
+        <span class="counter" ng-bind="::dataProvider.count"></span>
+        <span class="label">of</span>
+        <span class="counter" ng-bind="::dataProvider.total"></span>
+    </div>
+
+    <div class="activity-title">
+        <span class="label" ng-bind="::dataProvider.title"></span>
+    </div>
+
+    <div class="badge">
+
+    </div>
+</div>

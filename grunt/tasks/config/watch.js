@@ -30,8 +30,8 @@ module.exports = {
     },
 
     example: {
-        files: ['<%= files.example %>'],
-        tasks: ['copy:example']
+        files: ['example/**/*'],
+        tasks: ['example']
     }
 
 };

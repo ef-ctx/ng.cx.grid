@@ -9,6 +9,11 @@ module.exports = {
         }
     },
 
+    example: {
+        src: ['<%= files.example.js %>', '<%= build.example.tpl %>'],
+        dest: '<%= build.example.js %>'
+    },
+
     build: {
         src: ['<%= files.lib.js %>', '<%= build.tpl %>'],
         dest: '<%= build.js %>'

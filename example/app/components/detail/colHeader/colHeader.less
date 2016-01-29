@@ -1,0 +1,35 @@
+.col-header-renderer {
+    padding: 20px;
+    max-width: 220px;
+    max-height: 140px;
+
+    &.no-response {
+        width: 140px;
+    }
+
+    .activity-counter {
+        font-size: 11px;
+        line-height: 15px;
+        color: rgba(255,255,255,0.4);
+    }
+    .activity-title {
+        max-width: 100%;
+
+        .label {
+            display: inline-block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: rgba(255,255,255,0.8);
+
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+    .badge {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: white;
+    }
+}
