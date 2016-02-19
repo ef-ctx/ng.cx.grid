@@ -53,38 +53,31 @@ angular.module('ng.cx.grid.grid', [
     function ngCxGridController($scope, $timeout, $element, CxGrid) {
         'use strict';
 
-        var _$rowHeadersWp,
-            _$colHeadersWp,
-            _$corner,
-            _grid;
+        var _grid,
+            _$rowHeadersContainer,
+            _$colHeadersContainer,
+            _$cellsContainer,
+            _$cornerContainer;
+
+        _$rowHeadersContainer = get$elementBySelector('.row-headers');
+        _$colHeadersContainer = get$elementBySelector('.column-headers');
+        _$cellsContainer = get$elementBySelector('.grid');
+        _$cornerContainer = get$elementBySelector('.corner');
 
         _grid = new CxGrid(
             this.ioDataProvider,
             this.ioColumnHeaderDataProvider,
-            this.ioRowHeaderDataProvider);
-
-        _$rowHeadersWp = get$elementBySelector('.row-headers');
-        _$colHeadersWp = get$elementBySelector('.column-headers');
-        _$corner = get$elementBySelector('.corner');
-
-        $scope.grid = _grid;
-        $scope.gridData = _grid.cells;
-        $scope.rowHeaderData = _grid.rowHeaders;
-        $scope.columnHeaderData = _grid.columnHeaders;
-
-        _grid.onRender(_grindRendererdHandler);
-
-        function _grindRendererdHandler() {
-            _$rowHeadersWp.css('min-width', _grid.maxRowHeaderWidth + 'px');
-            _$rowHeadersWp.css('max-width', _grid.maxRowHeaderWidth + 'px');
-            _$colHeadersWp.css('min-height', _grid.maxColHeaderHeight + 'px');
-            _$colHeadersWp.css('max-height', _grid.maxColHeaderHeight + 'px');
-
-            _$corner.css('min-width', _grid.maxRowHeaderWidth + 'px');
-            _$corner.css('max-width', _grid.maxRowHeaderWidth + 'px');
-            _$corner.css('min-height', _grid.maxColHeaderHeight + 'px');
-            _$corner.css('max-height', _grid.maxColHeaderHeight + 'px');
-        }
+            this.ioRowHeaderDataProvider,
+            this.ioCellRenderer,
+            this.ioColumnHeaderRenderer,
+            this.ioRowHeaderRenderer,
+            this.ioCornerRenderer,
+            $element,
+            _$colHeadersContainer,
+            _$rowHeadersContainer,
+            _$cellsContainer,
+            _$cornerContainer
+        );
 
         function get$elementBySelector(selector) {
             return angular.element($element[0].querySelector(selector));
@@ -93,5 +86,4 @@ angular.module('ng.cx.grid.grid', [
 ])
 
 /**********************************************************/
-
 ;
