@@ -36,8 +36,8 @@ angular.module('ng.cx.grid.example',[
         }
 
         function _initializeMatrix() {
-            var width = 10,
-                height = 10;
+            var width = 30,
+                height = 30;
 
             for (var row = 0; row < height; row++) {
                 _rowHeaders.push(rowHeaderParser(row, col, height));
