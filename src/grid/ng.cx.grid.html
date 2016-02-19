@@ -1,44 +1,12 @@
 <div class="ng-cx-grid">
 
     <div class="header">
-
-        <div class="corner">
-            <div cx-grid-cell
-                 io-renderer-directive="{{gridController.ioCornerRenderer}}" >
-            </div>
-        </div>
-
-        <div class="column-headers" cx-scroll="gridScroll" io-scroll-restrict-to-axis="x">
-            <div ng-repeat="cxCell in grid.columnHeaders track by $index">
-                <div cx-grid-cell
-                     io-renderer-directive="{{gridController.ioColumnHeaderRenderer}}"
-                     io-cx-cell="cxCell">
-                </div>
-            </div>
-        </div>
-
+        <div class="corner"></div>
+        <div class="column-headers" cx-scroll="gridScroll" io-scroll-restrict-to-axis="x"></div>
     </div>
 
     <div class="body">
-
-        <div class="row-headers" cx-scroll="gridScroll" io-scroll-restrict-to-axis="y">
-            <div ng-repeat="cxCell in grid.rowHeaders track by $index">
-                <div cx-grid-cell
-                     io-renderer-directive="{{gridController.ioRowHeaderRenderer}}"
-                     io-cx-cell="cxCell">
-                </div>
-            </div>
-        </div>
-
-        <div class="grid" cx-scroll="gridScroll">
-            <div class="grid-row" ng-repeat="row in grid.cells track by $index">
-                <div class="cell" ng-repeat="cxCell in row track by $index">
-                    <div cx-grid-cell
-                         io-renderer-directive="{{gridController.ioCellRenderer}}"
-                         io-cx-cell="cxCell">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="row-headers" cx-scroll="gridScroll" io-scroll-restrict-to-axis="y"></div>
+        <div class="grid" cx-scroll="gridScroll"></div>
     </div>
 </div>
