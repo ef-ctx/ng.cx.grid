@@ -15,7 +15,6 @@ angular.module('ng.cx.grid.CxGrid', [
  * @ngdoc service
  * @name CxGrid
  *
- * with ng-repeat it takes 6626.162ms to render
  **********************************************************/
 
 .factory('CxGrid', [
@@ -43,20 +42,11 @@ angular.module('ng.cx.grid.CxGrid', [
 
             console.time('render');
 
-            var _onRenderHandlers = [],
-                _rowHeaders = [],
+            var _rowHeaders = [],
                 _colHeaders = [],
-                _cells = [
-                    []
-                ];
-
-            this.onRender = onRender;
+                _cells = [[]];
 
             _init();
-
-            function onRender(handler) {
-                _onRenderHandlers.push(handler);
-            }
 
             function _init() {
                 _hideMainContainer();
@@ -75,26 +65,49 @@ angular.module('ng.cx.grid.CxGrid', [
                 console.timeEnd('render');
             }
 
+
+
+            /**********************************************************
+             * HEADERS
+             **********************************************************/
+
             function _renderHeaders() {
                 _colHeaders = columnHeaderData.map(_createColHeaderCell);
                 _rowHeaders = rowHeaderData.map(_createRowHeaderCell);
             }
 
+            function _createColHeaderCell(data) {
+                var cell = _createCell(data, columnHeaderRenderer);
+                $colHeadersContainer.append(cell.$element);
+                return cell;
+            }
+
+            function _createRowHeaderCell(data) {
+                var cell = _createCell(data, rowHeaderRenderer);
+
+                $rowHeadersContainer.append(cell.$element);
+                return cell;
+            }
+
+            /**********************************************************
+             * CORNER
+             **********************************************************/
+
             function _renderCorner() {
-                var width = _getMaxMeasure(_rowHeaders, 'width'),
-                    height = _getMaxMeasure(_colHeaders, 'height');
+                var restrictions = {
+                        measure: {
+                            width: _getMaxMeasure(_rowHeaders, 'width'),
+                            height: _getMaxMeasure(_colHeaders, 'height'),
+                        }
+                    },
+                    cell = _createCell(undefined, cornerRenderer, restrictions);
 
-                $cornerContainer.css('min-width', width + 'px');
-                $cornerContainer.css('min-height', height + 'px');
+                $cornerContainer.append(cell.$element);
             }
 
-            function _getMaxMeasure(elements, measure) {
-                var measures = elements.map(function(cell) {
-                    return cell[measure];
-                });
-
-                return Math.max.apply(null, measures);
-            }
+            /**********************************************************
+             * GRID
+             **********************************************************/
 
             function _renderGrid() {
                 var row,
@@ -111,16 +124,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 }
             }
 
-
-            function _createRowHeaderCell(data) {
-                var cell = _createCell(data, rowHeaderRenderer);
-                $rowHeadersContainer.append(cell.$element);
-                return cell;
-            }
-
             function _createGridCell(rowIndex, colIndex) {
-                console.log(rowIndex, colIndex);
-
                 var cell,
                     data = gridData[rowIndex][colIndex],
                     colHeaderCell = _colHeaders[colIndex],
@@ -131,8 +135,8 @@ angular.module('ng.cx.grid.CxGrid', [
                             height: rowHeaderCell.height
                         },
                         position: {
-                            x: colHeaderCell.left,
-                            y: rowHeaderCell.top
+                            x: colHeaderCell.relativeLeft,
+                            y: rowHeaderCell.relativeTop
                         }
                     };
 
@@ -143,33 +147,20 @@ angular.module('ng.cx.grid.CxGrid', [
                 return cell;
             }
 
-            function _createColHeaderCell(data) {
-                var cell = _createCell(data, columnHeaderRenderer);
-                $colHeadersContainer.append(cell.$element);
-                return cell;
-            }
-
-            function _createCell(data, template, restrictions) {
-                return new CxCell(data, template, restrictions);
-            }
-
-            /**********************************************************
-             * GETTERS & SETTERS
-             **********************************************************/
-
-            function getCells() {
-                return _cells;
-            }
-
-            function getRowHeaders() {
-                return _rowHeaders;
-            }
-
-            function getColHeaders() {
-                return _colHeaders;
-            }
         }
 
+        function _createCell(data, template, restrictions) {
+            return new CxCell(data, template, restrictions);
+        }
+
+        function _getMaxMeasure(elements, measure) {
+            var measures = elements.map(function(cell) {
+                console.log('row Header cell', cell.width, cell.height);
+                return cell[measure];
+            });
+
+            return Math.max.apply(null, measures);
+        }
     }
 ])
 
