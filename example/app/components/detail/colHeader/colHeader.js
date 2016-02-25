@@ -14,9 +14,6 @@ angular.module('ng.cx.grid.example.colHeader',[])
         return {
             restrict: 'AE',
             replace: 'element',
-            scope: {
-                dataProvider: '=?ioDataProvider'
-            },
             templateUrl: 'example/app/components/detail/colHeader/colHeader.html',
         };
     }

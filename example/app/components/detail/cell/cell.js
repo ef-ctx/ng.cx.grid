@@ -15,9 +15,6 @@ angular.module('ng.cx.grid.example.cell',[])
         return {
             restrict: 'AE',
             replace: 'element',
-            scope: {
-                dataProvider: '=?ioDataProvider'
-            },
             templateUrl: 'example/app/components/detail/cell/cell.html',
             link: function($scope, $element, $attrs, controller) {
                 var _intervalMs = ((Math.floor(Math.random() * 10) % 8) + 10 ) * 100,

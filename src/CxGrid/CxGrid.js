@@ -5,7 +5,10 @@
  *
  **********************************************************/
 
-angular.module('ng.cx.grid.CxGrid', [])
+angular.module('ng.cx.grid.CxGrid', [
+    'ng.cx.grid.CxCell',
+    'ng.cx.grid.cell.renderer'
+])
 
 /**********************************************************
  *
@@ -16,224 +19,147 @@ angular.module('ng.cx.grid.CxGrid', [])
 
 .factory('CxGrid', [
     '$timeout',
-    function $CxGrid($timeout) {
+    'CxCell',
+    function $CxGrid($timeout, CxCell) {
         'use strict';
 
         return CxGrid;
 
-        function CxGrid(gridData, columnHeaderData, rowHeaderData) {
-            var _onRenderHandlers = [],
-                _rowHeaders = [],
+        function CxGrid(
+            gridData,
+            columnHeaderData,
+            rowHeaderData,
+            cellRenderer,
+            columnHeaderRenderer,
+            rowHeaderRenderer,
+            cornerRenderer,
+            $mainContainer,
+            $colHeadersContainer,
+            $rowHeadersContainer,
+            $cellsContainer,
+            $cornerContainer
+        ) {
+
+            console.time('render');
+
+            var _rowHeaders = [],
                 _colHeaders = [],
-                _cells = [
-                    []
-                ],
-                _maxColHeaderHeight = 0,
-                _maxRowHeaderWidth = 0,
-                _totalCellCount = 0,
-                _totalCellRendered = 0,
-                _onRenderComplete,
-                _axes = {
-                    x: [0],
-                    y: [0]
-                };
-
-            Object.defineProperty(this, 'cells', {
-                get: getCells
-            });
-            Object.defineProperty(this, 'rowHeaders', {
-                get: getRowHeaders
-            });
-            Object.defineProperty(this, 'columnHeaders', {
-                get: getColHeaders
-            });
-            Object.defineProperty(this, 'maxColHeaderHeight', {
-                get: getMaxColHeaderHeight
-            });
-            Object.defineProperty(this, 'maxRowHeaderWidth', {
-                get: getMaxRowHeaderWidth
-            });
-            Object.defineProperty(this, 'axes', {
-                get: getAxes
-            });
-
-            this.onRender = onRender;
+                _cells = [[]];
 
             _init();
 
-            function onRender(handler) {
-                _onRenderHandlers.push(handler);
+            function _init() {
+                _hideMainContainer();
+                _renderHeaders();
+                $timeout(_renderCorner);
+                $timeout(_renderGrid);
+                $timeout(_showMainContainer);
             }
 
-            function _init() {
-                _renderHeaders();
+            function _hideMainContainer() {
+                $mainContainer.css('opacity', 0);
             }
+
+            function _showMainContainer() {
+                $mainContainer.css('opacity', 1);
+                console.timeEnd('render');
+            }
+
+
+
+            /**********************************************************
+             * HEADERS
+             **********************************************************/
 
             function _renderHeaders() {
-                _onRenderComplete = _onHeadersRenderComplete;
-                _rowHeaders = rowHeaderData.map(_createCell);
-                _colHeaders = columnHeaderData.map(_createCell);
+                _colHeaders = columnHeaderData.map(_createColHeaderCell);
+                _rowHeaders = rowHeaderData.map(_createRowHeaderCell);
             }
 
-            function _onHeadersRenderComplete() {
-                _onRenderComplete = _onGridRenderComplete;
-                _calculateHeaderDimensions();
-                _renderGrid();
+            function _createColHeaderCell(data) {
+                var cell = _createCell(data, columnHeaderRenderer);
+                $colHeadersContainer.append(cell.$element);
+                return cell;
             }
+
+            function _createRowHeaderCell(data) {
+                var cell = _createCell(data, rowHeaderRenderer);
+
+                $rowHeadersContainer.append(cell.$element);
+                return cell;
+            }
+
+            /**********************************************************
+             * CORNER
+             **********************************************************/
+
+            function _renderCorner() {
+                var restrictions = {
+                        measure: {
+                            width: _getMaxMeasure(_rowHeaders, 'width'),
+                            height: _getMaxMeasure(_colHeaders, 'height'),
+                        }
+                    },
+                    cell = _createCell(undefined, cornerRenderer, restrictions);
+
+                $cornerContainer.append(cell.$element);
+            }
+
+            /**********************************************************
+             * GRID
+             **********************************************************/
 
             function _renderGrid() {
-                var restrictions;
+                var row,
+                    col,
+                    width = _colHeaders.length,
+                    height = _rowHeaders.length,
+                    restrictions;
 
-                for (var row = 0; row < gridData.length; row++) {
+                for (row = 0; row < height; row++) {
                     _cells[row] = [];
-                    for (var col = 0; col < gridData[row].length; col++) {
-                        restrictions = {
-                            width: _colHeaders[col].width,
-                            height: _rowHeaders[row].height
-                        };
-                        _cells[row][col] = _createCell(gridData[row][col], restrictions);
+                    for (col = 0; col < width; col++) {
+                        _cells[row][col] = _createGridCell(row, col);
                     }
                 }
             }
 
-            function _onGridRenderComplete() {
-                _callOnRenderHandlers();
+            function _createGridCell(rowIndex, colIndex) {
+                var cell,
+                    data = gridData[rowIndex][colIndex],
+                    colHeaderCell = _colHeaders[colIndex],
+                    rowHeaderCell = _rowHeaders[rowIndex],
+                    restrictions = {
+                        measure: {
+                            width: colHeaderCell.width,
+                            height: rowHeaderCell.height
+                        },
+                        position: {
+                            x: colHeaderCell.relativeLeft,
+                            y: rowHeaderCell.relativeTop
+                        }
+                    };
+
+                cell = _createCell(data, cellRenderer, restrictions);
+
+                $cellsContainer.append(cell.$element);
+
+                return cell;
             }
 
-            function _callOnRenderHandlers() {
-                for (var ix = 0; ix < _onRenderHandlers.length; ix++) {
-                    _onRenderHandlers[ix]();
-                }
-            }
-
-            function _createCell(data, restrictions) {
-                _totalCellCount++;
-                return new CxCell(data, restrictions, _onCellRendered);
-            }
-
-            function _onCellRendered() {
-                _totalCellRendered++;
-                if (_totalCellCount === _totalCellRendered) {
-                    _onRenderComplete();
-                }
-            }
-
-            function _calculateHeaderDimensions() {
-                var cxCell, ix;
-
-                for (ix = 0; ix < _colHeaders.length; ix++) {
-                    cxCell = _colHeaders[ix];
-                    _maxColHeaderHeight = Math.max(_maxColHeaderHeight, cxCell.height);
-                    _addAxisIntervalByCell(_axes.x,cxCell);
-                }
-
-                for (ix = 0; ix < _rowHeaders.length; ix++) {
-                    cxCell = _rowHeaders[ix];
-                    _maxRowHeaderWidth = Math.max(_maxRowHeaderWidth, cxCell.width);
-                    _addAxisIntervalByCell(_axes.y,cxCell);
-                }
-            }
-
-            function _addAxisIntervalByCell(axis, cxCell) {
-                var intervalSize = (axis === _axes.x) ? cxCell.width : cxCell.height;
-                axis.push(intervalSize + axis[axis.length - 1]);
-            }
-
-            /**********************************************************
-             * GETTERS & SETTERS
-             **********************************************************/
-
-            function getCells() {
-                return _cells;
-            }
-
-            function getRowHeaders() {
-                return _rowHeaders;
-            }
-
-            function getColHeaders() {
-                return _colHeaders;
-            }
-
-            function getMaxColHeaderHeight() {
-                return _maxColHeaderHeight;
-            }
-
-            function getMaxRowHeaderWidth() {
-                return _maxRowHeaderWidth;
-            }
-
-            function getAxes() {
-                return _axes;
-            }
         }
 
-        function CxCell(data, restrictions, onRenderHandler) {
-            var _self = this,
-                _data = data,
-                _restrictions = restrictions,
-                _$element;
+        function _createCell(data, template, restrictions) {
+            return new CxCell(data, template, restrictions);
+        }
 
-            Object.defineProperty(this, 'data', {
-                get: getData
-            });
-            Object.defineProperty(this, '$element', {
-                get: get$element,
-                set: set$element
-            });
-            Object.defineProperty(this, 'width', {
-                get: getWidth
-            });
-            Object.defineProperty(this, 'height', {
-                get: getHeight
-            });
-            Object.defineProperty(this, 'top', {
-                get: getTop
-            });
-            Object.defineProperty(this, 'left', {
-                get: getLeft
+        function _getMaxMeasure(elements, measure) {
+            var measures = elements.map(function(cell) {
+                console.log('row Header cell', cell.width, cell.height);
+                return cell[measure];
             });
 
-            /**********************************************************
-             * GETTERS & SETTERS
-             **********************************************************/
-
-            function getData() {
-                return _data;
-            }
-
-            function get$element() {
-                return _$element;
-            }
-
-            function set$element($element) {
-                _$element = $element;
-                if (_restrictions) {
-                    _$element.css('width', restrictions.width + 'px');
-                    _$element.css('height', restrictions.height + 'px');
-                }
-                _$element.rect = $element[0].getBoundingClientRect();
-
-                if (angular.isFunction(onRenderHandler)) {
-                    onRenderHandler(_self);
-                }
-            }
-
-            function getWidth() {
-                return _$element.rect.width;
-            }
-
-            function getHeight() {
-                return _$element.rect.height;
-            }
-
-            function getTop() {
-                return _$element.rect.top;
-            }
-
-            function getLeft() {
-                return _$element.rect.left;
-            }
+            return Math.max.apply(null, measures);
         }
     }
 ])
