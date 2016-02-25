@@ -17,7 +17,8 @@ angular.module('ng.cx.grid.CxCell', [])
 .factory('CxCell', [
     '$compile',
     '$rootScope',
-    function $CxCell($compile, $rootScope) {
+    '$timeout',
+    function $CxCell($compile, $rootScope, $timeout) {
         'use strict';
 
         return CxCell;
@@ -25,6 +26,8 @@ angular.module('ng.cx.grid.CxCell', [])
         function CxCell(data, template, restrictions) {
             var _self = this,
                 _data = data,
+                _relativeMeasure,
+                _absoluteMeasure,
                 _$element;
 
             Object.defineProperty(this, 'data', {
@@ -43,32 +46,26 @@ angular.module('ng.cx.grid.CxCell', [])
                 get: getHeight
             });
 
-            Object.defineProperty(this, 'top', {
-                get: getTop
+            Object.defineProperty(this, 'relativeTop', {
+                get: getRelativeTop
             });
 
-            Object.defineProperty(this, 'left', {
-                get: getLeft
+            Object.defineProperty(this, 'relativeLeft', {
+                get: getRelativeLeft
+            });
+            Object.defineProperty(this, 'absoluteTop', {
+                get: getAbsoluteTop
+            });
+
+            Object.defineProperty(this, 'absoluteLeft', {
+                get: getAbsoluteLeft
             });
 
             /**********************************************************
              * RUN
              **********************************************************/
 
-            _init();
-
-            /**********************************************************
-             * METHODS
-             **********************************************************/
-
-
-            /**********************************************************
-             * HELPERS
-             **********************************************************/
-
-            function _init() {
-                _$element = _render(data, template, restrictions);
-            }
+            _$element = _render(data, template, restrictions);
 
             /**********************************************************
              * GETTERS & SETTERS
@@ -83,26 +80,48 @@ angular.module('ng.cx.grid.CxCell', [])
             }
 
             function getWidth() {
-                return _getMeasure(_$element, 'width');
+                return _getAbsoluteMeasure(_$element, 'width');
             }
 
             function getHeight() {
-                return _getMeasure(_$element, 'height');
+                return _getAbsoluteMeasure(_$element, 'height');
             }
 
-            function getTop() {
-                return _getMeasure(_$element, 'top');
+            function getAbsoluteTop() {
+                return _getAbsoluteMeasure(_$element, 'top');
             }
 
-            function getLeft() {
-                return _getMeasure(_$element, 'left');
+            function getAbsoluteLeft() {
+                return _getAbsoluteMeasure(_$element, 'left');
+            }
+
+            function getRelativeTop() {
+                return _getRelativeMeasure(_$element, 'top');
+            }
+
+            function getRelativeLeft() {
+                return _getRelativeMeasure(_$element, 'left');
+            }
+
+            function _getAbsoluteMeasure($element, measure) {
+                if (!_absoluteMeasure) {
+                    _absoluteMeasure = _calculateAbsoluteMeasure($element);
+                }
+                return _absoluteMeasure[measure];
+            }
+
+            function _getRelativeMeasure($element, measure) {
+                if (!_relativeMeasure) {
+                    _relativeMeasure = _calculateRelativeMeasure($element);
+                }
+                return _relativeMeasure[measure];
             }
         }
 
-        function _render(data, template,restrictions) {
+        function _render(data, template, restrictions) {
             var $element, tpl;
 
-            tpl = '<div class="cell"><div ###directiveId###></div></div>';
+            tpl = '<div class="cell"><div class="cell-renderer" ###directiveId###></div></div>';
             tpl = tpl.replace('###directiveId###', template);
             $element = _renderItem(data, tpl);
 
@@ -113,9 +132,6 @@ angular.module('ng.cx.grid.CxCell', [])
             return $element;
         }
 
-        function _getMeasure($element, measure) {
-            return $element[0].getBoundingClientRect()[measure];
-        }
 
         function _applyRestrictions($element, restrictions) {
             if (restrictions.measure) {
@@ -142,6 +158,22 @@ angular.module('ng.cx.grid.CxCell', [])
             return $compile(template)(scope);
         }
 
+        function _calculateAbsoluteMeasure($element) {
+            return $element[0].getBoundingClientRect();
+        }
+
+        function _calculateRelativeMeasure($element) {
+            var element = _calculateAbsoluteMeasure($element),
+                $parent = $element.parent(),
+                parent;
+
+            parent = ($parent) ? _calculateAbsoluteMeasure($parent) : null;
+
+            return {
+                left: element.left - ((parent) ? parent.left : 0),
+                top: element.top - ((parent) ? parent.top : 0)
+            };
+        }
     }
 ])
 
