@@ -1,7 +1,6 @@
 angular.module('ng.cx.grid.grid', [
     'ng.cx.grid.cxScroll',
-    'ng.cx.grid.CxGrid',
-    'ng.cx.grid.cell'
+    'ng.cx.grid.CxGrid'
 ])
 
 /**********************************************************
@@ -78,6 +77,8 @@ angular.module('ng.cx.grid.grid', [
             _$cellsContainer,
             _$cornerContainer
         );
+
+        window.cxGrid = _grid;
 
         function get$elementBySelector(selector) {
             return angular.element($element[0].querySelector(selector));

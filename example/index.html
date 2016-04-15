@@ -13,8 +13,9 @@
         <link rel="stylesheet" href="example.css" />
     </head>
 
-    <body>
+    <body cx-container="body">
         <div class="main-container" ng-controller="exampleController">
+
             <div cx-grid
                 io-data-provider="matrix"
                 io-row-header-data-provider="rowHeaders"
@@ -25,6 +26,7 @@
                 io-corner-renderer="corner-renderer"
                 class="my-grid">
             </div>
+
         </div>
 
         <script type="text/javascript" charset="utf-8" src="vendor/angular.js"></script>
