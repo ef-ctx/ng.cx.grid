@@ -6,8 +6,7 @@
  **********************************************************/
 
 angular.module('ng.cx.grid.CxGrid', [
-    'ng.cx.grid.CxCell',
-    'ng.cx.grid.cell.renderer'
+    'ng.cx.grid.CxCell'
 ])
 
 /**********************************************************
@@ -44,9 +43,60 @@ angular.module('ng.cx.grid.CxGrid', [
 
             var _rowHeaders = [],
                 _colHeaders = [],
-                _cells = [[]];
+                _cells = [
+                    []
+                ],
+                _highlighted = {
+                    x: undefined,
+                    y: undefined
+                };
+
+
+            this.highlightRow = highlightRow;
+            this.highlightColumn = highlightColumn;
+
+            /**********************************************************
+             * IMPLEMENTATION
+             **********************************************************/
 
             _init();
+
+            /**********************************************************
+             * METHODS
+             **********************************************************/
+
+            function switchLineHighlighting(index, axis, switchValue) {
+                if(_highlighted.x !== undefined) {
+                    _highlighted.x.switchHighlight('off');
+                }
+
+                if(_highlighted.y !== undefined) {
+                    _highlighted.y.switchHighlight('off');
+                }
+
+                _highlighted[axis] = (axis === 'x') ? _getRowByIndex(index) : _getColumnByIndex(index);
+
+                if(_highlighted.x !== undefined) {
+                    _highlighted.x.switchHighlight('on');
+                }
+
+                if(_highlighted.y !== undefined) {
+                    _highlighted.y.switchHighlight('on');
+                }
+            }
+
+            function highlightRow(index) {
+                switchLineHighlighting(index, 'x', 'on');
+            }
+
+            function highlightColumn(index) {
+                switchLineHighlighting(index, 'y', 'on');
+            }
+
+
+            /**********************************************************
+             * HELPERS
+             **********************************************************/
 
             function _init() {
                 _hideMainContainer();
@@ -65,11 +115,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 console.timeEnd('render');
             }
 
-
-
-            /**********************************************************
-             * HEADERS
-             **********************************************************/
+            // HEADERS -------------------------------------------------
 
             function _renderHeaders() {
                 _colHeaders = columnHeaderData.map(_createColHeaderCell);
@@ -89,9 +135,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 return cell;
             }
 
-            /**********************************************************
-             * CORNER
-             **********************************************************/
+            // CORNER -------------------------------------------------
 
             function _renderCorner() {
                 var restrictions = {
@@ -105,9 +149,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 $cornerContainer.append(cell.$element);
             }
 
-            /**********************************************************
-             * GRID
-             **********************************************************/
+            // GRID -------------------------------------------------
 
             function _renderGrid() {
                 var row,
@@ -147,6 +189,20 @@ angular.module('ng.cx.grid.CxGrid', [
                 return cell;
             }
 
+            function _getColumnByIndex(index) {
+                var column = [_colHeaders[index]];
+
+                for (var ix = 0; ix < _cells.length; ix++) {
+                    column.push(_cells[ix][index]);
+                }
+
+                return new GridLine(index, column);
+            }
+
+            function _getRowByIndex(index) {
+                return new GridLine(index, [_rowHeaders[index]].concat(_cells[index]));
+            }
+
         }
 
         function _createCell(data, template, restrictions) {
@@ -161,6 +217,32 @@ angular.module('ng.cx.grid.CxGrid', [
 
             return Math.max.apply(null, measures);
         }
+
+        function GridLine(index, elements) {
+            var _self = this;
+
+            Object.defineProperty(this, 'index', {
+                get: function() {
+                    return index;
+                }
+            });
+
+            this.switchHighlight = switchHighlight;
+
+            this.isEqual = isEqual;
+
+            function switchHighlight(switchValue) {
+                elements.map(function(element) {
+                    element.switchHighlighting(switchValue);
+                });
+            }
+
+            function isEqual(gridLine) {
+                return _self.index === gridLine.index;
+            }
+        }
+
+
     }
 ])
 
