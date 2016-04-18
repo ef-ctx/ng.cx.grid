@@ -1,3 +1,9 @@
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.0...v0.1.1) (2016-04-18)
+
+
+
+
 <a name="0.0.4"></a>
 ## [0.0.4](https://github.com/ef-ctx/ng.cx.grid/compare/v0.0.2...v0.0.4) (2016-04-18)
 
