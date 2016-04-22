@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.2
+	 * ng.cx.grid - v0.1.3
 	 * 
-	 * Release date : 2016-04-22 : 14:09
+	 * Release date : 2016-04-22 : 14:10
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
