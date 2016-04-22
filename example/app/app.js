@@ -7,14 +7,7 @@
 
 angular.module('ng.cx.grid.example',[
     'ng.cx.grid',
-    'ng.cx.grid.example.corner',
-    'ng.cx.grid.example.cell',
-    'ng.cx.grid.example.colHeader',
-    'ng.cx.grid.example.rowHeader',
-    'ng.cx.grid.example.overview.corner',
-    'ng.cx.grid.example.overview.cell',
-    'ng.cx.grid.example.overview.colHeader',
-    'ng.cx.grid.example.overview.rowHeader'
+    'ng.cx.grid.example.components',
 ])
 
 .controller('exampleController', [
@@ -50,20 +43,6 @@ angular.module('ng.cx.grid.example',[
                 }
             }
         }
-
-        window.party = function (){
-            for (var ix = 0; ix < window.parties.length; ix++) {
-                window.parties[ix]();
-            }
-        };
-        window.enough = function (){
-            for (var ix = 0; ix < window.parties.length; ix++) {
-                window.stopParties[ix]();
-            }
-        };
-
-        window.parties = [];
-        window.stopParties = [];
 
         function itemParser (row, col) {
             return {

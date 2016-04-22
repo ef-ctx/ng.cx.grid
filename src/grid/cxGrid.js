@@ -58,10 +58,10 @@ angular.module('ng.cx.grid.grid', [
             _$cellsContainer,
             _$cornerContainer;
 
-        _$rowHeadersContainer = get$elementBySelector('.row-headers');
-        _$colHeadersContainer = get$elementBySelector('.column-headers');
-        _$cellsContainer = get$elementBySelector('.grid');
-        _$cornerContainer = get$elementBySelector('.corner');
+        _$rowHeadersContainer = get$elementBySelector('.cx-grid-rh-container');
+        _$colHeadersContainer = get$elementBySelector('.cx-grid-ch-container');
+        _$cellsContainer      = get$elementBySelector('.cx-grid-cells-container');
+        _$cornerContainer     = get$elementBySelector('.cx-grid-corner-container');
 
         _grid = new CxGrid(
             this.ioDataProvider,

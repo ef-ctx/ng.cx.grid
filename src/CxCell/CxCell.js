@@ -142,7 +142,7 @@ angular.module('ng.cx.grid.CxCell', [])
         function _render(data, template, restrictions) {
             var $element, tpl;
 
-            tpl = '<div class="cell"><div class="cell-renderer" ###directiveId###></div></div>';
+            tpl = '<div class="cx-grid-cell"><div class="cx-grid-cell-renderer" ###directiveId###></div></div>';
             tpl = tpl.replace('###directiveId###', template);
             $element = _renderItem(data, tpl);
 
