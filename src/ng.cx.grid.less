@@ -37,10 +37,18 @@
         display: flex;
         flex-grow: 1;
         overflow-x: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     .cx-grid-rh-container {
         overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     .cx-grid-cells-container {
@@ -55,5 +63,28 @@
             top: 0;
             left: 0;
         }
+
+        &::-webkit-scrollbar {
+
+            width: 8px;
+            height: 8px;
+
+            background-color: #294055;
+
+            &-track {
+            }
+
+            &-track-piece {
+            }
+
+            &-thumb {
+                background-color: #496177;
+            }
+            &-corner {
+                background-color: #294055;
+            }
+        }
+
     }
+
 }

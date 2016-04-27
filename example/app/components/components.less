@@ -66,6 +66,7 @@
 /**********************************************************
  * RH-TILE
  **********************************************************/
+
 .rh-tile {
     padding: 20px;
     background: transparent;
@@ -99,14 +100,16 @@
  **********************************************************/
 
 .tile {
+    height: 100%;
+    width: 100%;
     padding: 20px;
     background: transparent;
     border-bottom: 1px solid @border-color;
     border-right: 1px solid @border-color;
 
     .card {
-        /*width: 180px;
-        height: 100px;*/
+        width: 180px;
+        height: 100px;
         padding: 10px;
 
         border-radius: 2px;
@@ -121,7 +124,7 @@
 
         transition: background-color 0.3s linear;
 
-        &.no-response-label {
+        .no-response-label {
             display: none;
         }
 
