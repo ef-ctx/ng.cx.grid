@@ -1,3 +1,23 @@
+<a name="0.1.7"></a>
+## [0.1.7](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.5...v0.1.7) (2016-04-27)
+
+
+### Features
+
+* **scrollbars:** scrollbar styling ([6ff679b](https://github.com/ef-ctx/ng.cx.grid/commit/6ff679b))
+
+
+
+<a name="0.1.6"></a>
+## [0.1.6](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.5...v0.1.6) (2016-04-27)
+
+
+### Features
+
+* **scrollbars:** scrollbar styling ([6ff679b](https://github.com/ef-ctx/ng.cx.grid/commit/6ff679b))
+
+
+
 <a name="0.1.5"></a>
 ## [0.1.5](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.3...v0.1.5) (2016-04-26)
 
