@@ -113,10 +113,6 @@ angular.module('ng.cx.grid.grid', [
         function get$elementBySelector(selector) {
             return angular.element($element[0].querySelector(selector));
         }
-
-        $scope.$on('$destroy', function () {
-            cxGridService.cleanCurrentGrid();
-        });
     }
 ])
 

@@ -44,6 +44,7 @@ angular.module('ng.cx.grid.cxScroll', [])
     'cxScrollService',
     function cxBindScrollController($element, $attrs, cxScrollService) {
         'use strict';
+
         var _restrictToX = (this.ioScrollRestrictToAxis === 'x'),
             _restrictToY = (this.ioScrollRestrictToAxis === 'y'),
             _snapCoords = this.ioSnapCoords,
@@ -56,7 +57,7 @@ angular.module('ng.cx.grid.cxScroll', [])
             _cxScrollLeft = true;
         }
 
-        // Y is the priority if both are sspecified
+        // Y is the priority if both are specified
         if (_restrictToY) {
             _cxScrollTop = true;
             _cxScrollLeft = false;
@@ -128,6 +129,8 @@ angular.module('ng.cx.grid.cxScroll', [])
 
             function _scrollHandler(event) {
                 _resetEndScrollTimeout();
+                console.log('scroll', event.target.className, event.target.scrollTop, '-----------', event.target.scrollLeft );
+
                 _scrollElements(event.target);
             }
 

@@ -39,8 +39,6 @@ angular.module('ng.cx.grid.CxGrid', [
             $cornerContainer
         ) {
 
-            console.time('render');
-
             var _rowHeaders = [],
                 _colHeaders = [],
                 _cells = [
@@ -118,7 +116,6 @@ angular.module('ng.cx.grid.CxGrid', [
 
             function _showMainContainer() {
                 $mainContainer.css('opacity', 1);
-                console.timeEnd('render');
             }
 
             // HEADERS -------------------------------------------------
@@ -217,7 +214,6 @@ angular.module('ng.cx.grid.CxGrid', [
 
         function _getMaxMeasure(elements, measure) {
             var measures = elements.map(function(cell) {
-                console.log('row Header cell', cell.width, cell.height);
                 return cell[measure];
             });
 
