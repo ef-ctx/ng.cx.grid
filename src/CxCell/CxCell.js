@@ -26,6 +26,7 @@ angular.module('ng.cx.grid.CxCell', [])
         function CxCell(data, template, restrictions) {
             var _self = this,
                 _data = data,
+                _isHighlighted = false,
                 _highlightingClass = 'highlight',
                 _relativeMeasure,
                 _absoluteMeasure,
@@ -62,7 +63,9 @@ angular.module('ng.cx.grid.CxCell', [])
                 get: getAbsoluteLeft
             });
 
-            this.switchHighlighting = switchHighlighting;
+            this.toggleHighlight = toggleHighlight;
+            this.highlight = highlight;
+            this.unHighlight = unHighlight;
 
             /**********************************************************
              * RUN
@@ -74,18 +77,19 @@ angular.module('ng.cx.grid.CxCell', [])
              * METHODS
              **********************************************************/
 
-            function switchHighlighting(switchValue) {
-                switch (switchValue) {
-                    case 'on':
-                        _$element.addClass(_highlightingClass);
-                        break;
-                    case 'off':
-                        _$element.removeClass(_highlightingClass);
-                        break;
-                    default:
-                        _$element.toggleClass(_highlightingClass);
-                        break;
-                }
+            function highlight() {
+                _isHighlighted = true;
+                _$element.addClass(_highlightingClass);
+            }
+
+            function unHighlight() {
+                _isHighlighted = false;
+                _$element.removeClass(_highlightingClass);
+            }
+
+            function toggleHighlight() {
+                _isHighlighted = !_isHighlighted;
+                return (_isHighlighted) ? highlight() : unHighlight();
             }
 
             /**********************************************************

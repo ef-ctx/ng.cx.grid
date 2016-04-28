@@ -65,32 +65,38 @@ angular.module('ng.cx.grid.CxGrid', [
              * METHODS
              **********************************************************/
 
-            function switchLineHighlighting(index, axis, switchValue) {
-                if(_highlighted.x !== undefined) {
-                    _highlighted.x.switchHighlight('off');
+            function toggleLineHighlighting(index, axis) {
+                var oppositeAxis = (axis === 'x') ? 'y' : 'x';
+
+                if (_highlighted[axis] && _highlighted[axis].index !== index) {
+
+                    if(_highlighted.x !== undefined) {
+                        _highlighted.x.unHighlight();
+                    }
+
+                    if(_highlighted.y !== undefined) {
+                        _highlighted.y.unHighlight();
+                    }
                 }
 
-                if(_highlighted.y !== undefined) {
-                    _highlighted.y.switchHighlight('off');
+                if(_highlighted[oppositeAxis]) {
+                    _highlighted[oppositeAxis].unHighlight();
                 }
 
                 _highlighted[axis] = (axis === 'x') ? _getRowByIndex(index) : _getColumnByIndex(index);
 
-                if(_highlighted.x !== undefined) {
-                    _highlighted.x.switchHighlight('on');
+                if(_highlighted[axis] !== undefined) {
+                    _highlighted[axis].toggleHighlight();
                 }
 
-                if(_highlighted.y !== undefined) {
-                    _highlighted.y.switchHighlight('on');
-                }
             }
 
             function highlightRow(index) {
-                switchLineHighlighting(index, 'x', 'on');
+                toggleLineHighlighting(index, 'x');
             }
 
             function highlightColumn(index) {
-                switchLineHighlighting(index, 'y', 'on');
+                toggleLineHighlighting(index, 'y');
             }
 
 
@@ -227,13 +233,27 @@ angular.module('ng.cx.grid.CxGrid', [
                 }
             });
 
-            this.switchHighlight = switchHighlight;
+            this.highlight = highlight;
+            this.unHighlight = unHighlight;
+            this.toggleHighlight = toggleHighlight;
 
             this.isEqual = isEqual;
 
-            function switchHighlight(switchValue) {
+            function toggleHighlight() {
                 elements.map(function(element) {
-                    element.switchHighlighting(switchValue);
+                    element.toggleHighlight();
+                });
+            }
+
+            function highlight() {
+                elements.map(function(element) {
+                    element.highlight();
+                });
+            }
+
+            function unHighlight() {
+                elements.map(function(element) {
+                    element.unHighlight();
                 });
             }
 

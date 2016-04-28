@@ -44,12 +44,42 @@ angular.module('ng.cx.grid.grid', [
  *
  **********************************************************/
 
+.service('cxGridService',[
+    function cxGridService() {
+        'use strict';
+
+        var _currentGrid;
+
+        this.addGrid = addGrid;
+        this.cleanCurrentGrid = cleanCurrentGrid;
+        this.highlightRow = highlightRow;
+        this.highlightColumn = highlightColumn;
+
+        function addGrid(grid) {
+            _currentGrid = grid;
+        }
+
+        function cleanCurrentGrid() {
+            _currentGrid = undefined;
+        }
+
+        function highlightRow(index) {
+            _currentGrid.highlightRow(index);
+        }
+
+        function highlightColumn(index) {
+            _currentGrid.highlightColumn(index);
+        }
+    }
+])
+
 .controller('cxGridController', [
     '$scope',
     '$timeout',
     '$element',
     'CxGrid',
-    function ngCxGridController($scope, $timeout, $element, CxGrid) {
+    'cxGridService',
+    function ngCxGridController($scope, $timeout, $element, CxGrid, cxGridService) {
         'use strict';
 
         var _grid,
@@ -78,11 +108,15 @@ angular.module('ng.cx.grid.grid', [
             _$cornerContainer
         );
 
-        window.cxGrid = _grid;
+        cxGridService.addGrid( _grid );
 
         function get$elementBySelector(selector) {
             return angular.element($element[0].querySelector(selector));
         }
+
+        $scope.$on('$destroy', function () {
+            cxGridService.cleanCurrentGrid();
+        });
     }
 ])
 
