@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.8
+	 * ng.cx.grid - v0.1.9
 	 * 
-	 * Release date : 2016-04-28 : 16:55
+	 * Release date : 2016-04-28 : 17:53
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -261,8 +261,6 @@
 	            $cornerContainer
 	        ) {
 	
-	            console.time('render');
-	
 	            var _rowHeaders = [],
 	                _colHeaders = [],
 	                _cells = [
@@ -340,7 +338,6 @@
 	
 	            function _showMainContainer() {
 	                $mainContainer.css('opacity', 1);
-	                console.timeEnd('render');
 	            }
 	
 	            // HEADERS -------------------------------------------------
@@ -439,7 +436,6 @@
 	
 	        function _getMaxMeasure(elements, measure) {
 	            var measures = elements.map(function(cell) {
-	                console.log('row Header cell', cell.width, cell.height);
 	                return cell[measure];
 	            });
 	
@@ -538,6 +534,7 @@
 	    'cxScrollService',
 	    function cxBindScrollController($element, $attrs, cxScrollService) {
 	        
+	
 	        var _restrictToX = (this.ioScrollRestrictToAxis === 'x'),
 	            _restrictToY = (this.ioScrollRestrictToAxis === 'y'),
 	            _snapCoords = this.ioSnapCoords,
@@ -550,7 +547,7 @@
 	            _cxScrollLeft = true;
 	        }
 	
-	        // Y is the priority if both are sspecified
+	        // Y is the priority if both are specified
 	        if (_restrictToY) {
 	            _cxScrollTop = true;
 	            _cxScrollLeft = false;
@@ -622,6 +619,8 @@
 	
 	            function _scrollHandler(event) {
 	                _resetEndScrollTimeout();
+	                console.log('scroll', event.target.className, event.target.scrollTop, '-----------', event.target.scrollLeft );
+	
 	                _scrollElements(event.target);
 	            }
 	
@@ -797,10 +796,6 @@
 	        function get$elementBySelector(selector) {
 	            return angular.element($element[0].querySelector(selector));
 	        }
-	
-	        $scope.$on('$destroy', function () {
-	            cxGridService.cleanCurrentGrid();
-	        });
 	    }
 	])
 	
