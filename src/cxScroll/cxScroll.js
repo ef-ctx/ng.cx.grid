@@ -129,7 +129,7 @@ angular.module('ng.cx.grid.cxScroll', [])
 
             function _scrollHandler(event) {
                 _resetEndScrollTimeout();
-                console.log('scroll', event.target.className, event.target.scrollTop, '-----------', event.target.scrollLeft );
+                //console.log('scroll', event.target.className, event.target.scrollTop, '-----------', event.target.scrollLeft );
 
                 _scrollElements(event.target);
             }
