@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.9
+	 * ng.cx.grid - v0.1.10
 	 * 
-	 * Release date : 2016-04-28 : 17:53
+	 * Release date : 2016-04-28 : 17:58
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -619,7 +619,7 @@
 	
 	            function _scrollHandler(event) {
 	                _resetEndScrollTimeout();
-	                console.log('scroll', event.target.className, event.target.scrollTop, '-----------', event.target.scrollLeft );
+	                //console.log('scroll', event.target.className, event.target.scrollTop, '-----------', event.target.scrollLeft );
 	
 	                _scrollElements(event.target);
 	            }

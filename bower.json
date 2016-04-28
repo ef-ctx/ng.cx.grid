@@ -1,6 +1,6 @@
 {
   "name": "ng.cx.grid",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "configurable grid for angular",
   "authors": [
     "EF CTX <ctx@ef.com> (http://efclass.io)"
