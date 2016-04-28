@@ -1,3 +1,13 @@
+<a name="0.1.8"></a>
+## [0.1.8](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.7...v0.1.8) (2016-04-28)
+
+
+### Features
+
+* **highlight:** highlight exclusively ([4ed56b8](https://github.com/ef-ctx/ng.cx.grid/commit/4ed56b8))
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.5...v0.1.7) (2016-04-27)
 

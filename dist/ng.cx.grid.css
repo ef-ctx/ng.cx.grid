@@ -51,20 +51,24 @@
   flex: 1 1;
   flex-direction: column;
   overflow: scroll;
+  /*&::-webkit-scrollbar {*/
+  /*width: 8px;*/
+  /*height: 8px;*/
+  /*background-color: #294055;*/
+  /*&-track {*/
+  /*}*/
+  /*&-track-piece {*/
+  /*}*/
+  /*&-thumb {*/
+  /*background-color: #496177;*/
+  /*}*/
+  /*&-corner {*/
+  /*background-color: #294055;*/
+  /*}*/
+  /*}*/
 }
 .ng-cx-grid .cx-grid-cells-container .cx-grid-cell {
   position: absolute;
   top: 0;
   left: 0;
-}
-.ng-cx-grid .cx-grid-cells-container::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background-color: #294055;
-}
-.ng-cx-grid .cx-grid-cells-container::-webkit-scrollbar-thumb {
-  background-color: #496177;
-}
-.ng-cx-grid .cx-grid-cells-container::-webkit-scrollbar-corner {
-  background-color: #294055;
 }
