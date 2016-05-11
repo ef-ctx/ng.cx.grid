@@ -70,6 +70,7 @@ angular.module('ng.cx.grid.grid', [
         function highlightColumn(index) {
             _currentGrid.highlightColumn(index);
         }
+
     }
 ])
 
@@ -86,7 +87,10 @@ angular.module('ng.cx.grid.grid', [
             _$rowHeadersContainer,
             _$colHeadersContainer,
             _$cellsContainer,
-            _$cornerContainer;
+            _$cornerContainer,
+            _$element = $element;
+
+        this.scrollHandler = scrollHandler;
 
         _$rowHeadersContainer = get$elementBySelector('.cx-grid-rh-container');
         _$colHeadersContainer = get$elementBySelector('.cx-grid-ch-container');
@@ -109,6 +113,24 @@ angular.module('ng.cx.grid.grid', [
         );
 
         cxGridService.addGrid( _grid );
+
+        function scrollHandler(event) {
+
+            var scrollTop = event.target.scrollTop,
+                scrollLeft = event.target.scrollLeft;
+
+            if(scrollTop > 0){
+                _$element.addClass('is-scrolling-y');
+            } else {
+                _$element.removeClass('is-scrolling-y');
+            }
+
+            if(scrollLeft > 0){
+                _$element.addClass('is-scrolling-x');
+            } else {
+                _$element.removeClass('is-scrolling-x');
+            }
+        }
 
         function get$elementBySelector(selector) {
             return angular.element($element[0].querySelector(selector));

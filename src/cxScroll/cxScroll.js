@@ -24,7 +24,8 @@ angular.module('ng.cx.grid.cxScroll', [])
             bindToController: {
                 ioScrollId: '@',
                 ioScrollRestrictToAxis: '@?',
-                ioSnapCoords: '=?'
+                ioSnapCoords: '=?',
+                ioScrollOnScroll: '=?'
             },
             controller: 'cxScrollController as cxScrollController'
         };
@@ -50,6 +51,7 @@ angular.module('ng.cx.grid.cxScroll', [])
             _snapCoords = this.ioSnapCoords,
             _cxScrollTop,
             _cxScrollLeft,
+            _onScrollHandler = this.ioScrollOnScroll,
             _bindingId = $attrs.cxBindScroll;
 
         if (_restrictToX) {
@@ -63,7 +65,7 @@ angular.module('ng.cx.grid.cxScroll', [])
             _cxScrollLeft = false;
         }
 
-        cxScrollService.bind(_bindingId, $element, _cxScrollTop, _cxScrollLeft, _snapCoords);
+        cxScrollService.bind(_bindingId, $element, _cxScrollTop, _cxScrollLeft, _snapCoords, _onScrollHandler);
     }
 ])
 
@@ -84,23 +86,36 @@ angular.module('ng.cx.grid.cxScroll', [])
             _isSnapping = false;
 
         this.bind = bind;
+        this.getScrollBindingById = getScrollBindingById;
 
-        function bind(bindingId, $element, cxScrollTop, cxScrollLeft, snapCoords) {
+        function bind(bindingId, $element, cxScrollTop, cxScrollLeft, snapCoords, onScrollHandler) {
             if (!_scrollBindings[bindingId]) {
                 _scrollBindings[bindingId] = new ScrollBinding();
             }
-            _scrollBindings[bindingId].addElement($element, cxScrollTop, cxScrollLeft, snapCoords);
+            _scrollBindings[bindingId].addElement($element, cxScrollTop, cxScrollLeft, snapCoords, onScrollHandler);
         }
+
+        function getScrollBindingById(id) {
+            return _scrollBindings[id];
+        }
+
 
         function ScrollBinding() {
             var _elements = [],
                 _$element,
                 _snapElement,
-                _snapCoords;
+                _snapCoords,
+                _scrollHandlers = [];
 
             this.addElement = addElement;
 
-            function addElement($element, scrollTop, scrollLeft, snapCoords) {
+            Object.defineProperty(this, '$element', {
+                get: function () {
+                    return _$element;
+                }
+            });
+
+            function addElement($element, scrollTop, scrollLeft, snapCoords, onScrollHandler) {
                 var _element = $element[0];
 
                 _$element = $element;
@@ -113,6 +128,10 @@ angular.module('ng.cx.grid.cxScroll', [])
                 if (snapCoords) {
                     _snapCoords = snapCoords;
                     _snapElement = _element;
+                }
+
+                if (onScrollHandler) {
+                    _$element.on('scroll', onScrollHandler);
                 }
 
                 _elements.push(_element);
@@ -129,8 +148,6 @@ angular.module('ng.cx.grid.cxScroll', [])
 
             function _scrollHandler(event) {
                 _resetEndScrollTimeout();
-                //console.log('scroll', event.target.className, event.target.scrollTop, '-----------', event.target.scrollLeft );
-
                 _scrollElements(event.target);
             }
 

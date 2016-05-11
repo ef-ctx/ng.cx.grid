@@ -1,3 +1,6 @@
+@scrollbar-track-width: 13px;
+@scrollbar-thumb-width: 11px;
+
 *, *:before, *:after {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -9,6 +12,56 @@
     flex-direction: column;
     align-content: flex-start;
     transition: all .3s cubic-bezier(0.55, 0, 0.55, 0.2);
+
+    &.is-scrolling-x.is-scrolling-y {
+        .cx-grid-corner-container {
+            box-shadow: 6px 6px 10px -1px rgba(0, 0, 0, .3);
+            z-index:3;
+        }
+    }
+
+    &.is-scrolling-x {
+        .cx-grid-corner-container {
+            box-shadow: 6px -2px 10px -1px rgba(0, 0, 0, .3);
+            z-index:3;
+        }
+
+        .cx-grid-rh-container {
+            box-shadow: 6px -2px 10px -1px rgba(0, 0, 0, .3);
+            z-index:2;
+        }
+
+        .cx-grid-ch-container {
+            &:after {
+                content: ' ';
+                display: block;
+                min-width: @scrollbar-track-width;
+                min-height: 100%;
+            }
+        }
+    }
+
+    &.is-scrolling-y {
+        .cx-grid-corner-container {
+            box-shadow: -2px 6px 10px -1px rgba(0, 0, 0, 0.3);
+            z-index:3;
+        }
+
+        .cx-grid-ch-container {
+            box-shadow: -2px 6px 10px -1px rgba(0, 0, 0, 0.3);
+            z-index:2;
+        }
+
+        .cx-grid-rh-container {
+            &:after {
+                content: ' ';
+                display: block;
+                min-height: @scrollbar-track-width;
+                min-width: 100%;
+            }
+        }
+
+    }
 
     .cx-grid-header {
         display: flex;
@@ -31,6 +84,7 @@
         position: relative;
         display: flex;
         flex: 0 0 auto;
+        background-color: #294055;
     }
 
     .cx-grid-ch-container {
@@ -64,26 +118,28 @@
             left: 0;
         }
 
-        /*&::-webkit-scrollbar {*/
+        &::-webkit-scrollbar {
 
-            /*width: 8px;*/
-            /*height: 8px;*/
+            width: @scrollbar-track-width;
+            height: @scrollbar-track-width;
 
-            /*background-color: #294055;*/
+            background-color: #294055;
 
-            /*&-track {*/
-            /*}*/
+            &-track {
+            }
 
-            /*&-track-piece {*/
-            /*}*/
+            &-track-piece {
+            }
 
-            /*&-thumb {*/
-                /*background-color: #496177;*/
-            /*}*/
-            /*&-corner {*/
-                /*background-color: #294055;*/
-            /*}*/
-        /*}*/
+            &-thumb {
+                width: @scrollbar-thumb-width;
+                background-color: #B7B4B9;
+                border: solid 1px #D7DBDF;
+            }
+            &-corner {
+                background-color: #294055;
+            }
+        }
 
     }
 
