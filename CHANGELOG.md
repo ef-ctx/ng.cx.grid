@@ -7,31 +7,6 @@
 * **Scope:** create cells preserving scope chain. ([ad2996e](https://github.com/ef-ctx/ng.cx.grid/commit/ad2996e))
 
 
-
-<a name="0.1.12"></a>
-## [0.1.12](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.10...v0.1.12) (2016-05-11)
-
-
-
-
-<a name="0.1.11"></a>
-## [0.1.11](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.10...v0.1.11) (2016-05-11)
-
-
-
-
-<a name="0.1.10"></a>
-## [0.1.10](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.9...v0.1.10) (2016-04-28)
-
-
-
-
-<a name="0.1.9"></a>
-## [0.1.9](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.8...v0.1.9) (2016-04-28)
-
-
-
-
 <a name="0.1.8"></a>
 ## [0.1.8](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.7...v0.1.8) (2016-04-28)
 
@@ -59,38 +34,6 @@
 ### Features
 
 * **scrollbars:** scrollbar styling ([6ff679b](https://github.com/ef-ctx/ng.cx.grid/commit/6ff679b))
-
-
-
-<a name="0.1.5"></a>
-## [0.1.5](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.3...v0.1.5) (2016-04-26)
-
-
-
-
-<a name="0.1.4"></a>
-## [0.1.4](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.3...v0.1.4) (2016-04-26)
-
-
-
-
-<a name="0.1.3"></a>
-## [0.1.3](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.1...v0.1.3) (2016-04-22)
-
-
-
-
-<a name="0.1.2"></a>
-## [0.1.2](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.1...v0.1.2) (2016-04-22)
-
-
-
-
-<a name="0.1.1"></a>
-## [0.1.1](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.0...v0.1.1) (2016-04-18)
-
-
-
 
 <a name="0.0.4"></a>
 ## [0.0.4](https://github.com/ef-ctx/ng.cx.grid/compare/v0.0.2...v0.0.4) (2016-04-18)
