@@ -36,7 +36,8 @@ angular.module('ng.cx.grid.CxGrid', [
             $colHeadersContainer,
             $rowHeadersContainer,
             $cellsContainer,
-            $cornerContainer
+            $cornerContainer,
+            gridScope
         ) {
 
             var _rowHeaders = [],
@@ -126,13 +127,13 @@ angular.module('ng.cx.grid.CxGrid', [
             }
 
             function _createColHeaderCell(data) {
-                var cell = _createCell(data, columnHeaderRenderer);
+                var cell = _createCell(data, columnHeaderRenderer, null, gridScope);
                 $colHeadersContainer.append(cell.$element);
                 return cell;
             }
 
             function _createRowHeaderCell(data) {
-                var cell = _createCell(data, rowHeaderRenderer);
+                var cell = _createCell(data, rowHeaderRenderer, null, gridScope);
 
                 $rowHeadersContainer.append(cell.$element);
                 return cell;
@@ -147,7 +148,7 @@ angular.module('ng.cx.grid.CxGrid', [
                             height: _getMaxMeasure(_colHeaders, 'height'),
                         }
                     },
-                    cell = _createCell(undefined, cornerRenderer, restrictions);
+                    cell = _createCell(undefined, cornerRenderer, restrictions, gridScope);
 
                 $cornerContainer.append(cell.$element);
             }
@@ -185,7 +186,7 @@ angular.module('ng.cx.grid.CxGrid', [
                         }
                     };
 
-                cell = _createCell(data, cellRenderer, restrictions);
+                cell = _createCell(data, cellRenderer, restrictions, gridScope);
 
                 $cellsContainer.append(cell.$element);
 
@@ -208,8 +209,8 @@ angular.module('ng.cx.grid.CxGrid', [
 
         }
 
-        function _createCell(data, template, restrictions) {
-            return new CxCell(data, template, restrictions);
+        function _createCell(data, template, restrictions, gridScope) {
+            return new CxCell(data, template, restrictions, gridScope);
         }
 
         function _getMaxMeasure(elements, measure) {

@@ -23,7 +23,7 @@ angular.module('ng.cx.grid.CxCell', [])
 
         return CxCell;
 
-        function CxCell(data, template, restrictions) {
+        function CxCell(data, template, restrictions, cellParentScope) {
             var _self = this,
                 _data = data,
                 _isHighlighted = false,
@@ -71,7 +71,7 @@ angular.module('ng.cx.grid.CxCell', [])
              * RUN
              **********************************************************/
 
-            _$element = _render(data, template, restrictions);
+            _$element = _render(data, template, restrictions, cellParentScope);
 
             /**********************************************************
              * METHODS
@@ -143,12 +143,12 @@ angular.module('ng.cx.grid.CxCell', [])
             }
         }
 
-        function _render(data, template, restrictions) {
+        function _render(data, template, restrictions, cellParentScope) {
             var $element, tpl;
 
             tpl = '<div class="cx-grid-cell"><div class="cx-grid-cell-renderer" ###directiveId###></div></div>';
             tpl = tpl.replace('###directiveId###', template);
-            $element = _renderItem(data, tpl);
+            $element = _renderItem(data, tpl, cellParentScope);
 
             if (restrictions) {
                 _applyRestrictions($element, restrictions);
@@ -177,8 +177,8 @@ angular.module('ng.cx.grid.CxCell', [])
             $element.css('transform', 'translate3d(' + (position.x || 0) + 'px,' + (position.y || 0) + 'px, 0px )');
         }
 
-        function _renderItem(data, template) {
-            var scope = $rootScope.$new(true);
+        function _renderItem(data, template, cellParentScope) {
+            var scope = $rootScope.$new(true, cellParentScope);
             scope.dataProvider = data;
             return $compile(template)(scope);
         }

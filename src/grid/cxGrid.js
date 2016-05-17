@@ -109,7 +109,8 @@ angular.module('ng.cx.grid.grid', [
             _$colHeadersContainer,
             _$rowHeadersContainer,
             _$cellsContainer,
-            _$cornerContainer
+            _$cornerContainer,
+            $scope
         );
 
         cxGridService.addGrid( _grid );
