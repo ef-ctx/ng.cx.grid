@@ -1,3 +1,13 @@
+<a name="0.1.13"></a>
+## [0.1.13](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.12...v0.1.13) (2016-05-17)
+
+
+### Features
+
+* **Scope:** create cells preserving scope chain. ([ad2996e](https://github.com/ef-ctx/ng.cx.grid/commit/ad2996e))
+
+
+
 <a name="0.1.12"></a>
 ## [0.1.12](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.10...v0.1.12) (2016-05-11)
 

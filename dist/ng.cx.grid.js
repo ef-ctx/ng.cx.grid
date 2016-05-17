@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.12
+	 * ng.cx.grid - v0.1.13
 	 * 
-	 * Release date : 2016-05-11 : 17:16
+	 * Release date : 2016-05-17 : 16:16
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -38,7 +38,7 @@
 	
 	        return CxCell;
 	
-	        function CxCell(data, template, restrictions) {
+	        function CxCell(data, template, restrictions, cellParentScope) {
 	            var _self = this,
 	                _data = data,
 	                _isHighlighted = false,
@@ -86,7 +86,7 @@
 	             * RUN
 	             **********************************************************/
 	
-	            _$element = _render(data, template, restrictions);
+	            _$element = _render(data, template, restrictions, cellParentScope);
 	
 	            /**********************************************************
 	             * METHODS
@@ -158,12 +158,12 @@
 	            }
 	        }
 	
-	        function _render(data, template, restrictions) {
+	        function _render(data, template, restrictions, cellParentScope) {
 	            var $element, tpl;
 	
 	            tpl = '<div class="cx-grid-cell"><div class="cx-grid-cell-renderer" ###directiveId###></div></div>';
 	            tpl = tpl.replace('###directiveId###', template);
-	            $element = _renderItem(data, tpl);
+	            $element = _renderItem(data, tpl, cellParentScope);
 	
 	            if (restrictions) {
 	                _applyRestrictions($element, restrictions);
@@ -192,8 +192,8 @@
 	            $element.css('transform', 'translate3d(' + (position.x || 0) + 'px,' + (position.y || 0) + 'px, 0px )');
 	        }
 	
-	        function _renderItem(data, template) {
-	            var scope = $rootScope.$new(true);
+	        function _renderItem(data, template, cellParentScope) {
+	            var scope = $rootScope.$new(true, cellParentScope);
 	            scope.dataProvider = data;
 	            return $compile(template)(scope);
 	        }
@@ -258,7 +258,8 @@
 	            $colHeadersContainer,
 	            $rowHeadersContainer,
 	            $cellsContainer,
-	            $cornerContainer
+	            $cornerContainer,
+	            gridScope
 	        ) {
 	
 	            var _rowHeaders = [],
@@ -348,13 +349,13 @@
 	            }
 	
 	            function _createColHeaderCell(data) {
-	                var cell = _createCell(data, columnHeaderRenderer);
+	                var cell = _createCell(data, columnHeaderRenderer, null, gridScope);
 	                $colHeadersContainer.append(cell.$element);
 	                return cell;
 	            }
 	
 	            function _createRowHeaderCell(data) {
-	                var cell = _createCell(data, rowHeaderRenderer);
+	                var cell = _createCell(data, rowHeaderRenderer, null, gridScope);
 	
 	                $rowHeadersContainer.append(cell.$element);
 	                return cell;
@@ -369,7 +370,7 @@
 	                            height: _getMaxMeasure(_colHeaders, 'height'),
 	                        }
 	                    },
-	                    cell = _createCell(undefined, cornerRenderer, restrictions);
+	                    cell = _createCell(undefined, cornerRenderer, restrictions, gridScope);
 	
 	                $cornerContainer.append(cell.$element);
 	            }
@@ -407,7 +408,7 @@
 	                        }
 	                    };
 	
-	                cell = _createCell(data, cellRenderer, restrictions);
+	                cell = _createCell(data, cellRenderer, restrictions, gridScope);
 	
 	                $cellsContainer.append(cell.$element);
 	
@@ -430,8 +431,8 @@
 	
 	        }
 	
-	        function _createCell(data, template, restrictions) {
-	            return new CxCell(data, template, restrictions);
+	        function _createCell(data, template, restrictions, gridScope) {
+	            return new CxCell(data, template, restrictions, gridScope);
 	        }
 	
 	        function _getMaxMeasure(elements, measure) {
@@ -809,7 +810,8 @@
 	            _$colHeadersContainer,
 	            _$rowHeadersContainer,
 	            _$cellsContainer,
-	            _$cornerContainer
+	            _$cornerContainer,
+	            $scope
 	        );
 	
 	        cxGridService.addGrid( _grid );
