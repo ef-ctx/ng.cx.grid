@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.13
+	 * ng.cx.grid - v0.1.14
 	 * 
-	 * Release date : 2016-05-17 : 16:16
+	 * Release date : 2016-05-20 : 16:31
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -302,6 +302,7 @@
 	
 	                if(_highlighted[oppositeAxis]) {
 	                    _highlighted[oppositeAxis].unHighlight();
+	                    _highlighted[oppositeAxis] = undefined;
 	                }
 	
 	                _highlighted[axis] = (axis === 'x') ? _getRowByIndex(index) : _getColumnByIndex(index);

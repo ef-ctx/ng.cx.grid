@@ -1,3 +1,13 @@
+<a name="0.1.14"></a>
+## [0.1.14](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.13...v0.1.14) (2016-05-20)
+
+
+### Bug Fixes
+
+* **highlight:** cleaning last highlight row. WIP ([d512caa](https://github.com/ef-ctx/ng.cx.grid/commit/d512caa))
+
+
+
 <a name="0.1.13"></a>
 ## [0.1.13](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.12...v0.1.13) (2016-05-17)
 
