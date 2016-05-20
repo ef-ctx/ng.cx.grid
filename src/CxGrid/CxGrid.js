@@ -80,6 +80,7 @@ angular.module('ng.cx.grid.CxGrid', [
 
                 if(_highlighted[oppositeAxis]) {
                     _highlighted[oppositeAxis].unHighlight();
+                    _highlighted[oppositeAxis] = undefined;
                 }
 
                 _highlighted[axis] = (axis === 'x') ? _getRowByIndex(index) : _getColumnByIndex(index);
