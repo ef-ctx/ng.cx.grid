@@ -52,14 +52,14 @@ module.exports = {
 
         grunt: ['Gruntfile.js', 'grunt/**/*.js'],
 
-        test: ['src/**/*.spec*.js'],
+        test: ['./src/**/*.spec*.js'],
 
         vendor: [
-            'vendor/angular/angular.js',
-            'vendor/angular-touch/angular-touch.js',
+            './vendor/angular/angular.js',
+            './vendor/angular-touch/angular-touch.js',
         ],
 
-        testVendor: 'vendor/angular-mocks/angular-mocks.js'
+        testVendor: './vendor/angular-mocks/angular-mocks.js'
 
     },
 

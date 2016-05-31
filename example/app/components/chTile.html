@@ -1,19 +1,12 @@
-<div class="ch-tile"
+<div class="ch-tile header-tile"
     ng-class="{
-        'no-response': (dataProvider.score === undefined )
-    }">
-    <div class="activity-counter">
-        <span class="label">Activity</span>
-        <span class="counter" ng-bind="::dataProvider.count"></span>
-        <span class="label">of</span>
-        <span class="counter" ng-bind="::dataProvider.total"></span>
+        'contracted' : isContracted,
+        'narrow'     : (dataProvider.score === undefined )
+        }"
+    ng-click="clickHandler($event)">
+
+    <div class="header-counter">
+        <span class="counter" ng-bind="::dataProvider.label"></span>
     </div>
 
-    <div class="activity-title">
-        <span class="label" ng-bind="::dataProvider.title"></span>
-    </div>
-
-    <div class="badge">
-
-    </div>
 </div>

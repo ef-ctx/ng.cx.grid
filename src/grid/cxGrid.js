@@ -24,8 +24,6 @@ angular.module('ng.cx.grid.grid', [
             scope: {},
             bindToController: {
                 ioDataProvider: '=?',
-                ioRowHeaderDataProvider: '=?',
-                ioColumnHeaderDataProvider: '=?',
                 ioCellRenderer: '@?',
                 ioRowHeaderRenderer: '@?',
                 ioColumnHeaderRenderer: '@?',
@@ -99,8 +97,6 @@ angular.module('ng.cx.grid.grid', [
 
         _grid = new CxGrid(
             this.ioDataProvider,
-            this.ioColumnHeaderDataProvider,
-            this.ioRowHeaderDataProvider,
             this.ioCellRenderer,
             this.ioColumnHeaderRenderer,
             this.ioRowHeaderRenderer,

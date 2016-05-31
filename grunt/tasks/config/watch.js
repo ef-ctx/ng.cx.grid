@@ -10,7 +10,7 @@ module.exports = {
     },
 
     js: {
-        files: '<%= files.lib.js %>',
+        files: ['<%= files.lib.js %>'],
         tasks: ['jshint:src', 'karma:unit', 'ngtemplates:build', 'concat:build', 'wrap']
     },
 

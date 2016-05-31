@@ -25,9 +25,7 @@ angular.module('ng.cx.grid.CxGrid', [
         return CxGrid;
 
         function CxGrid(
-            gridData,
-            columnHeaderData,
-            rowHeaderData,
+            dataProvider,
             cellRenderer,
             columnHeaderRenderer,
             rowHeaderRenderer,
@@ -64,39 +62,13 @@ angular.module('ng.cx.grid.CxGrid', [
              * METHODS
              **********************************************************/
 
-            function toggleLineHighlighting(index, axis) {
-                var oppositeAxis = (axis === 'x') ? 'y' : 'x';
-
-                if (_highlighted[axis] && _highlighted[axis].index !== index) {
-
-                    if(_highlighted.x !== undefined) {
-                        _highlighted.x.unHighlight();
-                    }
-
-                    if(_highlighted.y !== undefined) {
-                        _highlighted.y.unHighlight();
-                    }
-                }
-
-                if(_highlighted[oppositeAxis]) {
-                    _highlighted[oppositeAxis].unHighlight();
-                    _highlighted[oppositeAxis] = undefined;
-                }
-
-                _highlighted[axis] = (axis === 'x') ? _getRowByIndex(index) : _getColumnByIndex(index);
-
-                if(_highlighted[axis] !== undefined) {
-                    _highlighted[axis].toggleHighlight();
-                }
-
-            }
 
             function highlightRow(index) {
-                toggleLineHighlighting(index, 'x');
+                _toggleLineHighlighting(index, 'x');
             }
 
             function highlightColumn(index) {
-                toggleLineHighlighting(index, 'y');
+                _toggleLineHighlighting(index, 'y');
             }
 
 
@@ -123,8 +95,8 @@ angular.module('ng.cx.grid.CxGrid', [
             // HEADERS -------------------------------------------------
 
             function _renderHeaders() {
-                _colHeaders = columnHeaderData.map(_createColHeaderCell);
-                _rowHeaders = rowHeaderData.map(_createRowHeaderCell);
+                _colHeaders = dataProvider.colHeaders.map(_createColHeaderCell);
+                _rowHeaders = dataProvider.rowHeaders.map(_createRowHeaderCell);
             }
 
             function _createColHeaderCell(data) {
@@ -173,7 +145,7 @@ angular.module('ng.cx.grid.CxGrid', [
 
             function _createGridCell(rowIndex, colIndex) {
                 var cell,
-                    data = gridData[rowIndex][colIndex],
+                    data = dataProvider.cells[rowIndex][colIndex],
                     colHeaderCell = _colHeaders[colIndex],
                     rowHeaderCell = _rowHeaders[rowIndex],
                     restrictions = {
@@ -192,6 +164,35 @@ angular.module('ng.cx.grid.CxGrid', [
                 $cellsContainer.append(cell.$element);
 
                 return cell;
+            }
+
+            // HIGHLIGHT -------------------------------------------
+
+            function _toggleLineHighlighting(index, axis) {
+                var oppositeAxis = (axis === 'x') ? 'y' : 'x';
+
+                if (_highlighted[axis] && _highlighted[axis].index !== index) {
+
+                    if(_highlighted.x !== undefined) {
+                        _highlighted.x.unHighlight();
+                    }
+
+                    if(_highlighted.y !== undefined) {
+                        _highlighted.y.unHighlight();
+                    }
+                }
+
+                if(_highlighted[oppositeAxis]) {
+                    _highlighted[oppositeAxis].unHighlight();
+                    _highlighted[oppositeAxis] = undefined;
+                }
+
+                _highlighted[axis] = (axis === 'x') ? _getRowByIndex(index) : _getColumnByIndex(index);
+
+                if(_highlighted[axis] !== undefined) {
+                    _highlighted[axis].toggleHighlight();
+                }
+
             }
 
             function _getColumnByIndex(index) {

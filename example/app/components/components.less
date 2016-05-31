@@ -1,3 +1,4 @@
+@import "gridDataForm/gridDataForm";
 
 /**********************************************************
  * CORNER
@@ -16,49 +17,49 @@
     border-right: 1px solid rgba(255,255,255,0.2);
 }
 
+.header-tile {
+
+    background: transparent;
+    border-bottom: 1px solid @border-color;
+    border-right: 1px solid @border-color;
+
+    font-size: 22px;
+
+    .header-counter {
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 5px;
+
+        color: white;
+        background-color: rgba(255,255,255,.2);
+    }
+
+}
+
 /**********************************************************
  * CH-TILE
  **********************************************************/
 
 .ch-tile {
-    background: transparent;
-    border-bottom: 1px solid @border-color;
-    border-right: 1px solid @border-color;
+
+    max-width: 220px;
+    max-height: 170px;
 
     padding: 20px;
-    max-width: 220px;
-    max-height: 140px;
 
-    &.no-response {
-        width: 140px;
-    }
+     &.narrow .header-counter {
 
-    .activity-counter {
-        font-size: 11px;
-        line-height: 15px;
-        color: rgba(255,255,255,0.4);
-    }
+        width: 80px;
+     }
 
-    .activity-title {
-        max-width: 100%;
+    .header-counter {
 
-        .label {
-            display: inline-block;
-            max-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: rgba(255,255,255,0.8);
-
-            font-size: 14px;
-            line-height: 20px;
-        }
-    }
-
-    .badge {
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background-color: white;
+        width: 130px;
+        height: 50px;
     }
 }
 
@@ -68,30 +69,21 @@
  **********************************************************/
 
 .rh-tile {
+
+    max-width: 220px;
+    max-height: 140px;
+
     padding: 20px;
-    background: transparent;
-    border-bottom: 1px solid @border-color;
-    border-right: 1px solid @border-color;
 
-    width: 140px;
-    height: 140px;
-    padding: 30px;
-    .wp {
-        width: 80px;
+     &.narrow .header-counter {
+
         height: 80px;
-        box-shadow: none;
+     }
 
-    }
-    .avatar {
-        width: 40px;
-        height: 40px;
-        margin: 0 auto 10px;
-        background-color: #bbb;
+    .header-counter {
 
-        border-radius: 50%;
-    }
-    .label {
-        font-size: 14px;
+        width: 50px;
+        height: 100px;
     }
 }
 
@@ -107,15 +99,21 @@
     border-bottom: 1px solid @border-color;
     border-right: 1px solid @border-color;
 
+
     .card {
-        width: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 130px;
         height: 100px;
         padding: 10px;
 
-        border-radius: 2px;
+
+        border-radius: 5px;
 
         color: #fff;
-        font-size: 13px;
+        font-size: 22px;
         text-align: left;
         white-space: normal;
 
@@ -123,6 +121,10 @@
         box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.2);
 
         transition: background-color 0.3s linear;
+
+        &.narrow {
+            width: 80px;
+        }
 
         .no-response-label {
             display: none;
@@ -147,31 +149,21 @@
         &.open {
             background-color: rgb(75,150,204);
         }
-    }
 
-    &.no-response {
+        &.no-response {
 
-        width: 140px;
-
-        .card {
             width: 100px;
-            color: #293F55;
-            box-shadow: none;
-            border-radius: 4px;
-            background-color: rgb(189, 189, 189);
-            white-space: wrap;
-            font-size: 14px;
-            opacity: 0.5;
-        }
 
-        .title,
-        .label,
-        .score {
-            display: none;
-        }
+            .title,
+            .label,
+            .score {
+                display: none;
+            }
 
-        .no-response-label {
-            display: block;
+            .no-response-label {
+                display: block;
+            }
         }
     }
+
 }

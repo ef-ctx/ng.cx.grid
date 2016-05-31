@@ -2,17 +2,14 @@
 
     <div class="card"
          ng-class="{
-              'error'       : dataProvider.score === 0,
-              'warn'        : dataProvider.score === 1,
-              'success'     : dataProvider.score === 2,
-              'empty'       : dataProvider.score === 3,
-              'open'        : dataProvider.score === 4,
-              'no-response' : (dataProvider.score === undefined )
+              'error'   : dataProvider.score === 0,
+              'warn'    : dataProvider.score === 1,
+              'success' : dataProvider.score === 2,
+              'empty'   : dataProvider.score === 3,
+              'open'    : dataProvider.score === 4,
+              'narrow'  : (dataProvider.score === undefined )
           }">
 
-        <div class="title" ng-bind="::dataProvider.title"></div>
-        <div class="label" ng-bind="::dataProvider.label"></div>
         <div class="score" ng-bind="::dataProvider.score"></div>
-        <div class="no-response-label"> No <br>response <br>expected </div>
     </div>
 </div>
