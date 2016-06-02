@@ -5,7 +5,9 @@
  *
  **********************************************************/
 
-angular.module('ng.cx.grid.example.components.gridDataForm', [])
+angular.module('ng.cx.grid.example.components.gridDataForm', [
+    'ng.cx.grid.grid'
+])
 
 /**********************************************************
  *
@@ -40,7 +42,8 @@ angular.module('ng.cx.grid.example.components.gridDataForm', [])
  **********************************************************/
 
 .controller('gridDataFormController', [
-    function gridDataFormController() {
+    'cxGridService',
+    function gridDataFormController(cxGridService) {
         'use strict';
 
         var _grid = this.ioDataProvider;
@@ -51,11 +54,13 @@ angular.module('ng.cx.grid.example.components.gridDataForm', [])
         function addRow() {
             var line = new Line(2, 'NR', 2);
             _grid.addRowAt(2, line.header, line.cells);
+            cxGridService.addRowAt(2, line.header, line.cells);
         }
 
         function addColumn() {
             var line = new Line(2, 'NC', 3);
             _grid.addColumnAt(2, line.header, line.cells);
+            cxGridService.addColumnAt(2, line.header, line.cells);
         }
 
         function Line(index, label, score) {

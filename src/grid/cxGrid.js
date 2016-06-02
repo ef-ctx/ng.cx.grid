@@ -52,6 +52,8 @@ angular.module('ng.cx.grid.grid', [
         this.cleanCurrentGrid = cleanCurrentGrid;
         this.highlightRow = highlightRow;
         this.highlightColumn = highlightColumn;
+        this.addRowAt = addRowAt;
+        this.addColumnAt = addColumnAt;
 
         function addGrid(grid) {
             _currentGrid = grid;
@@ -69,6 +71,13 @@ angular.module('ng.cx.grid.grid', [
             _currentGrid.highlightColumn(index);
         }
 
+        function addRowAt(index, header, cells) {
+            _currentGrid.addRowAt(index, header, cells);
+        }
+
+        function addColumnAt(index, header, cells) {
+            _currentGrid.addColumnAt(index, header, cells);
+        }
     }
 ])
 

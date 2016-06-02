@@ -51,6 +51,8 @@ angular.module('ng.cx.grid.CxGrid', [
 
             this.highlightRow = highlightRow;
             this.highlightColumn = highlightColumn;
+            this.addColumnAt = addColumnAt;
+            this.addRowAt = addRowAt;
 
             /**********************************************************
              * IMPLEMENTATION
@@ -69,6 +71,26 @@ angular.module('ng.cx.grid.CxGrid', [
 
             function highlightColumn(index) {
                 _toggleLineHighlighting(index, 'y');
+            }
+
+            function addColumnAt(index, header, cells) {
+                _addHeaderAtIndex(index, header, columnHeaderRenderer, _colHeaders, $colHeadersContainer);
+            }
+
+            function addRowAt(index, header, cells) {
+                _addHeaderAtIndex(index, header, rowHeaderRenderer, _rowHeaders, $rowHeadersContainer);
+            }
+
+            function _addHeaderAtIndex(index, data, renderer, collection, container) {
+                var cell = _createCell(data, renderer, null, gridScope);
+
+                collection.splice(index, 0, cell);
+
+                if ( index > 0 ) {
+                    collection[index - 1].$element.after(cell.$element);
+                } else {
+                    container.prepend(cell.$element);
+                }
             }
 
 

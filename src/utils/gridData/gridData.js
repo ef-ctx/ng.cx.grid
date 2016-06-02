@@ -94,6 +94,7 @@
     }
 
     function colHeaderParser(row, col, total) {
+
         return {
             label: col + 1,
             count: col + 1,
@@ -103,6 +104,7 @@
     }
 
     function rowHeaderParser(row, col, total) {
+
         return {
             label: row + 1,
             count: col + 1,
