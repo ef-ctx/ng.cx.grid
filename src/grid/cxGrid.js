@@ -118,6 +118,8 @@ angular.module('ng.cx.grid.grid', [
             $scope
         );
 
+        window.cxGrid = _grid;
+
         cxGridService.addGrid( _grid );
 
         function scrollHandler(event) {
