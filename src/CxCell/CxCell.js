@@ -23,44 +23,65 @@ angular.module('ng.cx.grid.CxCell', [])
 
         return CxCell;
 
-        function CxCell(data, template, cellParentScope, rowHeader, colHeader) {
+        function CxCell(data, template, cellParentScope, rowHeader, colHeader, collection) {
 
             var _self = this,
                 _data = data,
+                _children = [],
                 _rowHeader = rowHeader,
                 _colHeader = colHeader,
                 _isHighlighted = false,
                 _highlightingClass = 'highlight',
                 _relativeMeasure,
                 _absoluteMeasure,
+                _collection = collection,
                 _$element;
 
-            Object.defineProperty(this, 'data',         { get: getData         });
-            Object.defineProperty(this, '$element',     { get: get$element     });
-            Object.defineProperty(this, 'width',        { get: getWidth        });
-            Object.defineProperty(this, 'height',       { get: getHeight       });
-            Object.defineProperty(this, 'relativeTop',  { get: getRelativeTop  });
-            Object.defineProperty(this, 'relativeLeft', { get: getRelativeLeft });
-            Object.defineProperty(this, 'absoluteTop',  { get: getAbsoluteTop  });
-            Object.defineProperty(this, 'absoluteLeft', { get: getAbsoluteLeft });
+            Object.defineProperty ( this , 'data'         , { get: getData         } );
+            Object.defineProperty ( this , '$element'     , { get: get$element     } );
+            Object.defineProperty ( this , 'width'        , { get: getWidth        } );
+            Object.defineProperty ( this , 'height'       , { get: getHeight       } );
+            Object.defineProperty ( this , 'relativeTop'  , { get: getRelativeTop  } );
+            Object.defineProperty ( this , 'relativeLeft' , { get: getRelativeLeft } );
+            Object.defineProperty ( this , 'absoluteTop'  , { get: getAbsoluteTop  } );
+            Object.defineProperty ( this , 'absoluteLeft' , { get: getAbsoluteLeft } );
+            Object.defineProperty ( this , 'index'        , { get: getIndex        } );
+            Object.defineProperty ( this , 'children'     , { get: getChildren     } );
+            Object.defineProperty ( this , 'isHighlighted', { get: getIsHighlighted} );
+
 
             this.rowHeader = rowHeader;
             this.colHeader = colHeader;
+            this.addChild = addChild;
 
-            this.toggleHighlight = function toggleHighlight() {
-                _isHighlighted = !_isHighlighted;
-                return (_isHighlighted) ? _self.highlight() : _self.unHighlight();
-            };
+            function getIsHighlighted() {
+                return _$element.hasClass(_highlightingClass);
+            }
 
             this.highlight = function highlight() {
-                _isHighlighted = true;
-                _$element.addClass(_highlightingClass);
+                _highlightCell(_self);
+                _children.map(_highlightCell);
             };
 
             this.unHighlight = function unHighlight() {
-                _isHighlighted = false;
-                _$element.removeClass(_highlightingClass);
+                _unHighlightCell(_self);
+                _children.map(_unHighlightCell);
             };
+
+            function _highlightCell(cell) {
+                cell.$element.addClass(_highlightingClass);
+            }
+
+            function _unHighlightCell(cell) {
+                cell.$element.removeClass(_highlightingClass);
+            }
+
+            function _toggleHighlight() {
+                if(_self.isHighlighted){
+                    return _self.unHighlight();
+                }
+                return _self.highlight();
+            }
 
             this.resize = function resize(width, height) {
                 var w = width || _colHeader.width,
@@ -71,7 +92,7 @@ angular.module('ng.cx.grid.CxCell', [])
 
             this.position = function position(left, top) {
                 var l = left || (_colHeader) ? _colHeader.relativeLeft : null,
-                    t = top || (_rowHeader) ? _rowHeader.relativeTop: null;
+                    t = top || (_rowHeader) ? _rowHeader.relativeTop : null;
 
                 _relativeMeasure = null;
                 _absoluteMeasure = null;
@@ -79,11 +100,23 @@ angular.module('ng.cx.grid.CxCell', [])
                 _position(_$element, l, t);
             };
 
+            function addChild(cell) {
+                _children.push(cell);
+            }
+
             /**********************************************************
              * RUN
              **********************************************************/
 
             _$element = _render(data, template, cellParentScope, _rowHeader, _colHeader);
+            _$element.on('click', _toggleHighlight);
+
+            if(_rowHeader) {
+                _rowHeader.addChild(_self);
+            }
+            if(_colHeader) {
+                _colHeader.addChild(_self);
+            }
 
             /**********************************************************
              * GETTERS & SETTERS
@@ -121,6 +154,13 @@ angular.module('ng.cx.grid.CxCell', [])
                 return _getRelativeMeasure(_$element, 'left');
             }
 
+            function getIndex() {
+                return angular.isArray(_collection) ? _collection.indexOf(_self) : undefined;
+            }
+
+            function getChildren() {
+                return _children;
+            }
 
             function _getAbsoluteMeasure($element, measure) {
                 if (!_absoluteMeasure) {
@@ -156,7 +196,7 @@ angular.module('ng.cx.grid.CxCell', [])
 
         function _position($element, left, top) {
 
-            if(angular.isNumber(left) && angular.isNumber(top)) {
+            if (angular.isNumber(left) && angular.isNumber(top)) {
                 $element.css('transform', 'translate3d(' + (left || 0) + 'px,' + (top || 0) + 'px, 0px )');
             }
         }

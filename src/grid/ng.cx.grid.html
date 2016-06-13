@@ -1,11 +1,20 @@
 <div class="ng-cx-grid">
     <div class="cx-grid-header">
         <div class="cx-grid-corner-container"></div>
-        <div class="cx-grid-ch-container" cx-scroll="gridScroll" io-scroll-restrict-to-axis="x"></div>
+        <div class="cx-grid-ch-container"
+            cx-scroll="gridScroll"
+            io-scroll-restrict-to-axis="x">
+        </div>
     </div>
 
     <div class="cx-grid-body">
-        <div class="cx-grid-rh-container" cx-scroll="gridScroll" io-scroll-restrict-to-axis="y"></div>
-        <div class="cx-grid-cells-container" cx-scroll="gridScroll" io-scroll-on-scroll="gridController.scrollHandler"></div>
+        <div class="cx-grid-rh-container"
+            cx-scroll="gridScroll"
+            io-scroll-restrict-to-axis="y">
+        </div>
+        <div class="cx-grid-cells-container"
+            cx-scroll="gridScroll"
+            io-scroll-on-scroll="gridController.scrollHandler">
+        </div>
     </div>
 </div>

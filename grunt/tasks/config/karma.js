@@ -4,7 +4,7 @@ module.exports = {
         singleRun: true,
         reporters: ['dots', 'coverage'],
         browsers: [
-            'PhantomJS2'
+            'PhantomJS'
         ]
     },
 
@@ -31,9 +31,17 @@ module.exports = {
 
         frameworks: ['jasmine'],
 
-        plugins: ['karma-jasmine', 'karma-coverage', 'karma-chrome-launcher', 'karma-phantomjs2-launcher'],
+        plugins: [
+            'karma-jasmine',
+            'karma-coverage',
+            'karma-chrome-launcher',
+            'karma-phantomjs-launcher'
+        ],
 
-        reporters: ['dots', 'covergae'],
+        reporters: [
+            'dots',
+            'covergae'
+        ],
 
         urlRoot: '/',
 
@@ -46,7 +54,7 @@ module.exports = {
         singleRun: true,
 
         browsers: [
-            'PhantomJS2'
+            'PhantomJS'
         ]
     }
 
