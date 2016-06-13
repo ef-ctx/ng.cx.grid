@@ -1,3 +1,23 @@
+<a name="0.1.16"></a>
+## [0.1.16](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.14...v0.1.16) (2016-06-13)
+
+
+### Features
+
+* **Grid:** Add row and column  ([5c2bffa](http://github.com%20/%20ef-ctx/ng.cx.grid/commits/5c2bffa))
+
+
+
+<a name="0.1.15"></a>
+## [0.1.15](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.14...v0.1.15) (2016-06-13)
+
+
+### Features
+
+* **Grid:** Add row and column  ([5c2bffa](http://github.com%20/%20ef-ctx/ng.cx.grid/commits/5c2bffa))
+
+
+
 <a name="0.1.14"></a>
 ## [0.1.14](https://github.com/ef-ctx/ng.cx.grid/compare/v0.1.13...v0.1.14) (2016-05-20)
 
