@@ -5,7 +5,9 @@
  *
  **********************************************************/
 
-angular.module('ng.cx.grid.example.components',[])
+angular.module('ng.cx.grid.example.components',[
+    'ng.cx.grid.example.components.gridDataForm'
+])
 
 .directive('corner', [
     function() {
@@ -27,6 +29,17 @@ angular.module('ng.cx.grid.example.components',[])
             restrict: 'AE',
             replace: 'element',
             templateUrl: 'example/app/components/chTile.html',
+            link: function($scope, $element, $attrs, controller) {
+
+                $scope.isContracted = false;
+
+                $scope.clickHandler = clickHandler;
+
+                function clickHandler(evt) {
+                    $scope.isContracted = !$scope.isContracted;
+                }
+
+            }
         };
     }
 ])

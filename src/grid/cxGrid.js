@@ -1,6 +1,7 @@
 angular.module('ng.cx.grid.grid', [
     'ng.cx.grid.cxScroll',
-    'ng.cx.grid.CxGrid'
+    'ng.cx.grid.CxGrid',
+    'ng.cx.grid.cxGridService'
 ])
 
 /**********************************************************
@@ -24,8 +25,6 @@ angular.module('ng.cx.grid.grid', [
             scope: {},
             bindToController: {
                 ioDataProvider: '=?',
-                ioRowHeaderDataProvider: '=?',
-                ioColumnHeaderDataProvider: '=?',
                 ioCellRenderer: '@?',
                 ioRowHeaderRenderer: '@?',
                 ioColumnHeaderRenderer: '@?',
@@ -35,52 +34,12 @@ angular.module('ng.cx.grid.grid', [
     }
 ])
 
-/**********************************************************
- *
- * @ngdoc controller
- * @name ngCxGridController
- * @module ng.cx.grid
- * @description  Description
- *
- **********************************************************/
-
-.service('cxGridService',[
-    function cxGridService() {
-        'use strict';
-
-        var _currentGrid;
-
-        this.addGrid = addGrid;
-        this.cleanCurrentGrid = cleanCurrentGrid;
-        this.highlightRow = highlightRow;
-        this.highlightColumn = highlightColumn;
-
-        function addGrid(grid) {
-            _currentGrid = grid;
-        }
-
-        function cleanCurrentGrid() {
-            _currentGrid = undefined;
-        }
-
-        function highlightRow(index) {
-            _currentGrid.highlightRow(index);
-        }
-
-        function highlightColumn(index) {
-            _currentGrid.highlightColumn(index);
-        }
-
-    }
-])
-
 .controller('cxGridController', [
     '$scope',
-    '$timeout',
     '$element',
     'CxGrid',
     'cxGridService',
-    function ngCxGridController($scope, $timeout, $element, CxGrid, cxGridService) {
+    function ngCxGridController($scope, $element, CxGrid, cxGridService) {
         'use strict';
 
         var _grid,
@@ -99,8 +58,6 @@ angular.module('ng.cx.grid.grid', [
 
         _grid = new CxGrid(
             this.ioDataProvider,
-            this.ioColumnHeaderDataProvider,
-            this.ioRowHeaderDataProvider,
             this.ioCellRenderer,
             this.ioColumnHeaderRenderer,
             this.ioRowHeaderRenderer,
@@ -112,6 +69,8 @@ angular.module('ng.cx.grid.grid', [
             _$cornerContainer,
             $scope
         );
+
+        window.cxGrid = _grid;
 
         cxGridService.addGrid( _grid );
 

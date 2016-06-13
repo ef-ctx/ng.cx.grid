@@ -31,9 +31,17 @@ module.exports = {
 
         frameworks: ['jasmine'],
 
-        plugins: ['karma-jasmine', 'karma-coverage', 'karma-chrome-launcher', 'karma-phantomjs-launcher'],
+        plugins: [
+            'karma-jasmine',
+            'karma-coverage',
+            'karma-chrome-launcher',
+            'karma-phantomjs-launcher'
+        ],
 
-        reporters: ['dots', 'covergae'],
+        reporters: [
+            'dots',
+            'covergae'
+        ],
 
         urlRoot: '/',
 

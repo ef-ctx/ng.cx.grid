@@ -13,17 +13,17 @@
         <link rel="stylesheet" href="example.css" />
     </head>
 
-    <body cx-container="body">
-        <div class="main-container" ng-controller="exampleController">
+    <body cx-container="body" ng-controller="exampleController">
+        <div grid-data-form io-data-provider="gridData"></div>
+
+        <div class="main-container">
 
             <div cx-grid
-                io-data-provider="matrix"
-                io-row-header-data-provider="rowHeaders"
-                io-column-header-data-provider="columnHeaders"
-                io-row-header-renderer="rh-tile"
-                io-column-header-renderer="ch-tile"
-                io-cell-renderer="tile"
-                io-corner-renderer="corner"
+                io-data-provider               = "gridData"
+                io-row-header-renderer         = "rh-tile"
+                io-column-header-renderer      = "ch-tile"
+                io-cell-renderer               = "tile"
+                io-corner-renderer             = "corner"
                 class="my-grid">
             </div>
 

@@ -1,46 +1,46 @@
 {
-  "name": "ng.cx.grid",
-  "version": "0.1.14",
-  "description": "configurable grid for angular",
-  "authors": [
-    "EF CTX <ctx@ef.com> (http://efclass.io)"
-  ],
-  "license": "MIT",
-  "homepage": "https://github.com/ef-ctx/ng.cx.grid",
-  "ignore": [
-    "bin",
-    "docs",
-    "grunt",
-    ".bowerrc",
-    ".editorconfig",
-    ".gitignore",
-    ".jsbeautifyrc",
-    ".jshintrc",
-    ".travis.yml",
-    ".yo-rc.json",
-    "Gruntfile.js",
-    "TODO.md",
-    "bootstrap.sh",
-    "package.json",
-    "travis.sh"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:ef-ctx/ng.cx.grid.git"
-  },
-  "dependencies": {
-    "angular": "~1.4.8",
-    "angular-animate": "~1.4.8"
-  },
-  "devDependencies": {
-    "angular": "~1.5.0",
-    "angular-mocks": "~1.5.0",
-    "angular-animate": "~1.5.0",
-    "angular-touch": "~1.5.0"
-  },
-  "main": [
-    "./dist/ng.cx.grid.js",
-    "./dist/ng.cx.grid.min.js",
-    "./dist/ng.cx.grid.css"
-  ]
+    "name": "ng.cx.grid",
+    "version": "0.1.14",
+    "description": "configurable grid for angular",
+    "authors": [
+        "EF CTX <ctx@ef.com> (http://efclass.io)"
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/ef-ctx/ng.cx.grid",
+    "ignore": [
+        "bin",
+        "docs",
+        "grunt",
+        ".bowerrc",
+        ".editorconfig",
+        ".gitignore",
+        ".jsbeautifyrc",
+        ".jshintrc",
+        ".travis.yml",
+        ".yo-rc.json",
+        "Gruntfile.js",
+        "TODO.md",
+        "bootstrap.sh",
+        "package.json",
+        "travis.sh"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:ef-ctx/ng.cx.grid.git"
+    },
+    "dependencies": {
+        "angular": "~1.4.8",
+        "angular-animate": "~1.4.8"
+    },
+    "devDependencies": {
+        "angular": "~1.4.8",
+        "angular-mocks": "~1.4.8",
+        "angular-animate": "~1.4.8",
+        "angular-touch": "~1.4.8"
+    },
+    "main": [
+        "./dist/ng.cx.grid.js",
+        "./dist/ng.cx.grid.min.js",
+        "./dist/ng.cx.grid.css"
+    ]
 }

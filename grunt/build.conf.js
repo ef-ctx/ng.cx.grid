@@ -59,7 +59,7 @@ module.exports = {
             'vendor/angular-touch/angular-touch.js',
         ],
 
-        testVendor: 'vendor/angular-mocks/angular-mocks.js'
+        testVendor: './vendor/angular-mocks/angular-mocks.js'
 
     },
 
