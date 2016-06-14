@@ -1,3 +1,13 @@
+<a name="0.1.17"></a>
+## [0.1.17](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.6...v0.1.17) (2016-06-14)
+
+
+### Bug Fixes
+
+* **addLine:** add a line in position 0 breaks the grid ([a2bc918](http://github.com%20/%20ef-ctx/ng.cx.grid/commits/a2bc918))
+
+
+
 <a name="0.1.16"></a>
 ## [0.1.16](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.14...v0.1.16) (2016-06-13)
 
