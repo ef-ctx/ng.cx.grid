@@ -10,7 +10,9 @@
 
     angular
         .module('ng.cx.grid.CxMatrix', [])
-        .factory('CxMatrix', [ function $cxMatrixFactory() { return CxMatrix; } ]);
+        .factory('CxMatrix', [function $cxMatrixFactory() {
+            return CxMatrix;
+        }]);
 
     /**********************************************************
      *
@@ -19,35 +21,22 @@
      *
      **********************************************************/
 
-    function CxMatrix(colHeaders, rowHeaders, cells, factory) {
+    function CxMatrix(colHeaders, rowHeaders, cells) {
 
-        //console.log(
-            //'factory',
-            //colHeaders,
-            //rowHeaders,
-            //cells,
-            //factory);
-
-        var _self       = this,
+        var _self = this,
             _colHeaders = colHeaders || [],
             _rowHeaders = rowHeaders || [],
-            _cells      = cells      || [];
-
-        _init();
+            _cells = cells || [];
 
         Object.defineProperty(this, 'width', {
-            get: function () {
-                return _colHeaders.length;
-            }
+            get: getWidth
         });
 
         Object.defineProperty(this, 'height', {
-            get: function () {
-                return _rowHeaders.length;
-            }
+            get: getHeight
         });
 
-        this.getCellAt  = getCellAt;
+        this.getCellAt = getCellAt;
         this.getRowHeaderAt = getRowHeaderAt;
         this.getColHeaderAt = getColHeaderAt;
 
@@ -82,30 +71,40 @@
             var row = [];
             row.push(_rowHeaders[index]);
 
-            for(var col = 0; col < _rowHeaders.length; col++) {
+            for (var col = 0; col < _rowHeaders.length; col++) {
                 row.push(_cells[col][index]);
             }
 
             return row;
         }
 
-        function addRowAt(index, header, cell){
+        function addRowAt(index, header, cells) {
 
-        }
+            _rowHeaders.splice(index, 0, header);
+            console.log('_rowHeaders', _rowHeaders);
 
-        function addColAt(index, header, cell){
 
-        }
+            for (var col = 0; col < _self.width; col++) {
+                console.log('col',col);
+                console.log('cells[col]',cells[col]);
 
-        function _init() {
-
-            if(typeof constructor === 'function') {
-                _colHeaders = colHeaders.map(factory.createInstance);
-                _rowHeaders = rowHeaders.map(factory.createInstance);
-                _cells = cells.map(function (col) {
-                    return col.map(factory.createInstance);
-                });
+                _cells[col].splice(index, 0, cells[col]);
             }
+        }
+
+        function addColAt(index, header, cell) {
+            _colHeaders.splice(index, 0, header);
+            _cells.splice(index, 0, cells);
+        }
+
+        // ACCESSORS
+
+        function getWidth() {
+            return _colHeaders.length;
+        }
+
+        function getHeight() {
+            return _rowHeaders.length;
         }
 
     }

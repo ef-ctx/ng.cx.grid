@@ -1,111 +1,120 @@
 describe('CxMatrix', function() {
-    //'use strict';
+    'use strict';
 
-    //var matrix,
-        //_rowHeaders = ['r_0', 'r_1', 'r_2', 'r_3', 'r_4', 'r_5', 'r_6', 'r_7', 'r_8', 'r_9'],
-        //_colHeaders = ['c_0', 'c_1', 'c_2', 'c_3', 'c_4', 'c_5', 'c_6', 'c_7', 'c_8', 'c_9'],
-        //_cells = [],
-        //_factory = new ObjFactory();
+    var matrix,
+        _rowHeaders,
+        _colHeaders,
+        _cells,
+        _factory = new ObjFactory();
 
-    //function ObjFactory() {
-        //this.createInstance = function(data) {
-            //console.log('hey');
+    function ObjFactory() {
+        this.createInstance = function(data) {
+            return new Obj(data);
+        };
+    }
 
-            //return new Obj(data);
-        //};
-    //}
+    function Obj(data) {
+        this.data = data;
+    }
 
-    //function Obj(data) {
-        //this.data = data;
-    //}
+    beforeEach(module('ng.cx.grid.CxMatrix'));
 
-    //beforeEach(module('ng.cx.grid.CxMatrix'));
+    beforeEach(inject(function(CxMatrix) {
 
-    //beforeEach(inject(function(CxMatrix) {
+        _rowHeaders = ['r_0', 'r_1', 'r_2', 'r_3', 'r_4', 'r_5', 'r_6', 'r_7', 'r_8', 'r_9'];
+        _colHeaders = ['c_0', 'c_1', 'c_2', 'c_3', 'c_4', 'c_5', 'c_6', 'c_7', 'c_8', 'c_9'];
+        _cells = [];
 
-        //for (var col = 0; col < _colHeaders.length; col++) {
-            //_cells[col] = [];
-            //for (var row = 0; row < _rowHeaders.length; row++) {
-                //_cells[col][row] = col + '_' + row;
-            //}
-        //}
+        for (var col = 0; col < _colHeaders.length; col++) {
+            _cells[col] = [];
+            for (var row = 0; row < _rowHeaders.length; row++) {
+                _cells[col][row] = _factory.createInstance(col + '_' + row);
+            }
+        }
 
-        //matrix = new CxMatrix(
-            //_colHeaders,
-            //_rowHeaders,
-            //_cells,
-            //_factory
-        //);
+        _colHeaders = _colHeaders.map(_factory.createInstance);
+        _rowHeaders = _rowHeaders.map(_factory.createInstance);
 
-    //}));
+        matrix = new CxMatrix(
+            _colHeaders,
+            _rowHeaders,
+            _cells,
+            _factory
+        );
 
-    //describe('width', function() {
-        //it('returns the length of the colHeaders', inject(function() {
-            //expect(matrix.width).toBe(_colHeaders.length);
-        //}));
-    //});
+    }));
 
-    //describe('height', function() {
-        //it('returns the length of the rowHeaders', function() {
-            //expect(matrix.width).toBe(10);
-        //});
-    //});
+    describe('width', function() {
+        it('returns the length of the colHeaders', inject(function() {
+            expect(matrix.width).toBe(_colHeaders.length);
+        }));
+    });
 
-    //describe('getCellAt(x,y)', function() {
-        //it('should return the cell at x column and y row', inject(function() {
-            //var data = matrix.getCellAt(0, 0).data;
-            //expect(data).toBe('0_0');
-        //}));
-    //});
+    describe('height', function() {
+        it('returns the length of the rowHeaders', function() {
+            expect(matrix.width).toBe(10);
+        });
+    });
 
-    //describe('getRowHeaderAt()index)', function() {
-        //it('returns the RowHeader at index', function() {
-            //expect(matrix.getRowHeaderAt(2).data).toBe('r_2');
-        //});
-    //});
+    describe('getCellAt(x,y)', function() {
+        it('should return the cell at x column and y row', inject(function() {
+            expect(matrix.getCellAt(0, 0).data).toBe('0_0');
+        }));
+    });
 
-    //describe('getColHeaderAt(index)', function() {
-        //it('returns the ColHeader at index', function() {
-            //expect(matrix.getColHeaderAt(2).data).toBe('c_2');
-        //});
-    //});
+    describe('getRowHeaderAt()index)', function() {
+        it('returns the RowHeader at index', function() {
+            expect(matrix.getRowHeaderAt(2).data).toBe('r_2');
+        });
+    });
 
-    //describe('constructor', function() {
-        //describe('providing a constructor function', function() {
-            //it('maps the data with the constructor function', function() {
-                //expect(matrix.getCellAt(0, 0) instanceof Obj).toBe(true);
-            //});
-        //});
-    //});
+    describe('getColHeaderAt(index)', function() {
+        it('returns the ColHeader at index', function() {
+            expect(matrix.getColHeaderAt(2).data).toBe('c_2');
+        });
+    });
 
-    //describe('getColAt(x)', function() {
+    describe('constructor', function() {
+        describe('providing a constructor function', function() {
+            it('maps the data with the constructor function', function() {
+                expect(matrix.getCellAt(0, 0) instanceof Obj).toBe(true);
+            });
+        });
+    });
 
-        //it('returns an array containing the header cell in the first position and the matrix´s cells after it', function() {
-            //var column = matrix.getColAt(2);
+    describe('getColAt(x)', function() {
 
-            //expect(column[0].data).toBe('c_2');
-            //expect(column[1].data).toBe('2_0');
-            //expect(column[2].data).toBe('2_1');
-            //expect(column[3].data).toBe('2_2');
-            //expect(column[4].data).toBe('2_3');
-            //expect(column[5].data).toBe('2_4');
-            //expect(column[6].data).toBe('2_5');
-        //});
-    //});
+        it('returns an array containing the header cell in the first position and the matrix´s cells after it', function() {
+            var column = matrix.getColAt(2);
 
-    //describe('getRowAt(x)', function() {
+            expect(column[0].data).toBe('c_2');
+            expect(column[1].data).toBe('2_0');
+            expect(column[2].data).toBe('2_1');
+            expect(column[3].data).toBe('2_2');
+            expect(column[4].data).toBe('2_3');
+            expect(column[5].data).toBe('2_4');
+            expect(column[6].data).toBe('2_5');
+        });
+    });
 
-        //it('returns an array containing the header cell in the first position and the matrix´s cells after it', function() {
-            //var row = matrix.getRowAt(2);
+    describe('getRowAt(x)', function() {
 
-            //expect(row[0].data).toBe('r_2');
-            //expect(row[6].data).toBe('5_2');
-        //});
-    //});
+        it('returns an array containing the header cell in the first position and the matrix´s cells after it', function() {
+            var row = matrix.getRowAt(2);
 
-    //describe('addRowAt(index, header, cells)', function() {
+            expect(row[0].data).toBe('r_2');
+            expect(row[6].data).toBe('5_2');
+        });
+    });
 
-        //var header = 'foo',
+    describe('addRowAt(index, header, cells)', function() {
+
+        //var header, cells, row;
+
+        //beforeEach(function() {
+
+            //header = _factory.createInstance('foo');
+
             //cells = [
                 //'foo_0',
                 //'foo_1',
@@ -117,11 +126,12 @@ describe('CxMatrix', function() {
                 //'foo_7',
                 //'foo_8',
                 //'foo_9'
-            //],
-            //row;
+            //];
 
-        //beforeEach(function() {
+            //cells.map(_factory.createInstance);
+
             //matrix.addRowAt(2, header, cells);
+
             //row = matrix.getRowAt(2);
         //});
 
@@ -134,11 +144,16 @@ describe('CxMatrix', function() {
             //expect(row[10].data).toBe('foo_9');
         //});
 
-    //});
+    });
 
-    //describe('addColAt(index, header, cells)', function() {
+    describe('addColAt(index, header, cells)', function() {
 
-        //var header = 'foo',
+        //var header, cells, col;
+
+        //beforeEach(function() {
+
+            //header = 'foo';
+
             //cells = [
                 //'foo_0',
                 //'foo_1',
@@ -150,11 +165,12 @@ describe('CxMatrix', function() {
                 //'foo_7',
                 //'foo_8',
                 //'foo_9'
-            //],
-            //col;
+            //];
 
-        //beforeEach(function() {
+            //cells.map(_factory.createInstance);
+
             //matrix.addColAt(2, header, cells);
+
             //col = matrix.getColAt(2);
         //});
 
@@ -167,7 +183,7 @@ describe('CxMatrix', function() {
             //expect(col[10].data).toBe('foo_9');
         //});
 
-    //});
+    });
 
 
 

@@ -30,7 +30,7 @@
         $scope.gridData = _gridData;
 
         function _init() {
-            _gridData = new GridData(30, 30);
+            _gridData = new GridData(2, 2);
         }
     }
 

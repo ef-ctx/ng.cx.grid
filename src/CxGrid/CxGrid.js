@@ -178,7 +178,7 @@ angular.module('ng.cx.grid.CxGrid', [
 
                 var cell = _createCell(data, renderer, gridScope, null, null, collection);
 
-                index = index || collection.length;
+                index = angular.isNumber(index) ? index : collection.length;
 
                 collection.splice(index, 0, cell);
 
@@ -186,7 +186,7 @@ angular.module('ng.cx.grid.CxGrid', [
 
                     container.prepend(cell.$element);
 
-                } else if (index === collection.length - 1) {
+                } else if (index >= collection.length - 1) {
 
                     container.append(cell.$element);
 
