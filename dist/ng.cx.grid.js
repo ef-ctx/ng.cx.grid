@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.17
+	 * ng.cx.grid - v0.1.18
 	 * 
-	 * Release date : 2016-06-14 : 15:08
+	 * Release date : 2016-06-14 : 15:11
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -307,7 +307,7 @@
 	                }
 	            });
 	
-	            this.addColumnAt = addColumnAt;
+	            this.addColAt = addColAt;
 	            this.addRowAt = addRowAt;
 	            this.getCell = getCell;
 	
@@ -325,7 +325,7 @@
 	                return _cells[row][column];
 	            }
 	
-	            function addColumnAt(index, header, cells) {
+	            function addColAt(index, header, cells) {
 	                _addHeaderAtIndex(index, header, columnHeaderRenderer, _colHeaders, $colHeadersContainer);
 	                $timeout(function () {
 	                    _addCellsColumnAt(index, cells, cellRenderer, $cellsContainer);
@@ -656,7 +656,7 @@
 	        this.highlightRow = highlightRow;
 	        this.highlightColumn = highlightColumn;
 	        this.addRowAt = addRowAt;
-	        this.addColumnAt = addColumnAt;
+	        this.addColAt = addColAt;
 	
 	        function addGrid(grid) {
 	            _currentGrid = grid;
@@ -678,8 +678,8 @@
 	            _currentGrid.addRowAt(index, header, cells);
 	        }
 	
-	        function addColumnAt(index, header, cells) {
-	            _currentGrid.addColumnAt(index, header, cells);
+	        function addColAt(index, header, cells) {
+	            _currentGrid.addColAt(index, header, cells);
 	        }
 	    }
 	])
