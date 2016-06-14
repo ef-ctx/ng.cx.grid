@@ -57,7 +57,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 }
             });
 
-            this.addColumnAt = addColumnAt;
+            this.addColAt = addColAt;
             this.addRowAt = addRowAt;
             this.getCell = getCell;
 
@@ -75,7 +75,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 return _cells[row][column];
             }
 
-            function addColumnAt(index, header, cells) {
+            function addColAt(index, header, cells) {
                 _addHeaderAtIndex(index, header, columnHeaderRenderer, _colHeaders, $colHeadersContainer);
                 $timeout(function () {
                     _addCellsColumnAt(index, cells, cellRenderer, $cellsContainer);

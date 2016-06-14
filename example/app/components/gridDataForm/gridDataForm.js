@@ -54,13 +54,13 @@ angular.module('ng.cx.grid.example.components.gridDataForm', [
         function addRow() {
             var line = new Line(2, 'NR', 2);
             _grid.addRowAt(2, line.header, line.cells);
-            cxGridService.addRowAt(89, line.header, line.cells);
+            cxGridService.addRowAt(0, line.header, line.cells);
         }
 
         function addColumn() {
             var line = new Line(2, 'NC', 3);
             _grid.addColumnAt(2, line.header, line.cells);
-            cxGridService.addColumnAt(78, line.header, line.cells);
+            cxGridService.addColAt(0, line.header, line.cells);
         }
 
         function Line(index, label, score) {
