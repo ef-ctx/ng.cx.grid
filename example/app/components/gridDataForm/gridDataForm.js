@@ -25,7 +25,7 @@ angular.module('ng.cx.grid.example.components.gridDataForm', [
             restrict: 'AE',
             replace: 'element',
             templateUrl: 'example/app/components/gridDataForm/gridDataForm.tpl.html',
-            scope: {},
+            scope: true,
             bindToController: {
                 ioDataProvider: '='
             },
@@ -42,28 +42,26 @@ angular.module('ng.cx.grid.example.components.gridDataForm', [
  **********************************************************/
 
 .controller('gridDataFormController', [
-    'cxGridService',
-    function gridDataFormController(cxGridService) {
+    '$scope',
+    function gridDataFormController($scope) {
         'use strict';
 
-        var _grid = this.ioDataProvider;
+        var _matrix = this.ioDataProvider;
 
         this.addRow = addRow;
         this.addColumn = addColumn;
 
         function addRow() {
-            var line = new Line(2, 'NR', 2);
-            _grid.addRowAt(2, line.header, line.cells);
-            cxGridService.addRowAt(0, line.header, line.cells);
+            var line = new Line('NR', 2);
+            _matrix.addRowAt(9, line.header, line.cells);
         }
 
         function addColumn() {
-            var line = new Line(2, 'NC', 3);
-            _grid.addColumnAt(2, line.header, line.cells);
-            cxGridService.addColAt(0, line.header, line.cells);
+            var line = new Line('NC', 3);
+            _matrix.addColAt(9, line.header, line.cells);
         }
 
-        function Line(index, label, score) {
+        function Line(label, score) {
             return {
                 header: {
                     label: label
@@ -89,6 +87,7 @@ angular.module('ng.cx.grid.example.components.gridDataForm', [
                 }]
             };
         }
+
     }
 ])
 

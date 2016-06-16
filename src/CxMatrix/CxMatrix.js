@@ -1,112 +1,149 @@
-(function(angular) {
-    'use strict';
+angular.module('ng.cx.grid.CxMatrix', [])
 
-    /**********************************************************
-     *
-     * @ngdoc module
-     * @name ng.cx.grid.matrix
-     *
-     **********************************************************/
+/**********************************************************
+ *
+ * @ngdoc component
+ * @name myComponent
+ *
+ **********************************************************/
 
-    angular
-        .module('ng.cx.grid.CxMatrix', [])
-        .factory('CxMatrix', [function $cxMatrixFactory() {
-            return CxMatrix;
-        }]);
+.factory('CxMatrix', [
+    function $cxMatrixFactory() {
+        'use strict';
 
-    /**********************************************************
-     *
-     * @ngdoc module
-     * @name ng.cx.grid.matrix
-     *
-     **********************************************************/
 
-    function CxMatrix(colHeaders, rowHeaders, cells) {
+        return CxMatrix;
 
-        var _self = this,
-            _colHeaders = colHeaders || [],
-            _rowHeaders = rowHeaders || [],
-            _cells = cells || [];
+        /**
+         * PRECONDITIONS:
+         * 1.) if initialised with a matrix all rows and columns has to have the same length
+         **/
 
-        Object.defineProperty(this, 'width', {
-            get: getWidth
-        });
+        function CxMatrix(matrix) {
 
-        Object.defineProperty(this, 'height', {
-            get: getHeight
-        });
+            var _self = this,
+                _height = 0,
+                _width = 0,
+                _cells = [];
 
-        this.getCellAt = getCellAt;
-        this.getRowHeaderAt = getRowHeaderAt;
-        this.getColHeaderAt = getColHeaderAt;
+            /**********************************************************
+             * PROPERTIES
+             **********************************************************/
 
-        this.getColAt = getColAt;
-        this.getRowAt = getRowAt;
+            Object.defineProperty(this, 'height', {
+                get: getHeight
+            });
 
-        this.addRowAt = addRowAt;
-        this.addColAt = addColAt;
+            Object.defineProperty(this, 'width', {
+                get: getWidth
+            });
 
-        function getCellAt(col, row) {
-            return _cells[col][row];
-        }
+            /**********************************************************
+             * METHODS
+             **********************************************************/
 
-        function getRowHeaderAt(index) {
-            return _rowHeaders[index];
-        }
+            this.getCellAt = getCellAt;
 
-        function getColHeaderAt(index) {
-            return _colHeaders[index];
-        }
+            this.getColAt = getColAt;
+            this.getRowAt = getRowAt;
 
-        function getColAt(index) {
+            this.addRowAt = addRowAt;
+            this.addColAt = addColAt;
 
-            var col = [];
-            col.push(_colHeaders[index]);
+            this.getCopy = getCopy;
+            this.map = map;
 
-            return col.concat(_cells[index]);
-        }
+            /**********************************************************
+             * CONSTRUCTOR
+             **********************************************************/
 
-        function getRowAt(index) {
+            _init();
 
-            var row = [];
-            row.push(_rowHeaders[index]);
+            function _init() {
 
-            for (var col = 0; col < _rowHeaders.length; col++) {
-                row.push(_cells[col][index]);
+                if (Array.isArray(matrix)) {
+                    _cells = matrix || _cells;
+                    _setInitialDimensions();
+                }
             }
 
-            return row;
-        }
+            /**********************************************************
+             * ACCESSORS
+             **********************************************************/
 
-        function addRowAt(index, header, cells) {
-
-            _rowHeaders.splice(index, 0, header);
-            console.log('_rowHeaders', _rowHeaders);
-
-
-            for (var col = 0; col < _self.width; col++) {
-                console.log('col',col);
-                console.log('cells[col]',cells[col]);
-
-                _cells[col].splice(index, 0, cells[col]);
+            function getHeight() {
+                return _height;
             }
+
+            function getWidth() {
+                return _width;
+            }
+
+            /**********************************************************
+             * METHOD IMPLEMENTATION
+             **********************************************************/
+
+            function getCellAt(col, row) {
+
+                return _cells[col][row];
+            }
+
+            function getColAt(index) {
+
+                return _cells[index];
+            }
+
+            function getRowAt(index) {
+
+                var row = [];
+
+                for (var col = 0; col < _self.width; col++) {
+                    row.push(_cells[col][index]);
+                }
+
+                return row;
+            }
+
+            function addColAt(index, cells) {
+                _cells.splice(index, 0, cells);
+                _width++;
+            }
+
+            function addRowAt(index, cells) {
+
+                for (var col = 0; col < _self.width; col++) {
+                    _cells[col].splice(index, 0, cells[col]);
+                }
+
+                _height++;
+            }
+
+            function getCopy() {
+                return new CxMatrix(_cells);
+            }
+
+            function map(callback) {
+
+                var cells = _cells.map(function(col, colIndex) {
+                    return col.map(function(item, rowIndex) {
+
+                        return callback.call(this, item, colIndex, rowIndex, _self);
+                    });
+                });
+
+                return new CxMatrix(cells);
+            }
+
+
+            /**********************************************************
+             * HELPERS
+             **********************************************************/
+
+            function _setInitialDimensions() {
+                _width = _cells.length;
+                _height = _cells[0].length;
+            }
+
         }
-
-        function addColAt(index, header, cell) {
-            _colHeaders.splice(index, 0, header);
-            _cells.splice(index, 0, cells);
-        }
-
-        // ACCESSORS
-
-        function getWidth() {
-            return _colHeaders.length;
-        }
-
-        function getHeight() {
-            return _rowHeaders.length;
-        }
-
     }
-
-}(angular));
+]);

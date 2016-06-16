@@ -23,65 +23,41 @@ angular.module('ng.cx.grid.CxCell', [])
 
         return CxCell;
 
-        function CxCell(data, template, cellParentScope, rowHeader, colHeader, collection) {
+        function CxCell(data, template, cellParentScope) {
 
             var _self = this,
                 _data = data,
                 _children = [],
-                _rowHeader = rowHeader,
-                _colHeader = colHeader,
-                _isHighlighted = false,
-                _highlightingClass = 'highlight',
+                _rowHeader,
+                _colHeader,
                 _relativeMeasure,
                 _absoluteMeasure,
-                _collection = collection,
                 _$element;
 
-            Object.defineProperty ( this , 'data'         , { get: getData         } );
-            Object.defineProperty ( this , '$element'     , { get: get$element     } );
-            Object.defineProperty ( this , 'width'        , { get: getWidth        } );
-            Object.defineProperty ( this , 'height'       , { get: getHeight       } );
-            Object.defineProperty ( this , 'relativeTop'  , { get: getRelativeTop  } );
-            Object.defineProperty ( this , 'relativeLeft' , { get: getRelativeLeft } );
-            Object.defineProperty ( this , 'absoluteTop'  , { get: getAbsoluteTop  } );
-            Object.defineProperty ( this , 'absoluteLeft' , { get: getAbsoluteLeft } );
-            Object.defineProperty ( this , 'index'        , { get: getIndex        } );
-            Object.defineProperty ( this , 'children'     , { get: getChildren     } );
-            Object.defineProperty ( this , 'isHighlighted', { get: getIsHighlighted} );
-
-
-            this.rowHeader = rowHeader;
-            this.colHeader = colHeader;
-            this.addChild = addChild;
-
-            function getIsHighlighted() {
-                return _$element.hasClass(_highlightingClass);
-            }
-
-            this.highlight = function highlight() {
-                _highlightCell(_self);
-                _children.map(_highlightCell);
-            };
-
-            this.unHighlight = function unHighlight() {
-                _unHighlightCell(_self);
-                _children.map(_unHighlightCell);
-            };
-
-            function _highlightCell(cell) {
-                cell.$element.addClass(_highlightingClass);
-            }
-
-            function _unHighlightCell(cell) {
-                cell.$element.removeClass(_highlightingClass);
-            }
-
-            function _toggleHighlight() {
-                if(_self.isHighlighted){
-                    return _self.unHighlight();
-                }
-                return _self.highlight();
-            }
+            Object.defineProperty(this, 'data', {
+                get: getData
+            });
+            Object.defineProperty(this, '$element', {
+                get: get$element
+            });
+            Object.defineProperty(this, 'width', {
+                get: getWidth
+            });
+            Object.defineProperty(this, 'height', {
+                get: getHeight
+            });
+            Object.defineProperty(this, 'relativeTop', {
+                get: getRelativeTop
+            });
+            Object.defineProperty(this, 'relativeLeft', {
+                get: getRelativeLeft
+            });
+            Object.defineProperty(this, 'absoluteTop', {
+                get: getAbsoluteTop
+            });
+            Object.defineProperty(this, 'absoluteLeft', {
+                get: getAbsoluteLeft
+            });
 
             this.resize = function resize(width, height) {
                 var w = width || _colHeader.width,
@@ -100,26 +76,44 @@ angular.module('ng.cx.grid.CxCell', [])
                 _position(_$element, l, t);
             };
 
-            function addChild(cell) {
-                _children.push(cell);
-            }
+            this.positionByHeaders = function PositionByHeaders(colHeader, rowHeader) {
+                _colHeader = colHeader;
+                _rowHeader = rowHeader;
+                _self.position();
+                _self.resize();
+            };
+
+            this.on = function on(eventName, handler) {
+                _$element.on(eventName, function(event) {
+                    handler.call(this, event, _self);
+                });
+            };
+
+            this.select = function() {
+
+                if(_$element.hasClass('selected')) {
+                    _self.deSelect();
+                } else {
+                    _$element.addClass('selected');
+                }
+            };
+
+            this.deSelect = function() {
+                _$element.removeClass('selected');
+            };
 
             /**********************************************************
-             * RUN
+             * CONSTRUTOR
              **********************************************************/
 
-            _$element = _render(data, template, cellParentScope, _rowHeader, _colHeader);
-            _$element.on('click', _toggleHighlight);
+            _init();
 
-            if(_rowHeader) {
-                _rowHeader.addChild(_self);
-            }
-            if(_colHeader) {
-                _colHeader.addChild(_self);
+            function _init() {
+                _$element = _render(data, template, cellParentScope);
             }
 
             /**********************************************************
-             * GETTERS & SETTERS
+             * ACCESSORS
              **********************************************************/
 
             function getData() {
@@ -154,14 +148,6 @@ angular.module('ng.cx.grid.CxCell', [])
                 return _getRelativeMeasure(_$element, 'left');
             }
 
-            function getIndex() {
-                return angular.isArray(_collection) ? _collection.indexOf(_self) : undefined;
-            }
-
-            function getChildren() {
-                return _children;
-            }
-
             function _getAbsoluteMeasure($element, measure) {
                 if (!_absoluteMeasure) {
                     _absoluteMeasure = _calculateAbsoluteMeasure($element);
@@ -177,15 +163,14 @@ angular.module('ng.cx.grid.CxCell', [])
             }
         }
 
-        function _render(data, template, cellParentScope, rowHeader, colHeader) {
-            var $element = _renderItem(data, template, cellParentScope);
+        function _render(data, template, cellParentScope) {
+            var scope = $rootScope.$new(true, cellParentScope),
+                tpl = '<div class="cx-grid-cell"><div class="cx-grid-cell-renderer" ###directiveId###></div></div>';
 
-            if (rowHeader && colHeader) {
-                _resize($element, colHeader.width, rowHeader.height);
-                _position($element, colHeader.relativeLeft, rowHeader.relativeTop);
-            }
+            tpl = tpl.replace('###directiveId###', template);
 
-            return $element;
+            scope.dataProvider = data;
+            return $compile(tpl)(scope);
         }
 
         function _resize($element, width, height) {
@@ -199,16 +184,6 @@ angular.module('ng.cx.grid.CxCell', [])
             if (angular.isNumber(left) && angular.isNumber(top)) {
                 $element.css('transform', 'translate3d(' + (left || 0) + 'px,' + (top || 0) + 'px, 0px )');
             }
-        }
-
-        function _renderItem(data, template, cellParentScope) {
-            var scope = $rootScope.$new(true, cellParentScope),
-                tpl = '<div class="cx-grid-cell"><div class="cx-grid-cell-renderer" ###directiveId###></div></div>';
-
-            tpl = tpl.replace('###directiveId###', template);
-
-            scope.dataProvider = data;
-            return $compile(tpl)(scope);
         }
 
         function _calculateAbsoluteMeasure($element) {

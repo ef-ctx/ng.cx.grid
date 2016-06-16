@@ -27,7 +27,7 @@ angular.module('ng.cx.grid.CxGrid', [
         function CxGrid(
             dataProvider,
             cellRenderer,
-            columnHeaderRenderer,
+            colHeaderRenderer,
             rowHeaderRenderer,
             cornerRenderer,
             $mainContainer,
@@ -39,115 +39,188 @@ angular.module('ng.cx.grid.CxGrid', [
         ) {
 
             var self = this,
-                _rowHeaders = [],
-                _colHeaders = [],
-                _cells = [
-                    []
-                ];
+                _dataMatrix = dataProvider,
+                _viewMatrix,
+                _lastSelectedAxis = [];
+
+            /**********************************************************
+             * PROPERTIES
+             **********************************************************/
 
             Object.defineProperty(this, 'width', {
-                get: function () {
-                    return _colHeaders.length;
+                get: function() {
+                    return _viewMatrix.width;
                 }
             });
 
             Object.defineProperty(this, 'height', {
-                get: function () {
-                    return _rowHeaders.length;
+                get: function() {
+                    return _viewMatrix.height;
                 }
             });
-
-            this.addColAt = addColAt;
-            this.addRowAt = addRowAt;
-            this.getCell = getCell;
-
-            /**********************************************************
-             * IMPLEMENTATION
-             **********************************************************/
-
-            _init();
 
             /**********************************************************
              * METHODS
              **********************************************************/
 
-            function getCell(row, column) {
-                return _cells[row][column];
-            }
 
-            function addColAt(index, header, cells) {
-                _addHeaderAtIndex(index, header, columnHeaderRenderer, _colHeaders, $colHeadersContainer);
+            /**********************************************************
+             * CONSTRUCTOR
+             **********************************************************/
+
+            _init();
+
+            function _init() {
+
+                _hideMainContainer();
+
+                _dataMatrix.onRowAdded(onRowAddedHandler);
+                _dataMatrix.onColAdded(onColAddedHandler);
+
+                _viewMatrix = _dataMatrix.map(_createColHeader, _createRowHeader, _createCell);
+
+                _renderHeaders();
+
                 $timeout(function () {
-                    _addCellsColumnAt(index, cells, cellRenderer, $cellsContainer);
+                    _renderCorner();
+                    _renderAllCells();
+                    _showMainContainer();
                 });
             }
 
-            function addRowAt(index, header, cells) {
-                _addHeaderAtIndex(index, header, rowHeaderRenderer, _rowHeaders, $rowHeadersContainer);
-                $timeout(function () {
-                    _addCellsRowAt(index, cells, cellRenderer, $cellsContainer);
+            /**********************************************************
+             * ACCESSORS
+             **********************************************************/
+
+            /**********************************************************
+             * METHOD IMPLEMENTATION
+             **********************************************************/
+
+
+            /**********************************************************
+             * HANDLERS
+             **********************************************************/
+
+            function onColHeaderClicked(event, header) {
+                _highlightAxis(_viewMatrix.getAxisByHeader(header));
+            }
+
+            function onRowHeaderClicked(event, header) {
+                _highlightAxis(_viewMatrix.getAxisByHeader(header));
+            }
+
+            function onColAddedHandler(index, header, cells) {
+                var headerCell = _createColHeader(header),
+                    cxCells = cells.map(_createCell);
+
+                _viewMatrix.addColAt(index, headerCell, cxCells);
+                console.log('col added', headerCell, cxCells, _viewMatrix.getColHeaderAt(index) === headerCell);
+
+                if(index === 0) {
+                    $colHeadersContainer.prepend(headerCell.$element);
+                } else {
+                    _viewMatrix.getColHeaderAt(index - 1).$element.after(headerCell.$element);
+                }
+
+                $timeout(function(){
+                    _viewMatrix.map(_resetCellPosition, null, _renderCell);
                 });
             }
 
-            function _addCellsRowAt(index, cells, template, $container) {
-                var cell,
-                    cellsRow = [];
+            function onRowAddedHandler(index, header, cells) {
+                var headerCell = _createRowHeader(header),
+                    cxCells = cells.map(_createCell);
 
-                for (var ix = 0; ix < self.width; ix++) {
-                    cell = _createCell(cells[ix], template, gridScope, _rowHeaders[index], _colHeaders[ix]);
-                    cellsRow[ix] = cell;
-                    cell.position();
-                    $container.append(cell.$element);
+                _viewMatrix.addRowAt(index, headerCell, cxCells);
+                console.log('col added', headerCell, cxCells, _viewMatrix.getRowHeaderAt(index) === headerCell);
+
+                if(index === 0) {
+                    $rowHeadersContainer.prepend(headerCell.$element);
+                } else {
+                    _viewMatrix.getRowHeaderAt(index - 1).$element.after(headerCell.$element);
                 }
 
-                _cells.splice(index, 0, cellsRow);
-                $timeout(_repositionCells(index + 1, 0));
+                $timeout(function(){
+                    _viewMatrix.map(null, _resetCellPosition, _renderCell);
+                });
             }
-
-            function _addCellsColumnAt(index, cells, template, $container) {
-                var cell;
-
-                for (var ix = 0; ix < self.height; ix++) {
-                    cell = _createCell(cells[ix], template, gridScope, _rowHeaders[ix], _colHeaders[index]);
-                    _cells[ix].splice(index, 0, cell);
-                    cell.position();
-                    $container.append(cell.$element);
-                }
-
-                $timeout(_repositionCells(0, index + 1));
-            }
-
-            function _repositionCells(initialRow, initialColumn) {
-                initialRow = initialRow || 0;
-                initialColumn = initialColumn || 0;
-
-                for (var row = 0; row < self.height; row++) {
-                    _rowHeaders[row].position();
-                    for (var col = 0; col < self.width; col++) {
-                        _colHeaders[col].position();
-                        _cells[row][col].position();
-                        _cells[row][col].resize();
-                    }
-                }
-            }
-
-            function headerClickedHandler(event, header) {
-                console.log('event', event);
-                console.log('header', header);
-            }
-
 
             /**********************************************************
              * HELPERS
              **********************************************************/
 
-            function _init() {
-                _hideMainContainer();
-                _renderHeaders();
-                $timeout(_renderCorner);
-                $timeout(_renderGrid);
-                $timeout(_showMainContainer);
+
+            // Create -------------------------------------------------
+
+            function _createColHeader(item, index) {
+                var cell = _createCxCell(item, colHeaderRenderer, gridScope);
+                cell.on('click', onColHeaderClicked);
+                return cell;
             }
+
+            function _createRowHeader(item, index) {
+                var cell = _createCxCell(item, rowHeaderRenderer, gridScope);
+                cell.on('click', onRowHeaderClicked);
+                return cell;
+            }
+
+            function _createCell(item, col, row) {
+                return _createCxCell(item, cellRenderer, gridScope);
+            }
+
+
+
+
+            // Render -------------------------------------------------
+
+            function _renderColHeader(header, index) {
+                $colHeadersContainer.append(header.$element);
+            }
+
+            function _renderRowHeader(header, index) {
+                $rowHeadersContainer.append(header.$element);
+            }
+
+            function _renderCell(cell, colIndex, rowIndex) {
+
+                if(cell) {
+                    cell.positionByHeaders(
+                        _viewMatrix.getColHeaderAt(colIndex),
+                        _viewMatrix.getRowHeaderAt(rowIndex)
+                    );
+
+                    $cellsContainer.append(cell.$element);
+                }
+            }
+
+            function _resetCellPosition(cell) {
+                cell.position();
+            }
+
+            // Initial Render ----------------------------------------
+
+            function _renderHeaders() {
+                _viewMatrix.map(_renderColHeader, _renderRowHeader);
+            }
+
+            function _renderCorner() {
+
+                var width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
+                    height = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
+                    cell = _createCxCell(undefined, cornerRenderer, gridScope);
+
+                cell.resize(width, height);
+                $cornerContainer.append(cell.$element);
+            }
+
+            function _renderAllCells() {
+                _viewMatrix.mapCells(_renderCell);
+            }
+
+
+
+
+            // Hide / Show --------------------------------------------
 
             function _hideMainContainer() {
                 $mainContainer.css('opacity', 0);
@@ -158,105 +231,48 @@ angular.module('ng.cx.grid.CxGrid', [
                 console.timeEnd('grid');
             }
 
-            // HEADERS -------------------------------------------------
+            // Highlight ----------------------------------------------
 
-            function _renderHeaders() {
+            function _highlightAxis(axis) {
 
-                dataProvider.colHeaders.map(_createColHeaderCell);
-                dataProvider.rowHeaders.map(_createRowHeaderCell);
-            }
+                _lastSelectedAxis.map(deSelectCell);
 
-            function _createColHeaderCell(data) {
-                _addHeaderAtIndex(null, data, columnHeaderRenderer, _colHeaders, $colHeadersContainer);
-            }
-
-            function _createRowHeaderCell(data) {
-                _addHeaderAtIndex(null, data, rowHeaderRenderer, _rowHeaders, $rowHeadersContainer);
-            }
-
-            function _addHeaderAtIndex(index, data, renderer, collection, container) {
-
-                var cell = _createCell(data, renderer, gridScope, null, null, collection);
-
-                index = angular.isNumber(index) ? index : collection.length;
-
-                collection.splice(index, 0, cell);
-
-                if (index === 0) {
-
-                    container.prepend(cell.$element);
-
-                } else if (index >= collection.length - 1) {
-
-                    container.append(cell.$element);
-
-                } else {
-
-                    collection[index - 1].$element.after(cell.$element);
-                    collection.map(function (item) {
-                        item.position();
-                    });
+                if(!isThePreviouslySelectedAxis(axis)) {
+                    axis.map(selectCell);
+                    _lastSelectedAxis = axis;
                 }
 
-                return cell;
-            }
-
-            // CORNER -------------------------------------------------
-
-            function _renderCorner() {
-                var width = _getMaxMeasure(_rowHeaders, 'width'),
-                    height = _getMaxMeasure(_colHeaders, 'height'),
-                    cell = _createCell(undefined, cornerRenderer, gridScope);
-
-                cell.resize(width, height);
-                $cornerContainer.append(cell.$element);
-            }
-
-            // GRID -------------------------------------------------
-
-            function _renderGrid() {
-
-                for (var row = 0; row < _rowHeaders.length; row++) {
-
-                    _cells[row] = [];
-
-                    for (var col = 0; col < _colHeaders.length; col++) {
-
-                        _cells[row][col] = _createGridCell(row, col);
+                function selectCell(cell){
+                    if(cell) {
+                        cell.select();
                     }
                 }
+
+                function deSelectCell(cell) {
+                    if(cell) {
+                        cell.deSelect();
+                    }
+                }
+
+                function isThePreviouslySelectedAxis(axis) {
+                    return _lastSelectedAxis[0] === axis[0];
+                }
             }
 
-            function _createGridCell(rowIndex, colIndex) {
-
-                var cellData = dataProvider.cells[rowIndex][colIndex],
-                    cell = _createCell(
-                    cellData,
-                    cellRenderer,
-                    gridScope,
-                    _rowHeaders[rowIndex],
-                    _colHeaders[colIndex]
-                );
-
-                $cellsContainer.append(cell.$element);
-
-                return cell;
-            }
 
         }
 
-        function _createCell(data, template, gridScope, rowHeader, colHeader, collection) {
-            return new CxCell(data, template, gridScope, rowHeader, colHeader, collection);
+        function _createCxCell(data, template, gridScope) {
+            return new CxCell(data, template, gridScope);
         }
 
         function _getMaxMeasure(elements, measure) {
-            var measures = elements.map(function(cell) {
+            var measures = elements.map(function(cell, index) {
                 return cell[measure];
             });
 
             return Math.max.apply(null, measures);
         }
-
     }
 ])
 
