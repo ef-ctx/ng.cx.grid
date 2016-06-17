@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.23
+	 * ng.cx.grid - v0.1.24
 	 * 
-	 * Release date : 2016-06-17 : 15:33
+	 * Release date : 2016-06-17 : 15:52
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -808,7 +808,11 @@
 	            function _init() {
 	
 	                if (Array.isArray(matrix) && Array.isArray(matrix[0])) {
-	                    _cells = matrix;
+	
+	                    _cells = matrix.map(function(row) {
+	                        return Array.isArray(row) ? row.concat() : [];
+	                    }).concat();
+	
 	                    _setInitialDimensions();
 	                }
 	            }

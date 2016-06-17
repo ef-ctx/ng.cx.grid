@@ -1,3 +1,13 @@
+<a name="0.1.24"></a>
+## [0.1.24](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.23...v0.1.24) (2016-06-17)
+
+
+### Bug Fixes
+
+* **CxMatrix:** Matrix initialisation ([c118913](http://github.com%20/%20ef-ctx/ng.cx.grid/commits/c118913))
+
+
+
 <a name="0.1.23"></a>
 ## [0.1.23](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.22...v0.1.23) (2016-06-17)
 
