@@ -1,3 +1,13 @@
+<a name="0.1.23"></a>
+## [0.1.23](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.22...v0.1.23) (2016-06-17)
+
+
+### Bug Fixes
+
+* **corner:** initial state ([a2c833d](http://github.com%20/%20ef-ctx/ng.cx.grid/commits/a2c833d))
+
+
+
 <a name="0.1.22"></a>
 ## [0.1.22](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.21...v0.1.22) (2016-06-17)
 

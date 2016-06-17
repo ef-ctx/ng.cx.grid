@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.22
+	 * ng.cx.grid - v0.1.23
 	 * 
-	 * Release date : 2016-06-17 : 15:08
+	 * Release date : 2016-06-17 : 15:33
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -348,11 +348,10 @@
 	                    _viewMatrix.getColHeaderAt(index - 1).$element.after(headerCell.$element);
 	                }
 	
-	                _resizeCorner();
-	
 	                $timeout(function() {
 	                    _viewMatrix.mapColHeaders(_resetCellPosition);
 	                    _viewMatrix.mapCells(_renderCell);
+	                    _resizeCorner();
 	                });
 	
 	
@@ -370,11 +369,10 @@
 	                    _viewMatrix.getRowHeaderAt(index - 1).$element.after(headerCell.$element);
 	                }
 	
-	                _resizeCorner();
-	
 	                $timeout(function() {
 	                    _viewMatrix.mapRowHeaders(_resetCellPosition);
 	                    _viewMatrix.mapCells(_renderCell);
+	                    _resizeCorner();
 	                });
 	            }
 	
