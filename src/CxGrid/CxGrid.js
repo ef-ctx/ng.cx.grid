@@ -203,8 +203,8 @@ angular.module('ng.cx.grid.CxGrid', [
 
             function _renderCorner() {
 
-                var height = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
-                    width = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
+                var height = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
+                    width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
                     cell = _createCxCell(undefined, cornerRenderer, gridScope);
 
                 cell.resize(width, height);
