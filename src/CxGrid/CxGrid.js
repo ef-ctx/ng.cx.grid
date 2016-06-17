@@ -39,6 +39,7 @@ angular.module('ng.cx.grid.CxGrid', [
         ) {
 
             var self = this,
+                _cornerCell,
                 _dataMatrix = dataProvider,
                 _viewMatrix,
                 _lastSelectedAxis = [];
@@ -80,9 +81,10 @@ angular.module('ng.cx.grid.CxGrid', [
                 _viewMatrix = _dataMatrix.map(_createRowHeader, _createColHeader, _createCell);
 
                 _renderHeaders();
+                _renderCorner();
 
-                $timeout(function () {
-                    _renderCorner();
+                $timeout(function() {
+                    _resizeCorner();
                     _renderAllCells();
                     _showMainContainer();
                 });
@@ -115,15 +117,20 @@ angular.module('ng.cx.grid.CxGrid', [
 
                 _viewMatrix.addColAt(index, headerCell, cxCells);
 
-                if(index === 0) {
+                if (index === 0) {
                     $colHeadersContainer.prepend(headerCell.$element);
                 } else {
                     _viewMatrix.getColHeaderAt(index - 1).$element.after(headerCell.$element);
                 }
 
-                $timeout(function(){
-                    _viewMatrix.map(null, _resetCellPosition, _renderCell);
+                _resizeCorner();
+
+                $timeout(function() {
+                    _viewMatrix.mapColHeaders(_resetCellPosition);
+                    _viewMatrix.mapCells(_renderCell);
                 });
+
+
             }
 
             function onRowAddedHandler(index, header, cells) {
@@ -132,14 +139,17 @@ angular.module('ng.cx.grid.CxGrid', [
 
                 _viewMatrix.addRowAt(index, headerCell, cxCells);
 
-                if(index === 0) {
+                if (index === 0) {
                     $rowHeadersContainer.prepend(headerCell.$element);
                 } else {
                     _viewMatrix.getRowHeaderAt(index - 1).$element.after(headerCell.$element);
                 }
 
-                $timeout(function(){
-                    _viewMatrix.map(_resetCellPosition, null, _renderCell);
+                _resizeCorner();
+
+                $timeout(function() {
+                    _viewMatrix.mapRowHeaders(_resetCellPosition);
+                    _viewMatrix.mapCells(_renderCell);
                 });
             }
 
@@ -169,6 +179,7 @@ angular.module('ng.cx.grid.CxGrid', [
 
 
 
+
             // Render -------------------------------------------------
 
             function _renderColHeader(header, index) {
@@ -181,7 +192,7 @@ angular.module('ng.cx.grid.CxGrid', [
 
             function _renderCell(cell, rowIndex, colIndex) {
 
-                if(cell) {
+                if (cell) {
                     cell.positionByHeaders(
                         _viewMatrix.getRowHeaderAt(rowIndex),
                         _viewMatrix.getColHeaderAt(colIndex)
@@ -198,17 +209,20 @@ angular.module('ng.cx.grid.CxGrid', [
             // Initial Render ----------------------------------------
 
             function _renderHeaders() {
-                _viewMatrix.map( _renderRowHeader, _renderColHeader);
+                _viewMatrix.map(_renderRowHeader, _renderColHeader);
             }
 
             function _renderCorner() {
+                _cornerCell = _createCxCell(undefined, cornerRenderer, gridScope);
+                $cornerContainer.append(_cornerCell.$element);
+            }
+
+            function _resizeCorner() {
 
                 var height = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
-                    width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
-                    cell = _createCxCell(undefined, cornerRenderer, gridScope);
+                    width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width');
 
-                cell.resize(width, height);
-                $cornerContainer.append(cell.$element);
+                _cornerCell.resize(width, height);
             }
 
             function _renderAllCells() {
@@ -235,19 +249,19 @@ angular.module('ng.cx.grid.CxGrid', [
 
                 _lastSelectedAxis.map(deSelectCell);
 
-                if(!isThePreviouslySelectedAxis(axis)) {
+                if (!isThePreviouslySelectedAxis(axis)) {
                     axis.map(selectCell);
                     _lastSelectedAxis = axis;
                 }
 
-                function selectCell(cell){
-                    if(cell) {
+                function selectCell(cell) {
+                    if (cell) {
                         cell.select();
                     }
                 }
 
                 function deSelectCell(cell) {
-                    if(cell) {
+                    if (cell) {
                         cell.deSelect();
                     }
                 }

@@ -53,12 +53,12 @@ angular.module('ng.cx.grid.example.components.gridDataForm', [
 
         function addRow() {
             var line = new Line('NR', 2);
-            _matrix.addRowAt(0, line.header, line.cells);
+            _matrix.addRowAt(0, line.header, []);
         }
 
         function addColumn() {
             var line = new Line('NC', 3);
-            _matrix.addColAt(0, line.header, line.cells);
+            _matrix.addColAt(0, line.header, []);
         }
 
         function Line(label, score) {

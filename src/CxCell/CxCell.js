@@ -60,8 +60,8 @@ angular.module('ng.cx.grid.CxCell', [])
             });
 
             this.resize = function resize(width, height) {
-                var w = width || _colHeader.width,
-                    h = height || _rowHeader.height;
+                var w = width || (_colHeader ? _colHeader.width : 0),
+                    h = height || (_rowHeader ? _rowHeader.height : 0);
 
                 _resize(_$element, w, h);
             };
@@ -91,7 +91,7 @@ angular.module('ng.cx.grid.CxCell', [])
 
             this.select = function() {
 
-                if(_$element.hasClass('selected')) {
+                if (_$element.hasClass('selected')) {
                     _self.deSelect();
                 } else {
                     _$element.addClass('selected');

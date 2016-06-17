@@ -22,7 +22,7 @@ angular.module('ng.cx.grid.example', [
         _init();
 
         function _init() {
-            _matrix = buildGridData(9, 9);
+            _matrix = buildGridData(0, 0);
         }
 
 
@@ -36,7 +36,7 @@ angular.module('ng.cx.grid.example', [
 
                 _rowHeaders.push(rowHeaderParser(row, col, rows));
                 _cells.push([]);
-                for (var col = 0; col < rows; col++) {
+                for (var col = 0; col < cols; col++) {
 
                     if (row === 0) {
                         _colHeaders.push(colHeaderParser(row, col, cols));

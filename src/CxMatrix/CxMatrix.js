@@ -24,7 +24,7 @@ angular.module('ng.cx.grid.CxMatrix', [])
             var _self = this,
                 _height = 0,
                 _width = 0,
-                _cells = [];
+                _cells = [[]];
 
             /**********************************************************
              * PROPERTIES
@@ -61,8 +61,8 @@ angular.module('ng.cx.grid.CxMatrix', [])
 
             function _init() {
 
-                if (Array.isArray(matrix)) {
-                    _cells = matrix || _cells;
+                if (Array.isArray(matrix) && Array.isArray(matrix[0])) {
+                    _cells = matrix;
                     _setInitialDimensions();
                 }
             }
