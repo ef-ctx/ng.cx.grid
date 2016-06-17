@@ -123,11 +123,10 @@ angular.module('ng.cx.grid.CxGrid', [
                     _viewMatrix.getColHeaderAt(index - 1).$element.after(headerCell.$element);
                 }
 
-                _resizeCorner();
-
                 $timeout(function() {
                     _viewMatrix.mapColHeaders(_resetCellPosition);
                     _viewMatrix.mapCells(_renderCell);
+                    _resizeCorner();
                 });
 
 
@@ -145,11 +144,10 @@ angular.module('ng.cx.grid.CxGrid', [
                     _viewMatrix.getRowHeaderAt(index - 1).$element.after(headerCell.$element);
                 }
 
-                _resizeCorner();
-
                 $timeout(function() {
                     _viewMatrix.mapRowHeaders(_resetCellPosition);
                     _viewMatrix.mapCells(_renderCell);
+                    _resizeCorner();
                 });
             }
 
