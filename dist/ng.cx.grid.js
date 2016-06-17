@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.19
+	 * ng.cx.grid - v0.1.20
 	 * 
-	 * Release date : 2016-06-16 : 23:51
+	 * Release date : 2016-06-17 : 13:47
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -91,7 +91,7 @@
 	                _position(_$element, l, t);
 	            };
 	
-	            this.positionByHeaders = function PositionByHeaders(colHeader, rowHeader) {
+	            this.positionByHeaders = function PositionByHeaders(rowHeader, colHeader) {
 	                _colHeader = colHeader;
 	                _rowHeader = rowHeader;
 	                _self.position();
@@ -302,7 +302,7 @@
 	                _dataMatrix.onRowAdded(onRowAddedHandler);
 	                _dataMatrix.onColAdded(onColAddedHandler);
 	
-	                _viewMatrix = _dataMatrix.map(_createColHeader, _createRowHeader, _createCell);
+	                _viewMatrix = _dataMatrix.map(_createRowHeader, _createColHeader, _createCell);
 	
 	                _renderHeaders();
 	
@@ -339,7 +339,6 @@
 	                    cxCells = cells.map(_createCell);
 	
 	                _viewMatrix.addColAt(index, headerCell, cxCells);
-	                console.log('col added', headerCell, cxCells, _viewMatrix.getColHeaderAt(index) === headerCell);
 	
 	                if(index === 0) {
 	                    $colHeadersContainer.prepend(headerCell.$element);
@@ -348,7 +347,7 @@
 	                }
 	
 	                $timeout(function(){
-	                    _viewMatrix.map(_resetCellPosition, null, _renderCell);
+	                    _viewMatrix.map(null, _resetCellPosition, _renderCell);
 	                });
 	            }
 	
@@ -357,7 +356,6 @@
 	                    cxCells = cells.map(_createCell);
 	
 	                _viewMatrix.addRowAt(index, headerCell, cxCells);
-	                console.log('col added', headerCell, cxCells, _viewMatrix.getRowHeaderAt(index) === headerCell);
 	
 	                if(index === 0) {
 	                    $rowHeadersContainer.prepend(headerCell.$element);
@@ -366,7 +364,7 @@
 	                }
 	
 	                $timeout(function(){
-	                    _viewMatrix.map(null, _resetCellPosition, _renderCell);
+	                    _viewMatrix.map(_resetCellPosition, null, _renderCell);
 	                });
 	            }
 	
@@ -406,12 +404,12 @@
 	                $rowHeadersContainer.append(header.$element);
 	            }
 	
-	            function _renderCell(cell, colIndex, rowIndex) {
+	            function _renderCell(cell, rowIndex, colIndex) {
 	
 	                if(cell) {
 	                    cell.positionByHeaders(
-	                        _viewMatrix.getColHeaderAt(colIndex),
-	                        _viewMatrix.getRowHeaderAt(rowIndex)
+	                        _viewMatrix.getRowHeaderAt(rowIndex),
+	                        _viewMatrix.getColHeaderAt(colIndex)
 	                    );
 	
 	                    $cellsContainer.append(cell.$element);
@@ -425,13 +423,13 @@
 	            // Initial Render ----------------------------------------
 	
 	            function _renderHeaders() {
-	                _viewMatrix.map(_renderColHeader, _renderRowHeader);
+	                _viewMatrix.map( _renderRowHeader, _renderColHeader);
 	            }
 	
 	            function _renderCorner() {
 	
-	                var width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
-	                    height = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
+	                var height = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
+	                    width = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
 	                    cell = _createCxCell(undefined, cornerRenderer, gridScope);
 	
 	                cell.resize(width, height);
@@ -523,11 +521,11 @@
 	         *
 	         **********************************************************/
 	
-	        function CxGridMatrix(colHeaders, rowHeaders, cells) {
+	        function CxGridMatrix(rowHeaders, colHeaders, cells) {
 	
 	            var _self = this,
-	                _colHeaders,
 	                _rowHeaders,
+	                _colHeaders,
 	                _cells,
 	                _handlers = {
 	                    onRowAdded: [],
@@ -546,12 +544,12 @@
 	                get: getHeight
 	            });
 	
-	            Object.defineProperty(this, 'colHeaders', {
-	                get: getColHeaders
-	            });
-	
 	            Object.defineProperty(this, 'rowHeaders', {
 	                get: getRowHeaders
+	            });
+	
+	            Object.defineProperty(this, 'colHeaders', {
+	                get: getColHeaders
 	            });
 	
 	            Object.defineProperty(this, 'cells', {
@@ -593,12 +591,12 @@
 	             * CONSTRUCTOR
 	             **********************************************************/
 	
-	            _init(colHeaders, rowHeaders, cells);
+	            _init(rowHeaders, colHeaders, cells);
 	
-	            function _init(colHeaders, rowHeaders, cells) {
+	            function _init(rowHeaders, colHeaders, cells) {
 	
-	                _colHeaders = Array.isArray(colHeaders) ? colHeaders.concat() : [];
 	                _rowHeaders = Array.isArray(rowHeaders) ? rowHeaders.concat() : [];
+	                _colHeaders = Array.isArray(colHeaders) ? colHeaders.concat() : [];
 	
 	                _cells = (cells instanceof CxMatrix) ? cells.getCopy() : new CxMatrix(cells);
 	            }
@@ -631,9 +629,9 @@
 	             * METHOD IMPLEMENTATION
 	             **********************************************************/
 	
-	            function getCellAt(col, row) {
+	            function getCellAt(row, col) {
 	
-	                return _cells.getCellAt(col, row);
+	                return _cells.getCellAt(row, col);
 	            }
 	
 	            function getColHeaderAt(index) {
@@ -646,35 +644,30 @@
 	                return _rowHeaders[index];
 	            }
 	
-	            function getColAt(index) {
-	
-	                return [_colHeaders[index]].concat(_cells.getColAt(index));
-	            }
-	
 	            function getRowAt(index) {
 	
 	                return [_rowHeaders[index]].concat(_cells.getRowAt(index));
 	            }
 	
-	            function getAxisByHeader(header) {
-	                var colIndex = _colHeaders.indexOf(header),
-	                    rowIndex = _rowHeaders.indexOf(header);
+	            function getColAt(index) {
 	
-	                if (colIndex > -1) {
-	                    return getColAt(colIndex);
-	                }
+	                return [_colHeaders[index]].concat(_cells.getColAt(index));
+	            }
+	
+	            function getAxisByHeader(header) {
+	                var rowIndex = _rowHeaders.indexOf(header),
+	                    colIndex = _colHeaders.indexOf(header);
 	
 	                if (rowIndex > -1) {
 	                    return getRowAt(rowIndex);
 	                }
 	
-	                throw new Error('CxGridMatrix.getAxisByHeader error: the header provided is not present on any of the headers lists');
-	            }
+	                if (colIndex > -1) {
+	                    return getColAt(colIndex);
+	                }
 	
-	            function addColAt(index, header, cells) {
-	                _colHeaders.splice(index, 0, header);
-	                _cells.addColAt(index, cells);
-	                _notifyHandlers('onColAdded', index, header, cells);
+	
+	                throw new Error('CxGridMatrix.getAxisByHeader error: the header provided is not present on any of the headers lists');
 	            }
 	
 	            function addRowAt(index, header, cells) {
@@ -684,38 +677,46 @@
 	                _notifyHandlers('onRowAdded', index, header, cells);
 	            }
 	
+	            function addColAt(index, header, cells) {
+	                _colHeaders.splice(index, 0, header);
+	                _cells.addColAt(index, cells);
+	                _notifyHandlers('onColAdded', index, header, cells);
+	            }
+	
+	
 	            function getCopy() {
-	                return new CxGridMatrix(_colHeaders, _rowHeaders, _cells);
+	                return new CxGridMatrix(_rowHeaders, _colHeaders, _cells);
 	            }
 	
-	            function map(mapColHeaderFn, mapRowHeaderFn, mapCellsFn) {
+	            function map(mapRowHeaderFn, mapColHeaderFn, mapCellsFn) {
 	
-	                var colHeaders = (typeof mapColHeaderFn === 'function') ? _colHeaders.map(mapColHeaderFn) : _colHeaders,
-	                    rowHeaders = (typeof mapRowHeaderFn === 'function') ? _rowHeaders.map(mapRowHeaderFn) : _rowHeaders,
-	                    cells = (typeof mapCellsFn === 'function') ? _cells.map(mapCellsFn) : _cells;
+	                var rowHeaders = (typeof mapRowHeaderFn === 'function') ? mapRowHeaders(mapRowHeaderFn) : _rowHeaders,
+	                    colHeaders = (typeof mapColHeaderFn === 'function') ? mapColHeaders(mapColHeaderFn) : _colHeaders,
+	                    cells = (typeof mapCellsFn === 'function') ? mapCells(mapCellsFn) : _cells;
 	
-	                return new CxGridMatrix(colHeaders, rowHeaders, cells);
-	            }
-	
-	            function mapColHeaders(mapFn) {
-	                return _colHeaders.map(mapFn);
+	                return new CxGridMatrix(rowHeaders, colHeaders, cells);
 	            }
 	
 	            function mapRowHeaders(mapFn) {
 	                return _rowHeaders.map(mapFn);
 	            }
 	
+	            function mapColHeaders(mapFn) {
+	                return _colHeaders.map(mapFn);
+	            }
+	
 	            function mapCells(mapFn) {
 	                return _cells.map(mapFn);
+	            }
+	
+	            function onRowAdded(handler) {
+	                _handlers.onRowAdded.push(handler);
 	            }
 	
 	            function onColAdded(handler) {
 	                _handlers.onColAdded.push(handler);
 	            }
 	
-	            function onRowAdded(handler) {
-	                _handlers.onRowAdded.push(handler);
-	            }
 	
 	
 	            /**********************************************************
@@ -816,38 +817,37 @@
 	             * METHOD IMPLEMENTATION
 	             **********************************************************/
 	
-	            function getCellAt(col, row) {
+	            function getCellAt(row, col) {
 	
-	                return _cells[col][row];
+	                return _cells[row][col];
 	            }
 	
 	            function getColAt(index) {
+	                var col = [];
 	
-	                return _cells[index];
+	                for (var row = 0; row < _self.height; row++) {
+	                    col.push(_cells[row][index]);
+	                }
+	
+	                return col;
+	
 	            }
 	
 	            function getRowAt(index) {
 	
-	                var row = [];
-	
-	                for (var col = 0; col < _self.width; col++) {
-	                    row.push(_cells[col][index]);
-	                }
-	
-	                return row;
+	                return _cells[index];
 	            }
 	
 	            function addColAt(index, cells) {
-	                _cells.splice(index, 0, cells);
+	                for (var row = 0; row < _self.height; row++) {
+	                    _cells[row].splice(index, 0, cells[row]);
+	                }
 	                _width++;
 	            }
 	
 	            function addRowAt(index, cells) {
 	
-	                for (var col = 0; col < _self.width; col++) {
-	                    _cells[col].splice(index, 0, cells[col]);
-	                }
-	
+	                _cells.splice(index, 0, cells);
 	                _height++;
 	            }
 	
@@ -857,10 +857,10 @@
 	
 	            function map(callback) {
 	
-	                var cells = _cells.map(function(col, colIndex) {
-	                    return col.map(function(item, rowIndex) {
+	                var cells = _cells.map(function(row, rowIndex) {
+	                    return row.map(function(item, colIndex) {
 	
-	                        return callback.call(this, item, colIndex, rowIndex, _self);
+	                        return callback.call(this, item, rowIndex, colIndex, _self);
 	                    });
 	                });
 	
@@ -873,8 +873,8 @@
 	             **********************************************************/
 	
 	            function _setInitialDimensions() {
-	                _width = _cells.length;
-	                _height = _cells[0].length;
+	                _width = _cells[0].length;
+	                _height = _cells.length;
 	            }
 	
 	        }
