@@ -62,7 +62,11 @@ angular.module('ng.cx.grid.CxMatrix', [])
             function _init() {
 
                 if (Array.isArray(matrix) && Array.isArray(matrix[0])) {
-                    _cells = matrix;
+
+                    _cells = matrix.map(function(row) {
+                        return Array.isArray(row) ? row.concat() : [];
+                    }).concat();
+
                     _setInitialDimensions();
                 }
             }
