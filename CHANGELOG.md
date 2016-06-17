@@ -1,3 +1,13 @@
+<a name="0.1.21"></a>
+## [0.1.21](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.20...v0.1.21) (2016-06-17)
+
+
+### Bug Fixes
+
+* **corner:** dimensions ([b575f13](http://github.com%20/%20ef-ctx/ng.cx.grid/commits/b575f13))
+
+
+
 <a name="0.1.20"></a>
 ## [0.1.20](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.19...v0.1.20) (2016-06-17)
 

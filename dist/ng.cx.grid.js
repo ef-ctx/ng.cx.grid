@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.20
+	 * ng.cx.grid - v0.1.21
 	 * 
-	 * Release date : 2016-06-17 : 13:47
+	 * Release date : 2016-06-17 : 14:23
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -428,8 +428,8 @@
 	
 	            function _renderCorner() {
 	
-	                var height = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
-	                    width = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
+	                var height = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
+	                    width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
 	                    cell = _createCxCell(undefined, cornerRenderer, gridScope);
 	
 	                cell.resize(width, height);
