@@ -83,38 +83,37 @@ angular.module('ng.cx.grid.CxMatrix', [])
              * METHOD IMPLEMENTATION
              **********************************************************/
 
-            function getCellAt(col, row) {
+            function getCellAt(row, col) {
 
-                return _cells[col][row];
+                return _cells[row][col];
             }
 
             function getColAt(index) {
+                var col = [];
 
-                return _cells[index];
+                for (var row = 0; row < _self.height; row++) {
+                    col.push(_cells[row][index]);
+                }
+
+                return col;
+
             }
 
             function getRowAt(index) {
 
-                var row = [];
-
-                for (var col = 0; col < _self.width; col++) {
-                    row.push(_cells[col][index]);
-                }
-
-                return row;
+                return _cells[index];
             }
 
             function addColAt(index, cells) {
-                _cells.splice(index, 0, cells);
+                for (var row = 0; row < _self.height; row++) {
+                    _cells[row].splice(index, 0, cells[row]);
+                }
                 _width++;
             }
 
             function addRowAt(index, cells) {
 
-                for (var col = 0; col < _self.width; col++) {
-                    _cells[col].splice(index, 0, cells[col]);
-                }
-
+                _cells.splice(index, 0, cells);
                 _height++;
             }
 
@@ -124,10 +123,10 @@ angular.module('ng.cx.grid.CxMatrix', [])
 
             function map(callback) {
 
-                var cells = _cells.map(function(col, colIndex) {
-                    return col.map(function(item, rowIndex) {
+                var cells = _cells.map(function(row, rowIndex) {
+                    return row.map(function(item, colIndex) {
 
-                        return callback.call(this, item, colIndex, rowIndex, _self);
+                        return callback.call(this, item, rowIndex, colIndex, _self);
                     });
                 });
 
@@ -140,8 +139,8 @@ angular.module('ng.cx.grid.CxMatrix', [])
              **********************************************************/
 
             function _setInitialDimensions() {
-                _width = _cells.length;
-                _height = _cells[0].length;
+                _width = _cells[0].length;
+                _height = _cells.length;
             }
 
         }

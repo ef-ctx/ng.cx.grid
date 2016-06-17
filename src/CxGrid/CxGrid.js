@@ -77,7 +77,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 _dataMatrix.onRowAdded(onRowAddedHandler);
                 _dataMatrix.onColAdded(onColAddedHandler);
 
-                _viewMatrix = _dataMatrix.map(_createColHeader, _createRowHeader, _createCell);
+                _viewMatrix = _dataMatrix.map(_createRowHeader, _createColHeader, _createCell);
 
                 _renderHeaders();
 
@@ -114,7 +114,6 @@ angular.module('ng.cx.grid.CxGrid', [
                     cxCells = cells.map(_createCell);
 
                 _viewMatrix.addColAt(index, headerCell, cxCells);
-                console.log('col added', headerCell, cxCells, _viewMatrix.getColHeaderAt(index) === headerCell);
 
                 if(index === 0) {
                     $colHeadersContainer.prepend(headerCell.$element);
@@ -123,7 +122,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 }
 
                 $timeout(function(){
-                    _viewMatrix.map(_resetCellPosition, null, _renderCell);
+                    _viewMatrix.map(null, _resetCellPosition, _renderCell);
                 });
             }
 
@@ -132,7 +131,6 @@ angular.module('ng.cx.grid.CxGrid', [
                     cxCells = cells.map(_createCell);
 
                 _viewMatrix.addRowAt(index, headerCell, cxCells);
-                console.log('col added', headerCell, cxCells, _viewMatrix.getRowHeaderAt(index) === headerCell);
 
                 if(index === 0) {
                     $rowHeadersContainer.prepend(headerCell.$element);
@@ -141,7 +139,7 @@ angular.module('ng.cx.grid.CxGrid', [
                 }
 
                 $timeout(function(){
-                    _viewMatrix.map(null, _resetCellPosition, _renderCell);
+                    _viewMatrix.map(_resetCellPosition, null, _renderCell);
                 });
             }
 
@@ -181,12 +179,12 @@ angular.module('ng.cx.grid.CxGrid', [
                 $rowHeadersContainer.append(header.$element);
             }
 
-            function _renderCell(cell, colIndex, rowIndex) {
+            function _renderCell(cell, rowIndex, colIndex) {
 
                 if(cell) {
                     cell.positionByHeaders(
-                        _viewMatrix.getColHeaderAt(colIndex),
-                        _viewMatrix.getRowHeaderAt(rowIndex)
+                        _viewMatrix.getRowHeaderAt(rowIndex),
+                        _viewMatrix.getColHeaderAt(colIndex)
                     );
 
                     $cellsContainer.append(cell.$element);
@@ -200,13 +198,13 @@ angular.module('ng.cx.grid.CxGrid', [
             // Initial Render ----------------------------------------
 
             function _renderHeaders() {
-                _viewMatrix.map(_renderColHeader, _renderRowHeader);
+                _viewMatrix.map( _renderRowHeader, _renderColHeader);
             }
 
             function _renderCorner() {
 
-                var width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
-                    height = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
+                var height = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
+                    width = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
                     cell = _createCxCell(undefined, cornerRenderer, gridScope);
 
                 cell.resize(width, height);

@@ -3,8 +3,8 @@ describe('CxMatrix', function() {
 
     var matrix,
         _cells,
-        _width = 7,
-        _height = 5,
+        _width = 5,
+        _height = 7,
         _factory = new ObjFactory();
 
     function ObjFactory() {
@@ -39,10 +39,10 @@ describe('CxMatrix', function() {
 
                 _cells = [];
 
-                for (var col = 0; col < _width; col++) {
-                    _cells[col] = [];
-                    for (var row = 0; row < _height; row++) {
-                        _cells[col][row] = _factory.createInstance(col + '_' + row);
+                for (var row = 0; row < _height; row++) {
+                    _cells[row] = [];
+                    for (var col = 0; col < _width; col++) {
+                        _cells[row][col] = _factory.createInstance(row + '_' + col);
                     }
                 }
 
@@ -66,7 +66,7 @@ describe('CxMatrix', function() {
             describe('getCellAt(x,y)', function() {
 
                 it('should return the cell at x column and y row', inject(function() {
-                    expect(matrix.getCellAt(0, 0).data).toBe('0_0');
+                    expect(matrix.getCellAt(2, 3).data).toBe('2_3');
                 }));
             });
 
@@ -75,8 +75,8 @@ describe('CxMatrix', function() {
                 it('returns an array containing the matrix´s cells at column specified', function() {
                     var column = matrix.getColAt(2);
 
-                    expect(column[0].data).toBe('2_0');
-                    expect(column[4].data).toBe('2_4');
+                    expect(column[0].data).toBe('0_2');
+                    expect(column[4].data).toBe('4_2');
                 });
             });
 
@@ -85,8 +85,8 @@ describe('CxMatrix', function() {
                 it('returns an array containing the matrix´s cells at row specified', function() {
                     var row = matrix.getRowAt(2);
 
-                    expect(row[0].data).toBe('0_2');
-                    expect(row[6].data).toBe('6_2');
+                    expect(row[0].data).toBe('2_0');
+                    expect(row[4].data).toBe('2_4');
                 });
             });
 

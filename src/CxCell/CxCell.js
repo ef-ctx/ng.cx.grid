@@ -76,7 +76,7 @@ angular.module('ng.cx.grid.CxCell', [])
                 _position(_$element, l, t);
             };
 
-            this.positionByHeaders = function PositionByHeaders(colHeader, rowHeader) {
+            this.positionByHeaders = function PositionByHeaders(rowHeader, colHeader) {
                 _colHeader = colHeader;
                 _rowHeader = rowHeader;
                 _self.position();

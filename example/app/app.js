@@ -26,51 +26,51 @@ angular.module('ng.cx.grid.example', [
         }
 
 
-        function buildGridData(cols, rows) {
+        function buildGridData(rows, cols) {
 
-            var _colHeaders = [],
-                _rowHeaders = [],
+            var _rowHeaders = [],
+                _colHeaders = [],
                 _cells = [];
 
-            for (var col = 0; col < cols; col++) {
+            for (var row = 0; row < rows; row++) {
 
-                _colHeaders.push(colHeaderParser(col, row, cols));
+                _rowHeaders.push(rowHeaderParser(row, col, rows));
                 _cells.push([]);
-                for (var row = 0; row < cols; row++) {
+                for (var col = 0; col < rows; col++) {
 
-                    if (col === 0) {
-                        _rowHeaders.push(rowHeaderParser(col, row, rows));
+                    if (row === 0) {
+                        _colHeaders.push(colHeaderParser(row, col, cols));
                     }
-                    _cells[col].push(itemParser(col, row));
+                    _cells[row].push(itemParser(row, col));
                 }
             }
 
-            return new CxGridMatrix(_colHeaders, _rowHeaders, _cells);
+            return new CxGridMatrix(_rowHeaders, _colHeaders, _cells);
         }
 
-        function itemParser(col, row) {
+        function itemParser(row, col) {
 
             return {
                 title: 'Closed answer',
-                label: col + '-' + row,
+                label: row + '-' + col,
                 score: Math.floor(Math.random() * 10) % 5
             };
         }
 
-        function rowHeaderParser(col, row, total) {
+        function colHeaderParser(row, col, total) {
 
             return {
-                label: 'R' + (row + 1),
-                count: row + 1,
+                label: 'C' + (col + 1),
+                count: col + 1,
                 total: total,
                 score: Math.floor(Math.random() * 10) % 5
             };
         }
 
-        function colHeaderParser(col, row, total) {
+        function rowHeaderParser(row, col, total) {
 
             return {
-                label: 'C' + (col + 1),
+                label: 'R' + (row + 1),
                 count: row + 1,
                 total: total,
                 score: Math.floor(Math.random() * 10) % 5

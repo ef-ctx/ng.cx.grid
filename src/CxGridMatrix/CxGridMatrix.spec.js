@@ -25,42 +25,41 @@ describe('CxGridMatrix', function() {
         _colHeaders = ['c_0', 'c_1', 'c_2', 'c_3', 'c_4', 'c_5', 'c_6', 'c_7', 'c_8', 'c_9'];
         _cells = [];
 
-        for (var col = 0; col < _colHeaders.length; col++) {
-            _cells[col] = [];
-            for (var row = 0; row < _rowHeaders.length; row++) {
-                _cells[col][row] = _factory.createInstance(col + '_' + row);
+        for (var row = 0; row < _rowHeaders.length; row++) {
+            _cells[row] = [];
+            for (var col = 0; col < _colHeaders.length; col++) {
+                _cells[row][col] = _factory.createInstance(row + '_' + col);
             }
         }
 
-        _colHeaders = _colHeaders.map(_factory.createInstance);
         _rowHeaders = _rowHeaders.map(_factory.createInstance);
+        _colHeaders = _colHeaders.map(_factory.createInstance);
 
         matrix = new CxGridMatrix(
-            _colHeaders,
             _rowHeaders,
-            _cells,
-            _factory
+            _colHeaders,
+            _cells
         );
     }));
 
     describe('width', function() {
 
-        it('returns the length of the colHeaders', inject(function() {
-            expect(matrix.width).toBe(_colHeaders.length);
+        it('returns the length of the rowHeaders', inject(function() {
+            expect(matrix.width).toBe(_rowHeaders.length);
         }));
     });
 
     describe('height', function() {
 
-        it('returns the length of the rowHeaders', function() {
-            expect(matrix.width).toBe(10);
+        it('returns the length of the colHeaders', function() {
+            expect(matrix.height).toBe(_colHeaders.length);
         });
     });
 
     describe('getCellAt(x,y)', function() {
 
         it('should return the cell at x column and y row', inject(function() {
-            expect(matrix.getCellAt(0, 0).data).toBe('0_0');
+            expect(matrix.getCellAt(2, 3).data).toBe('2_3');
         }));
     });
 
@@ -78,12 +77,14 @@ describe('CxGridMatrix', function() {
         });
     });
 
-    describe('constructor', function() {
 
-        describe('providing a constructor function', function() {
-            it('maps the data with the constructor function', function() {
-                expect(matrix.getCellAt(0, 0) instanceof Obj).toBe(true);
-            });
+    describe('getRowAt(x)', function() {
+
+        it('returns an array containing the header cell in the first position and the matrix´s cells after it', function() {
+            var row = matrix.getRowAt(2);
+
+            expect(row[0].data).toBe('r_2');
+            expect(row[5].data).toBe('2_4');
         });
     });
 
@@ -93,25 +94,9 @@ describe('CxGridMatrix', function() {
             var column = matrix.getColAt(2);
 
             expect(column[0].data).toBe('c_2');
-            expect(column[1].data).toBe('2_0');
-            expect(column[2].data).toBe('2_1');
-            expect(column[3].data).toBe('2_2');
-            expect(column[4].data).toBe('2_3');
-            expect(column[5].data).toBe('2_4');
-            expect(column[6].data).toBe('2_5');
+            expect(column[4].data).toBe('3_2');
         });
     });
-
-    describe('getRowAt(x)', function() {
-
-        it('returns an array containing the header cell in the first position and the matrix´s cells after it', function() {
-            var row = matrix.getRowAt(2);
-
-            expect(row[0].data).toBe('r_2');
-            expect(row[6].data).toBe('5_2');
-        });
-    });
-
     describe('getAxisByHeader(header)', function() {
 
         it('when providing a column header returns the column for the correspondant header', function() {
@@ -140,7 +125,9 @@ describe('CxGridMatrix', function() {
 
         it('throws an error when the header is not present on the headers lists', function() {
             expect(function() {
-                matrix.getAxisByHeader({ id: 2 });
+                matrix.getAxisByHeader({
+                    id: 2
+                });
             }).toThrow();
         });
     });
@@ -210,6 +197,7 @@ describe('CxGridMatrix', function() {
             matrix.addColAt(2, header, cells);
 
             col = matrix.getColAt(2);
+
         });
 
         it('adds the colHeader at the specified index', function() {
@@ -240,13 +228,13 @@ describe('CxGridMatrix', function() {
                 return item;
             }
 
-            function mapCells(item, colIndex, rowIndex, matrix) {
+            function mapCells(item, rowIndex, colIndex, matrix) {
 
-                item.foo = 'matrix cell [' + colIndex + ', ' + rowIndex + ']';
+                item.foo = 'matrix cell [' + rowIndex + ', ' + colIndex + ']';
                 return item;
             }
 
-            mappedMatrix = matrix.map(mapColHeader, mapRowHeader, mapCells);
+            mappedMatrix = matrix.map(mapRowHeader, mapColHeader, mapCells);
         });
 
         it('maps the rowHeaders array with the provided function', function() {

@@ -16,11 +16,11 @@ angular.module('ng.cx.grid.CxGridMatrix', [
          *
          **********************************************************/
 
-        function CxGridMatrix(colHeaders, rowHeaders, cells) {
+        function CxGridMatrix(rowHeaders, colHeaders, cells) {
 
             var _self = this,
-                _colHeaders,
                 _rowHeaders,
+                _colHeaders,
                 _cells,
                 _handlers = {
                     onRowAdded: [],
@@ -39,12 +39,12 @@ angular.module('ng.cx.grid.CxGridMatrix', [
                 get: getHeight
             });
 
-            Object.defineProperty(this, 'colHeaders', {
-                get: getColHeaders
-            });
-
             Object.defineProperty(this, 'rowHeaders', {
                 get: getRowHeaders
+            });
+
+            Object.defineProperty(this, 'colHeaders', {
+                get: getColHeaders
             });
 
             Object.defineProperty(this, 'cells', {
@@ -86,12 +86,12 @@ angular.module('ng.cx.grid.CxGridMatrix', [
              * CONSTRUCTOR
              **********************************************************/
 
-            _init(colHeaders, rowHeaders, cells);
+            _init(rowHeaders, colHeaders, cells);
 
-            function _init(colHeaders, rowHeaders, cells) {
+            function _init(rowHeaders, colHeaders, cells) {
 
-                _colHeaders = Array.isArray(colHeaders) ? colHeaders.concat() : [];
                 _rowHeaders = Array.isArray(rowHeaders) ? rowHeaders.concat() : [];
+                _colHeaders = Array.isArray(colHeaders) ? colHeaders.concat() : [];
 
                 _cells = (cells instanceof CxMatrix) ? cells.getCopy() : new CxMatrix(cells);
             }
@@ -124,9 +124,9 @@ angular.module('ng.cx.grid.CxGridMatrix', [
              * METHOD IMPLEMENTATION
              **********************************************************/
 
-            function getCellAt(col, row) {
+            function getCellAt(row, col) {
 
-                return _cells.getCellAt(col, row);
+                return _cells.getCellAt(row, col);
             }
 
             function getColHeaderAt(index) {
@@ -139,35 +139,30 @@ angular.module('ng.cx.grid.CxGridMatrix', [
                 return _rowHeaders[index];
             }
 
-            function getColAt(index) {
-
-                return [_colHeaders[index]].concat(_cells.getColAt(index));
-            }
-
             function getRowAt(index) {
 
                 return [_rowHeaders[index]].concat(_cells.getRowAt(index));
             }
 
-            function getAxisByHeader(header) {
-                var colIndex = _colHeaders.indexOf(header),
-                    rowIndex = _rowHeaders.indexOf(header);
+            function getColAt(index) {
 
-                if (colIndex > -1) {
-                    return getColAt(colIndex);
-                }
+                return [_colHeaders[index]].concat(_cells.getColAt(index));
+            }
+
+            function getAxisByHeader(header) {
+                var rowIndex = _rowHeaders.indexOf(header),
+                    colIndex = _colHeaders.indexOf(header);
 
                 if (rowIndex > -1) {
                     return getRowAt(rowIndex);
                 }
 
-                throw new Error('CxGridMatrix.getAxisByHeader error: the header provided is not present on any of the headers lists');
-            }
+                if (colIndex > -1) {
+                    return getColAt(colIndex);
+                }
 
-            function addColAt(index, header, cells) {
-                _colHeaders.splice(index, 0, header);
-                _cells.addColAt(index, cells);
-                _notifyHandlers('onColAdded', index, header, cells);
+
+                throw new Error('CxGridMatrix.getAxisByHeader error: the header provided is not present on any of the headers lists');
             }
 
             function addRowAt(index, header, cells) {
@@ -177,38 +172,46 @@ angular.module('ng.cx.grid.CxGridMatrix', [
                 _notifyHandlers('onRowAdded', index, header, cells);
             }
 
+            function addColAt(index, header, cells) {
+                _colHeaders.splice(index, 0, header);
+                _cells.addColAt(index, cells);
+                _notifyHandlers('onColAdded', index, header, cells);
+            }
+
+
             function getCopy() {
-                return new CxGridMatrix(_colHeaders, _rowHeaders, _cells);
+                return new CxGridMatrix(_rowHeaders, _colHeaders, _cells);
             }
 
-            function map(mapColHeaderFn, mapRowHeaderFn, mapCellsFn) {
+            function map(mapRowHeaderFn, mapColHeaderFn, mapCellsFn) {
 
-                var colHeaders = (typeof mapColHeaderFn === 'function') ? _colHeaders.map(mapColHeaderFn) : _colHeaders,
-                    rowHeaders = (typeof mapRowHeaderFn === 'function') ? _rowHeaders.map(mapRowHeaderFn) : _rowHeaders,
-                    cells = (typeof mapCellsFn === 'function') ? _cells.map(mapCellsFn) : _cells;
+                var rowHeaders = (typeof mapRowHeaderFn === 'function') ? mapRowHeaders(mapRowHeaderFn) : _rowHeaders,
+                    colHeaders = (typeof mapColHeaderFn === 'function') ? mapColHeaders(mapColHeaderFn) : _colHeaders,
+                    cells = (typeof mapCellsFn === 'function') ? mapCells(mapCellsFn) : _cells;
 
-                return new CxGridMatrix(colHeaders, rowHeaders, cells);
-            }
-
-            function mapColHeaders(mapFn) {
-                return _colHeaders.map(mapFn);
+                return new CxGridMatrix(rowHeaders, colHeaders, cells);
             }
 
             function mapRowHeaders(mapFn) {
                 return _rowHeaders.map(mapFn);
             }
 
+            function mapColHeaders(mapFn) {
+                return _colHeaders.map(mapFn);
+            }
+
             function mapCells(mapFn) {
                 return _cells.map(mapFn);
+            }
+
+            function onRowAdded(handler) {
+                _handlers.onRowAdded.push(handler);
             }
 
             function onColAdded(handler) {
                 _handlers.onColAdded.push(handler);
             }
 
-            function onRowAdded(handler) {
-                _handlers.onRowAdded.push(handler);
-            }
 
 
             /**********************************************************
