@@ -1,3 +1,13 @@
+<a name="0.1.22"></a>
+## [0.1.22](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.21...v0.1.22) (2016-06-17)
+
+
+### Bug Fixes
+
+* **empty states:** Handling empty states ([011e582](http://github.com%20/%20ef-ctx/ng.cx.grid/commits/011e582))
+
+
+
 <a name="0.1.21"></a>
 ## [0.1.21](/http://github.com%20/%20ef-ctx/ng.cx.grid/compare/v0.1.20...v0.1.21) (2016-06-17)
 

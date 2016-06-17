@@ -3,9 +3,9 @@
 
 	/**********************************************************
 	 * 
-	 * ng.cx.grid - v0.1.21
+	 * ng.cx.grid - v0.1.22
 	 * 
-	 * Release date : 2016-06-17 : 14:23
+	 * Release date : 2016-06-17 : 15:08
 	 * Author       : Jaime Beneytez - EF CTX 
 	 * License      : MIT 
 	 * 
@@ -75,8 +75,8 @@
 	            });
 	
 	            this.resize = function resize(width, height) {
-	                var w = width || _colHeader.width,
-	                    h = height || _rowHeader.height;
+	                var w = width || (_colHeader ? _colHeader.width : 0),
+	                    h = height || (_rowHeader ? _rowHeader.height : 0);
 	
 	                _resize(_$element, w, h);
 	            };
@@ -106,7 +106,7 @@
 	
 	            this.select = function() {
 	
-	                if(_$element.hasClass('selected')) {
+	                if (_$element.hasClass('selected')) {
 	                    _self.deSelect();
 	                } else {
 	                    _$element.addClass('selected');
@@ -264,6 +264,7 @@
 	        ) {
 	
 	            var self = this,
+	                _cornerCell,
 	                _dataMatrix = dataProvider,
 	                _viewMatrix,
 	                _lastSelectedAxis = [];
@@ -305,9 +306,10 @@
 	                _viewMatrix = _dataMatrix.map(_createRowHeader, _createColHeader, _createCell);
 	
 	                _renderHeaders();
+	                _renderCorner();
 	
-	                $timeout(function () {
-	                    _renderCorner();
+	                $timeout(function() {
+	                    _resizeCorner();
 	                    _renderAllCells();
 	                    _showMainContainer();
 	                });
@@ -340,15 +342,20 @@
 	
 	                _viewMatrix.addColAt(index, headerCell, cxCells);
 	
-	                if(index === 0) {
+	                if (index === 0) {
 	                    $colHeadersContainer.prepend(headerCell.$element);
 	                } else {
 	                    _viewMatrix.getColHeaderAt(index - 1).$element.after(headerCell.$element);
 	                }
 	
-	                $timeout(function(){
-	                    _viewMatrix.map(null, _resetCellPosition, _renderCell);
+	                _resizeCorner();
+	
+	                $timeout(function() {
+	                    _viewMatrix.mapColHeaders(_resetCellPosition);
+	                    _viewMatrix.mapCells(_renderCell);
 	                });
+	
+	
 	            }
 	
 	            function onRowAddedHandler(index, header, cells) {
@@ -357,14 +364,17 @@
 	
 	                _viewMatrix.addRowAt(index, headerCell, cxCells);
 	
-	                if(index === 0) {
+	                if (index === 0) {
 	                    $rowHeadersContainer.prepend(headerCell.$element);
 	                } else {
 	                    _viewMatrix.getRowHeaderAt(index - 1).$element.after(headerCell.$element);
 	                }
 	
-	                $timeout(function(){
-	                    _viewMatrix.map(_resetCellPosition, null, _renderCell);
+	                _resizeCorner();
+	
+	                $timeout(function() {
+	                    _viewMatrix.mapRowHeaders(_resetCellPosition);
+	                    _viewMatrix.mapCells(_renderCell);
 	                });
 	            }
 	
@@ -394,6 +404,7 @@
 	
 	
 	
+	
 	            // Render -------------------------------------------------
 	
 	            function _renderColHeader(header, index) {
@@ -406,7 +417,7 @@
 	
 	            function _renderCell(cell, rowIndex, colIndex) {
 	
-	                if(cell) {
+	                if (cell) {
 	                    cell.positionByHeaders(
 	                        _viewMatrix.getRowHeaderAt(rowIndex),
 	                        _viewMatrix.getColHeaderAt(colIndex)
@@ -423,17 +434,20 @@
 	            // Initial Render ----------------------------------------
 	
 	            function _renderHeaders() {
-	                _viewMatrix.map( _renderRowHeader, _renderColHeader);
+	                _viewMatrix.map(_renderRowHeader, _renderColHeader);
 	            }
 	
 	            function _renderCorner() {
+	                _cornerCell = _createCxCell(undefined, cornerRenderer, gridScope);
+	                $cornerContainer.append(_cornerCell.$element);
+	            }
+	
+	            function _resizeCorner() {
 	
 	                var height = _getMaxMeasure(_viewMatrix.colHeaders, 'height'),
-	                    width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width'),
-	                    cell = _createCxCell(undefined, cornerRenderer, gridScope);
+	                    width = _getMaxMeasure(_viewMatrix.rowHeaders, 'width');
 	
-	                cell.resize(width, height);
-	                $cornerContainer.append(cell.$element);
+	                _cornerCell.resize(width, height);
 	            }
 	
 	            function _renderAllCells() {
@@ -460,19 +474,19 @@
 	
 	                _lastSelectedAxis.map(deSelectCell);
 	
-	                if(!isThePreviouslySelectedAxis(axis)) {
+	                if (!isThePreviouslySelectedAxis(axis)) {
 	                    axis.map(selectCell);
 	                    _lastSelectedAxis = axis;
 	                }
 	
-	                function selectCell(cell){
-	                    if(cell) {
+	                function selectCell(cell) {
+	                    if (cell) {
 	                        cell.select();
 	                    }
 	                }
 	
 	                function deSelectCell(cell) {
-	                    if(cell) {
+	                    if (cell) {
 	                        cell.deSelect();
 	                    }
 	                }
@@ -758,7 +772,7 @@
 	            var _self = this,
 	                _height = 0,
 	                _width = 0,
-	                _cells = [];
+	                _cells = [[]];
 	
 	            /**********************************************************
 	             * PROPERTIES
@@ -795,8 +809,8 @@
 	
 	            function _init() {
 	
-	                if (Array.isArray(matrix)) {
-	                    _cells = matrix || _cells;
+	                if (Array.isArray(matrix) && Array.isArray(matrix[0])) {
+	                    _cells = matrix;
 	                    _setInitialDimensions();
 	                }
 	            }
