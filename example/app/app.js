@@ -22,7 +22,7 @@ angular.module('ng.cx.grid.example', [
         _init();
 
         function _init() {
-            _matrix = buildGridData(0, 0);
+            _matrix = buildGridData(20, 20);
         }
 
 
